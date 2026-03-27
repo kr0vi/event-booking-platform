@@ -16,4 +16,31 @@ export const getAllEvents = async (req: Request, res: Response) => {
     message: "All events fetched successfully",
   });
 };
-    
+
+export const getEventById = async (req: Request, res: Response) => {
+  const eventId = req.params.id;
+  if (!eventId || Array.isArray(eventId)) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event ID is required",
+    });
+  }
+  const foundEvent = await prisma.event.findUnique({
+    where: {
+      id: eventId,
+    },
+  });
+  if (!foundEvent) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event not found",
+    });
+  }
+  res.json({
+    success: true,
+    data: foundEvent,
+    message: "Event fetched successfully",
+  });
+};
