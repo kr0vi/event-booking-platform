@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../index.js";
 import { JWT_SECRET_KEY } from "../secrets.js";
 import jwt from "jsonwebtoken";
-import { compareSync } from "bcrypt";
+import { compareSync, hashSync } from "bcrypt";
 
 export const signup = async (req: Request, res: Response) => {
   const {
@@ -26,8 +26,9 @@ export const signup = async (req: Request, res: Response) => {
   user = await prisma.user.create({
     data: {
       name,
+      role: "ORGANIZER",
       email,
-      passwordHash: password,
+      passwordHash: hashSync(password, 10),
     },
   });
   res.json({ success: true, message: "User created successfully", data: user });

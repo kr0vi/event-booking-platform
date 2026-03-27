@@ -56,7 +56,7 @@ interface inputType {
 }
 
 export const createEvents = async (req: Request, res: Response) => {
-  const organizerId = (req as any).id;
+  const organizerId = (req as any).userId;
   const {
     title,
     description,

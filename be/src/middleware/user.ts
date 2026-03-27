@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { JWT_SECRET_KEY } from "../secrets.js";
 import { prisma } from "../index.js";
 // @ts-ignore
-import jwt from "jsonwebtoken";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 export const adminMiddleware = async (
   req: Request,
   res: Response,
@@ -28,12 +28,15 @@ export const adminMiddleware = async (
     const userId = jwt.verify(token, JWT_SECRET_KEY);
     // @ts-ignore
     req.userId = userId.id;
+    // @ts-ignore
+    console.log("User ID from token:", userId.id);
     let role = await prisma.user.findUnique({
       where: {
-        id: userId.id,
+        id: (userId as JwtPayload).id,
       },
     });
-    if (role?.role !== "ADMIN") {
+    console.log("User role from database:", role?.role);
+    if (role?.role !== "ORGANIZER") {
       return res.json({
         success: false,
         data: null,
