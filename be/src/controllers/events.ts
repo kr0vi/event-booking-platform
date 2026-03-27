@@ -75,6 +75,7 @@ export const createEvents = async (req: Request, res: Response) => {
       date: eventDate,
       totalTickets,
       time: eventTime,
+      organizerId
     },
   });
 };

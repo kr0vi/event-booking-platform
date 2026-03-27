@@ -38,8 +38,8 @@ model Event {
   title       String
   description String?
   location    String
-  date        DateTime
-  time        DateTime
+  date        String
+  time        String
 
   totalTickets Int
   ticketsSold  Int @default(0)
