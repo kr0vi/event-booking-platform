@@ -1,8 +1,8 @@
-import { verifyToken } from "@clerk/backend";
 import type { NextFunction, Request, Response } from "express";
-import { CLERK_SECRET_KEY } from "../secrets.js";
+import { JWT_SECRET_KEY } from "../secrets.js";
 import { prisma } from "../index.js";
-
+// @ts-ignore
+import jwt from "jsonwebtoken";
 export const adminMiddleware = async (
   req: Request,
   res: Response,
@@ -25,15 +25,12 @@ export const adminMiddleware = async (
         message: "Unauthorized",
       });
     }
-    const payload = await verifyToken(token, {
-      secretKey: CLERK_SECRET_KEY,
-    });
+    const userId = jwt.verify(token, JWT_SECRET_KEY);
     // @ts-ignore
-    req.clerkId = payload.sub;
-
+    req.userId = userId.id;
     let role = await prisma.user.findUnique({
       where: {
-        clerkId: payload.sub,
+        id: userId.id,
       },
     });
     if (role?.role !== "ADMIN") {
@@ -75,11 +72,9 @@ export const authMiddleware = async (
         message: "Unauthorized",
       });
     }
-    const payload = await verifyToken(token, {
-      secretKey: CLERK_SECRET_KEY,
-    });
+    const payload = await jwt.verify(token, JWT_SECRET_KEY);
     // @ts-ignore
-    req.clerkId = payload.sub;
+    req.userId = payload.id;
     next();
   } catch (error) {
     console.error("Error in adminMiddleware:", error);
