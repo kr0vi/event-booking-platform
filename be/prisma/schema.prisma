@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id           String @id @default(uuid())
+  id           Int    @id @default(autoincrement())
   name         String
   email        String @unique
   passwordHash String
@@ -22,10 +22,36 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  events    Event[]
+
+  @@map("users")
 }
 
 enum Role {
   USER
   ORGANIZER
   ADMIN
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  location    String
+  date        DateTime
+  time        DateTime
+
+  totalTickets Int
+  ticketsSold  Int @default(0)
+
+  price Int
+
+  organizerId Int
+  organizer   User @relation(fields: [organizerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int?
+
+  @@map("events")
 }
