@@ -23,6 +23,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   events    Event[]
+  orders    Order[]
 
   @@map("users")
 }
@@ -34,7 +35,7 @@ enum Role {
 }
 
 model Event {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   title       String
   description String?
   location    String
@@ -52,6 +53,7 @@ model Event {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  orders    Order[]
 
   @@map("events")
 }
@@ -60,4 +62,27 @@ enum eventStatus {
   SOON
   OPEN
   CLOSED
+}
+
+model Order {
+  id            String        @id @default(uuid())
+  userId        Int
+  eventId       String
+  quantity      Int
+  totalAmount   Int
+  paymentStatus paymentStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
+  @@map("orders")
+}
+
+enum paymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
 }
