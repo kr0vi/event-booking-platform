@@ -44,3 +44,37 @@ export const getEventById = async (req: Request, res: Response) => {
     message: "Event fetched successfully",
   });
 };
+
+interface inputType {
+  title: string;
+  description: string;
+  location: string;
+  price: number;
+  eventDate: string;
+  eventTime: string;
+  totalTickets: number;
+}
+
+export const createEvents = async (req: Request, res: Response) => {
+  const organizerId = (req as any).id;
+  const {
+    title,
+    description,
+    location,
+    price,
+    eventDate,
+    eventTime,
+    totalTickets,
+  }: inputType = req.body;
+  await prisma.event.create({
+    data: {
+      title,
+      description,
+      location,
+      price,
+      date: eventDate,
+      totalTickets,
+      time: eventTime,
+    },
+  });
+};

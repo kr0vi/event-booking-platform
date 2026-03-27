@@ -44,7 +44,8 @@ model Event {
   totalTickets Int
   ticketsSold  Int @default(0)
 
-  price Int
+  price  Int
+  status eventStatus @default(OPEN)
 
   organizerId Int
   organizer   User @relation(fields: [organizerId], references: [id])
@@ -53,4 +54,10 @@ model Event {
   updatedAt DateTime @updatedAt
 
   @@map("events")
+}
+
+enum eventStatus {
+  SOON
+  OPEN
+  CLOSED
 }
