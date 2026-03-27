@@ -51,7 +51,6 @@ model Event {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    Int?
 
   @@map("events")
 }
