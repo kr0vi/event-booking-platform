@@ -78,4 +78,8 @@ export const createEvents = async (req: Request, res: Response) => {
       organizerId
     },
   });
+    res.json({
+        sucess: true,
+        message: "Event created successfully"
+    })
 };
