@@ -36,7 +36,7 @@ export const createOrder = async (req: Request, res: Response) => {
   }
   const totalPrice = foundEvent.price * quantity;
   // Create the order
- const order =  await prisma.order.create({
+  const order = await prisma.order.create({
     data: {
       userId,
       eventId,
@@ -60,8 +60,20 @@ export const createOrder = async (req: Request, res: Response) => {
   //   message: "Order created successfully",
   // });
   // LATER THIS WILL BE IMPLEMENTED TO CREATE A PAYMENT LINK AND RETURN IT TO THE CLIENT
-  createPayment(req,res,order.id)
+  createPayment(req, res, order.id);
 
   // For now, we will create ticket directly without payment
-  generateTicket(order.id,userId,order.eventId);
+  const ticket = await generateTicket(order.id, userId, order.eventId);
+  if (!ticket) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Failed to generate ticket",
+    });
+  }
+  return res.json({
+    success: true,
+    data: { order, ticket },
+    message: "Order and ticket created successfully",
+  });
 };
