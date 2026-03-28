@@ -60,7 +60,7 @@ export const createOrder = async (req: Request, res: Response) => {
   //   message: "Order created successfully",
   // });
   // LATER THIS WILL BE IMPLEMENTED TO CREATE A PAYMENT LINK AND RETURN IT TO THE CLIENT
-  createPayment(req, res, order.id);
+  // createPayment(req, res, order.id);
 
   // For now, we will create ticket directly without payment
   const ticket = await generateTicket(order.id, userId, order.eventId);
