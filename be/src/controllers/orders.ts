@@ -1,5 +1,7 @@
 import type { Request, Response } from "express";
 import { prisma } from "../index.js";
+import { createPayment } from "./payment.js";
+import { generateTicket } from "./tickets.js";
 
 export const createOrder = async (req: Request, res: Response) => {
   const userId = (req as any).userId;
@@ -40,6 +42,7 @@ export const createOrder = async (req: Request, res: Response) => {
       eventId,
       quantity,
       totalAmount: totalPrice,
+      paymentStatus: "COMPLETED", // For simplicity, we are marking the order as completed. In a real application, this should be "PENDING" until payment is confirmed.
     },
   });
   // Update the tickets sold for the event
@@ -51,9 +54,14 @@ export const createOrder = async (req: Request, res: Response) => {
       ticketsSold: foundEvent.ticketsSold + quantity,
     },
   });
-  return res.json({
-    success: true,
-    data: order,
-    message: "Order created successfully",
-  });
+  // return res.json({
+  //   success: true,
+  //   data: order,
+  //   message: "Order created successfully",
+  // });
+  // LATER THIS WILL BE IMPLEMENTED TO CREATE A PAYMENT LINK AND RETURN IT TO THE CLIENT
+  createPayment(req,res,order.id)
+
+  // For now, we will create ticket directly without payment
+  generateTicket(order.id,userId,order.eventId);
 };

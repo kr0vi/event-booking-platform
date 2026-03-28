@@ -2,8 +2,7 @@ import type { Request, Response } from "express";
 import { prisma } from "../index.js";
 import { createRazorpay } from "../lib/createRazorpay.js";
 
-export const createPayment = async (req: Request, res: Response) => {
-  const orderId = req.body.orderId;
+export const createPayment = async (req: Request, res: Response, orderId: string) => {
   if (!orderId) {
     return res.json({
       success: false,
@@ -63,4 +62,16 @@ export const createPayment = async (req: Request, res: Response) => {
       message: "Failed to create payment",
     });
   }
+};
+
+export const verifyPayment = async (req: Request, res: Response) => {
+  const { orderId, paymentId, signature } = req.body;
+  if (!orderId || !paymentId || !signature) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "All fields are required",
+    });
+  }
+  
 };
