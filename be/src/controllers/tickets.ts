@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET_KEY } from "../secrets.js";
 import QRCode from "qrcode";
 import { prisma } from "../index.js";
+import type { Request, Response } from "express";
 
 export const generateTicket = async (
   orderId: string,
@@ -27,5 +28,84 @@ export const generateTicket = async (
   } catch (error) {
     console.error("Error generating ticket:", error);
     return null;
+  }
+};
+
+export const validateTicket = async (req: Request, res: Response) => {
+  const qrToken = req.query.code;
+  if (!qrToken || typeof qrToken !== "string") {
+    return res.json({
+      success: false,
+      data: null,
+      message: "QR token is required",
+    });
+  }
+  try {
+    const decoded = jwt.verify(qrToken, JWT_SECRET_KEY) as {
+      orderId: string;
+      userId: number;
+      eventId: string;
+    };
+    const ticket = await prisma.ticket.findUnique({
+      where: {
+        qrToken,
+        orderId: decoded.orderId,
+        userId: decoded.userId,
+      },
+      select: {
+        status: true,
+        id: true,
+        event: true,
+        order: {
+          select: {
+            quantity: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    if (!ticket) {
+      return res.json({
+        success: false,
+        data: null,
+        message: "Ticket not found",
+      });
+    }
+    if (ticket.status !== "VALID") {
+      return res.json({
+        success: false,
+        data: null,
+        message: "Ticket is not valid",
+      });
+    }
+    // Mark the ticket as used
+    await prisma.ticket.update({
+      where: {
+        id: ticket.id,
+      },
+      data: {
+        status: "USED",
+      },
+    });
+    return res.json({
+      success: true,
+      data: {
+        eventName: ticket.event.title,
+        quantity: ticket.order.quantity,
+        user: ticket.user.name,
+      },
+      message: "Ticket validated successfully",
+    });
+  } catch (error) {
+    console.error("Error validating ticket:", error);
+    return res.json({
+      success: false,
+      data: null,
+      message: "Invalid QR token",
+    });
   }
 };
