@@ -109,3 +109,39 @@ export const validateTicket = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getAllTickets = async (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+  const tickets = await prisma.ticket.findMany({
+    where: {
+      userId,
+    },
+  });
+  return res.json({
+    success: true,
+    data: tickets,
+    message: "Tickets retrieved successfully",
+  });
+};
+export const getTicketById = async (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+  const ticketId = req.params.id as string;
+  const ticket = await prisma.ticket.findFirst({
+    where: {
+      id: ticketId,
+      userId,
+    },
+  });
+  if (!ticket) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Ticket not found",
+    });
+  }
+  return res.json({
+    success: true,
+    data: ticket,
+    message: "Ticket retrieved successfully",
+  });
+};
