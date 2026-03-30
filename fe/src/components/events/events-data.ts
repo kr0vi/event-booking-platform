@@ -14,7 +14,8 @@ export const eventCards: EventCardData[] = [
     title: "TATA IPL 2026: Match 3 | Rajasthan Royals vs Chennai Super Kings",
     venue: "ACA Stadium, Barsapara, Guwahati",
     price: "2600 onwards",
-    posterClassName: "bg-gradient-to-br from-fuchsia-500 via-violet-800 to-slate-900",
+    posterClassName:
+      "bg-gradient-to-br from-fuchsia-500 via-violet-800 to-slate-900",
   },
   {
     id: 2,
@@ -22,7 +23,8 @@ export const eventCards: EventCardData[] = [
     title: "Ye Live in India",
     venue: "Jawaharlal Nehru Stadium, Delhi/NCR",
     price: "9500 onwards",
-    posterClassName: "bg-gradient-to-b from-neutral-800 via-neutral-600 to-neutral-300",
+    posterClassName:
+      "bg-gradient-to-b from-neutral-800 via-neutral-600 to-neutral-300",
   },
   {
     id: 3,
@@ -30,7 +32,8 @@ export const eventCards: EventCardData[] = [
     title: "TATA IPL 2026: Match 4 | Punjab Kings vs Gujarat Titans",
     venue: "Maharaja Yadavindra Singh Cricket Stadium",
     price: "2000 onwards",
-    posterClassName: "bg-gradient-to-br from-red-700 via-orange-600 to-indigo-900",
+    posterClassName:
+      "bg-gradient-to-br from-red-700 via-orange-600 to-indigo-900",
   },
   {
     id: 4,
@@ -54,7 +57,8 @@ export const eventCards: EventCardData[] = [
     title: "Heritage India Tour - Live Concert",
     venue: "Nehru Place Open Grounds, Delhi",
     price: "799 onwards",
-    posterClassName: "bg-gradient-to-br from-amber-100 via-stone-200 to-amber-300",
+    posterClassName:
+      "bg-gradient-to-br from-amber-100 via-stone-200 to-amber-300",
   },
   {
     id: 7,
@@ -70,6 +74,7 @@ export const eventCards: EventCardData[] = [
     title: "Food and Music Carnival",
     venue: "DLF Avenue Courtyard, Saket",
     price: "499 onwards",
-    posterClassName: "bg-gradient-to-br from-emerald-900 via-teal-700 to-lime-700",
+    posterClassName:
+      "bg-gradient-to-br from-emerald-900 via-teal-700 to-lime-700",
   },
 ];

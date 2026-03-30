@@ -16,11 +16,15 @@ export function EventCard({ event }: EventCardProps) {
       </div>
 
       <div className="space-y-1 px-4 py-3">
-        <p className="text-sm font-semibold text-amber-700">{event.dateLabel}</p>
+        <p className="text-sm font-semibold text-amber-700">
+          {event.dateLabel}
+        </p>
         <h3 className="line-clamp-2 text-xl leading-tight font-bold text-slate-900">
           {event.title}
         </h3>
-        <p className="truncate text-sm font-medium text-slate-500">{event.venue}</p>
+        <p className="truncate text-sm font-medium text-slate-500">
+          {event.venue}
+        </p>
         <p className="text-sm font-semibold text-slate-700">{event.price}</p>
       </div>
     </article>

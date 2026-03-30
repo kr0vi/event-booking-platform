@@ -16,8 +16,12 @@ export function DistrictHeader() {
       <div className="mx-auto flex w-full max-w-[1120px] items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <div className="leading-none">
-            <p className="text-[38px] font-black lowercase tracking-[-0.06em] text-slate-900">district</p>
-            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-800">by zomato</p>
+            <p className="text-[38px] font-black lowercase tracking-[-0.06em] text-slate-900">
+              district
+            </p>
+            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-800">
+              by zomato
+            </p>
           </div>
 
           <div className="hidden items-center gap-2 md:flex">
@@ -51,7 +55,9 @@ export function DistrictHeader() {
                 key={item}
                 type="button"
                 className={`rounded-full px-3 py-1.5 text-sm font-semibold transition ${
-                  isActive ? "bg-[#ece5be] text-slate-900" : "text-slate-600 hover:text-slate-900"
+                  isActive
+                    ? "bg-[#ece5be] text-slate-900"
+                    : "text-slate-600 hover:text-slate-900"
                 }`}
               >
                 {item}
@@ -73,8 +79,19 @@ export function DistrictHeader() {
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
             >
-              <circle cx="11" cy="11" r="6" stroke="currentColor" strokeWidth="2" />
-              <path d="M16 16L21 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <circle
+                cx="11"
+                cy="11"
+                r="6"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <path
+                d="M16 16L21 21"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
 
@@ -90,7 +107,13 @@ export function DistrictHeader() {
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
             >
-              <circle cx="12" cy="8" r="3" stroke="currentColor" strokeWidth="1.7" />
+              <circle
+                cx="12"
+                cy="8"
+                r="3"
+                stroke="currentColor"
+                strokeWidth="1.7"
+              />
               <path
                 d="M5 19.5C6.5 16.8 9 15.5 12 15.5C15 15.5 17.5 16.8 19 19.5"
                 stroke="currentColor"

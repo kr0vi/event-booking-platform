@@ -12,7 +12,9 @@ export function EventsHomePage() {
       {/* TODO: remove debug background color from main content wrapper. */}
       <main className="mx-auto w-full max-w-[1120px] bg-[#f4f4ef] px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         <section>
-          <h1 className="text-4xl font-black tracking-tight text-slate-900">All events</h1>
+          <h1 className="text-4xl font-black tracking-tight text-slate-900">
+            All events
+          </h1>
           <EventFilters />
         </section>
 
