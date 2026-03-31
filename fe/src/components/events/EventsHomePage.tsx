@@ -1,15 +1,34 @@
 import { EventCard } from "./EventCard";
 import { EventFilters } from "./EventFilters";
 import { eventCards } from "./events-data";
-import { DistrictHeader } from "./DistrictHeader";
+import axios from "axios";
 
-export function EventsHomePage() {
+interface eventType {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  date: string;
+  time: string;
+  totalTickets: number;
+  ticketsSold: number;
+  price: number;
+  status: "OPEN" | "CLOSED" | "SOON";
+  organizerId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+export async function EventsHomePage() {
+  const { data } = await axios.get("http://localhost:3000/api/v1/events");
+  if (!data.success) {
+    return <div>Failed to fetch events</div>;
+  }
+  const events: eventType[] = data.data;
   return (
     // TODO: remove debug background color from the root container.
     <div className="min-h-screen bg-[#f1f1ee] text-slate-900 [font-family:var(--font-geist-sans)]">
-
       {/* TODO: remove debug background color from main content wrapper. */}
-      <main className="mx-auto w-full max-w-[1120px] bg-[#f4f4ef] px-4 pb-16 pt-8 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-280 bg-[#f4f4ef] px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         <section>
           <h1 className="text-4xl font-black tracking-tight text-slate-900">
             All events
@@ -18,7 +37,7 @@ export function EventsHomePage() {
         </section>
 
         <section className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {eventCards.map((event) => (
+          {events.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </section>
