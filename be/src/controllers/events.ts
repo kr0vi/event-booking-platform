@@ -56,9 +56,6 @@ export const createEvents = async (req: Request, res: Response) => {
       message: "Invalid event data",
     });
   }
-  const highlightArray = data.highlights.map((highlight) =>
-    JSON.stringify(highlight),
-  );
   try {
     await prisma.event.create({
       data: {
@@ -69,7 +66,7 @@ export const createEvents = async (req: Request, res: Response) => {
         time: data.eventTime,
         posterImage: data.posterImage,
         galleryImages: data.galleryImages,
-        highlights: highlightArray,
+        highlights: data.highlights,
         thingsToKnow: data.thingsToKnow,
         price: data.price,
         totalTickets: data.totalTickets,

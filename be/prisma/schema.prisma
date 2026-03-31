@@ -44,7 +44,7 @@ model Event {
   time          String
   posterImage   String
   galleryImages String[]
-  highlights    String[]
+  highlights    Json[]
   thingsToKnow  String[] @default([])
 
   totalTickets Int
