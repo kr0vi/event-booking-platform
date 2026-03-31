@@ -3,13 +3,19 @@ import { prisma } from "../index.js";
 import { JWT_SECRET_KEY } from "../secrets.js";
 import jwt from "jsonwebtoken";
 import { compareSync, hashSync } from "bcrypt";
+import { loginSchema, signupSchema } from "../schemas/auht.js";
 
 export const signup = async (req: Request, res: Response) => {
-  const {
-    email,
-    password,
-    name,
-  }: { email: string; password: string; name: string } = req.body;
+  const { success, data } = signupSchema.safeParse(req.body);
+  if (!success) {
+    res.json({
+      success: false,
+      data: null,
+      message: "Invalid input",
+    });
+    return;
+  }
+  const { email, password, name } = data;
 
   let user = await prisma.user.findFirst({
     where: {
@@ -19,6 +25,7 @@ export const signup = async (req: Request, res: Response) => {
   if (user) {
     res.json({
       success: false,
+      data: null,
       message: "User already exists",
     });
   }
@@ -35,7 +42,16 @@ export const signup = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { success, data } = loginSchema.safeParse(req.body);
+  if (!success) {
+    res.json({
+      success: false,
+      data: null,
+      message: "Invalid input",
+    });
+    return;
+  }
+  const { email, password } = data;
 
   const user = await prisma.user.findFirst({
     where: {
@@ -45,6 +61,7 @@ export const login = async (req: Request, res: Response) => {
   if (!user) {
     res.json({
       success: false,
+      data: null,
       message: "User does not exist",
     });
   }
@@ -53,6 +70,7 @@ export const login = async (req: Request, res: Response) => {
   if (!isPasswordValid) {
     res.json({
       success: false,
+      data: null, 
       message: "Invalid password",
     });
   }
@@ -64,7 +82,6 @@ export const login = async (req: Request, res: Response) => {
     JWT_SECRET_KEY,
   );
   res.json({
-    user,
     success: true,
     message: "Login successful",
     token,
