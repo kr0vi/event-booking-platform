@@ -1,22 +1,17 @@
 const navItems = [
   "For you",
-  "Dining",
-  "Movies",
   "Events",
-  "IPL",
-  "Stores",
-  "Activities",
-  "Play",
+  "Your Tickets",
 ];
 
 export function DistrictHeader() {
   return (
     // TODO: remove debug background color from the page header container.
     <header className="w-full border-b border-black/10 bg-[#fbf9ee]">
-      <div className="mx-auto flex w-full max-w-[1120px] items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-8xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <div className="leading-none">
-            <p className="text-[38px] font-black lowercase tracking-[-0.06em] text-slate-900">
+            <p className="text-[38px] font-semibold lowercase tracking-[-0.06em] text-slate-900">
               district
             </p>
             <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-800">
@@ -40,8 +35,8 @@ export function DistrictHeader() {
               <circle cx="12" cy="9" r="2.2" fill="currentColor" />
             </svg>
             <div className="leading-tight">
-              <p className="text-base font-semibold text-slate-900">Gurugram</p>
-              <p className="text-xs font-medium text-slate-500">Haryana</p>
+              <p className="text-base font-semibold text-slate-900">Delhi</p>
+              <p className="text-xs font-medium text-slate-500">NCR</p>
             </div>
           </div>
         </div>
@@ -66,7 +61,7 @@ export function DistrictHeader() {
           })}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-12">
           <button
             type="button"
             className="grid h-8 w-8 place-content-center rounded-full text-violet-600 transition hover:bg-violet-100"
@@ -94,7 +89,7 @@ export function DistrictHeader() {
               />
             </svg>
           </button>
-
+{false && (
           <button
             type="button"
             className="grid h-9 w-9 place-content-center rounded-full bg-slate-200 text-slate-500"
@@ -121,7 +116,8 @@ export function DistrictHeader() {
                 strokeLinecap="round"
               />
             </svg>
-          </button>
+          </button>)}
+          <button>Login</button>
         </div>
       </div>
     </header>

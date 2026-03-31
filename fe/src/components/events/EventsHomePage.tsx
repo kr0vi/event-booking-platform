@@ -7,7 +7,6 @@ export function EventsHomePage() {
   return (
     // TODO: remove debug background color from the root container.
     <div className="min-h-screen bg-[#f1f1ee] text-slate-900 [font-family:var(--font-geist-sans)]">
-      <DistrictHeader />
 
       {/* TODO: remove debug background color from main content wrapper. */}
       <main className="mx-auto w-full max-w-[1120px] bg-[#f4f4ef] px-4 pb-16 pt-8 sm:px-6 lg:px-8">
