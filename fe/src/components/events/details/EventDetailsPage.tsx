@@ -1,5 +1,5 @@
+import { eventType } from "@/utils/interfaces";
 import { DistrictHeader } from "../DistrictHeader";
-import type { EventCardData } from "../events-data";
 import { EventAboutSection } from "./EventAboutSection";
 import { EventBookingCard } from "./EventBookingCard";
 import { EventDetailHeader } from "./EventDetailHeader";
@@ -7,17 +7,12 @@ import { EventHighlights } from "./EventHighlights";
 import { EventImageGallery } from "./EventImageGallery";
 import { EventThingsToKnow } from "./EventThingsToKnow";
 
-type EventDetailsPageProps = {
-  event: EventCardData;
-};
-
-export function EventDetailsPage({ event }: EventDetailsPageProps) {
+export function EventDetailsPage({ event }: { event: eventType }) {
   return (
     // TODO: remove debug background color from details page root.
     <div className="min-h-screen bg-[#efefee] text-slate-900 [font-family:var(--font-geist-sans)]">
-
       {/* TODO: remove debug background color from details page content wrapper. */}
-      <main className="mx-auto w-full max-w-[1320px] bg-[#f4f4f1] px-4 pb-16 pt-10 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-330 bg-[#f4f4f1] px-4 pb-16 pt-10 sm:px-6 lg:px-8">
         <EventDetailHeader event={event} />
         <EventImageGallery event={event} />
 

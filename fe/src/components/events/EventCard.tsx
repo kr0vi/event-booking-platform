@@ -1,21 +1,5 @@
 import Link from "next/link";
-import type { EventCardData } from "./events-data";
-
-type eventType = {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  date: string;
-  time: string;
-  totalTickets: number;
-  ticketsSold: number;
-  price: number;
-  status: "OPEN" | "CLOSED" | "SOON";
-  organizerId: number;
-  createdAt: string;
-  updatedAt: string;
-};
+import { eventType } from "@/utils/interfaces";
 
 export function EventCard({ event }: { event: eventType }) {
   return (
@@ -42,7 +26,12 @@ export function EventCard({ event }: { event: eventType }) {
           <p className="truncate text-sm font-medium text-slate-500">
             {event.location}
           </p>
-          <p className="text-sm font-semibold text-slate-700">{event.price.toLocaleString("en-US", { style: "currency", currency: "INR" })}</p>
+          <p className="text-sm font-semibold text-slate-700">
+            {event.price.toLocaleString("en-US", {
+              style: "currency",
+              currency: "INR",
+            })}
+          </p>
         </div>
       </article>
     </Link>

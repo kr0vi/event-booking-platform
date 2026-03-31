@@ -7,17 +7,17 @@ type EventPageProps = {
 };
 
 export default async function EventPage({ params }: EventPageProps) {
-  const { id } = await params;
-  const eventId = Number(id);
+  const { id: eventId } = await params;
 
-  if (!Number.isInteger(eventId)) {
-    notFound();
-  }
-
-  const event = getEventById(eventId);
+  const event = await getEventById(eventId);
 
   if (!event) {
-    notFound();
+    return (
+      <>
+        <h1>Event not found</h1>
+        <p>The event you are looking for does not exist.</p>
+      </>
+    );
   }
 
   return <EventDetailsPage event={event} />;

@@ -1,17 +1,13 @@
-import type { EventCardData } from "../events-data";
+import { eventType } from "@/utils/interfaces";
 
-type EventAboutSectionProps = {
-  event: EventCardData;
-};
-
-export function EventAboutSection({ event }: EventAboutSectionProps) {
+export function EventAboutSection({ event }: { event: eventType }) {
   return (
     <section className="mt-7">
       <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
         About
       </h2>
       <p className="mt-3 max-w-4xl text-sm leading-6 text-slate-600">
-        {event.about}
+        {event.description}
       </p>
       <button
         type="button"

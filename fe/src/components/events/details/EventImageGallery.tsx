@@ -1,22 +1,19 @@
-import type { EventCardData } from "../events-data";
+import { eventType } from "@/utils/interfaces";
 
-type EventImageGalleryProps = {
-  event: EventCardData;
-};
 
-export function EventImageGallery({ event }: EventImageGalleryProps) {
+export function EventImageGallery({ event }: { event: eventType }) {
   return (
     <section className="mt-6 grid grid-cols-1 gap-3 lg:grid-cols-[2fr_1fr_1fr_1fr]">
       <div
-        className={`relative min-h-[280px] overflow-hidden rounded-2xl lg:min-h-[360px] ${event.posterClassName}`}
+        className={`relative min-h-70 overflow-hidden rounded-2xl lg:min-h-90 `}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/35 to-transparent" />
         <p className="absolute bottom-4 left-4 rounded bg-black/55 px-2 py-1 text-[10px] font-bold tracking-[0.2em] text-white">
           EVENT POSTER
         </p>
       </div>
 
-      {event.galleryClassNames.map((className, index) => (
+      {/* {event.galleryClassNames.map((className, index) => (
         <div
           key={index}
           className={`relative min-h-[220px] overflow-hidden rounded-2xl lg:min-h-[360px] ${className}`}
@@ -31,7 +28,7 @@ export function EventImageGallery({ event }: EventImageGalleryProps) {
             </button>
           ) : null}
         </div>
-      ))}
+      ))} */}
     </section>
   );
 }

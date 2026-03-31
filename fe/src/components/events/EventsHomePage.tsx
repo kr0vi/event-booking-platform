@@ -1,23 +1,8 @@
+import { eventType } from "@/utils/interfaces";
 import { EventCard } from "./EventCard";
 import { EventFilters } from "./EventFilters";
-import { eventCards } from "./events-data";
 import axios from "axios";
 
-interface eventType {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  date: string;
-  time: string;
-  totalTickets: number;
-  ticketsSold: number;
-  price: number;
-  status: "OPEN" | "CLOSED" | "SOON";
-  organizerId: number;
-  createdAt: string;
-  updatedAt: string;
-}
 export async function EventsHomePage() {
   const { data } = await axios.get("http://localhost:3000/api/v1/events");
   if (!data.success) {

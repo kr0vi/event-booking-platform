@@ -1,17 +1,13 @@
-import type { EventCardData } from "../events-data";
+import { eventType } from "@/utils/interfaces";
 
-type EventHighlightsProps = {
-  event: EventCardData;
-};
-
-export function EventHighlights({ event }: EventHighlightsProps) {
+export function EventHighlights({ event }: { event: eventType }) {
   return (
     <section className="mt-10">
       <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
         Highlights
       </h2>
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {event.highlights.map((highlight) => (
+        {/* {event.highlights.map((highlight) => (
           <article
             key={highlight.title}
             className="rounded-2xl border border-slate-200 bg-white px-6 py-6"
@@ -23,7 +19,8 @@ export function EventHighlights({ event }: EventHighlightsProps) {
               {highlight.description}
             </p>
           </article>
-        ))}
+        ))} */}
+        event highlights section
       </div>
     </section>
   );

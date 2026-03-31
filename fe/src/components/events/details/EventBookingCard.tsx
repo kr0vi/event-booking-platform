@@ -1,11 +1,7 @@
-import type { EventCardData } from "../events-data";
+import { eventType } from "@/utils/interfaces";
 
-type EventBookingCardProps = {
-  event: EventCardData;
-};
-
-export function EventBookingCard({ event }: EventBookingCardProps) {
-  const numericPrice = Number.parseInt(event.price.replace(/[^0-9]/g, ""), 10);
+export function EventBookingCard({ event }: { event: eventType }) {
+  const numericPrice = event.price;
 
   return (
     <aside className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_1px_0_rgba(15,23,42,0.04)]">
@@ -29,10 +25,10 @@ export function EventBookingCard({ event }: EventBookingCardProps) {
           </span>
           <div className="flex-1">
             <p className="text-base font-bold leading-6 text-slate-900">
-              {event.venue}
+              {event.location}
             </p>
             <p className="mt-1 text-sm font-semibold text-slate-500">
-              {event.distanceLabel}
+              12km
             </p>
           </div>
         </div>
@@ -65,7 +61,7 @@ export function EventBookingCard({ event }: EventBookingCardProps) {
           </span>
           <div className="flex-1">
             <p className="text-base font-bold leading-6 text-slate-900">
-              {event.gatesOpenLabel}
+              6pm gates open"
             </p>
             <button
               type="button"
