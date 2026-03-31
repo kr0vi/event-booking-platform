@@ -36,12 +36,16 @@ enum Role {
 }
 
 model Event {
-  id          String  @id @default(uuid())
-  title       String
-  description String?
-  location    String
-  date        String
-  time        String
+  id            String   @id @default(uuid())
+  title         String
+  description   String?
+  location      String
+  date          String
+  time          String
+  posterImage   String
+  galleryImages String[]
+  highlights    String[]
+  thingsToKnow  String[] @default([])
 
   totalTickets Int
   ticketsSold  Int @default(0)
@@ -59,7 +63,6 @@ model Event {
 
   @@map("events")
 }
-
 enum eventStatus {
   SOON
   OPEN

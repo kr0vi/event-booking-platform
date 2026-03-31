@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../index.js";
+import { createEventSchema } from "../schemas/events.js";
 
 export const getAllEvents = async (req: Request, res: Response) => {
   const allEvents = await prisma.event.findMany();
@@ -45,41 +46,46 @@ export const getEventById = async (req: Request, res: Response) => {
   });
 };
 
-interface inputType {
-  title: string;
-  description: string;
-  location: string;
-  price: number;
-  eventDate: string;
-  eventTime: string;
-  totalTickets: number;
-}
-
 export const createEvents = async (req: Request, res: Response) => {
   const organizerId = (req as any).userId;
-  const {
-    title,
-    description,
-    location,
-    price,
-    eventDate,
-    eventTime,
-    totalTickets,
-  }: inputType = req.body;
-  await prisma.event.create({
-    data: {
-      title,
-      description,
-      location,
-      price,
-      date: eventDate,
-      totalTickets,
-      time: eventTime,
-      organizerId
-    },
-  });
+  const { success, data } = createEventSchema.safeParse(req.body);
+  if (!success) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Invalid event data",
+    });
+  }
+  const highlightArray = data.highlights.map((highlight) =>
+    JSON.stringify(highlight),
+  );
+  try {
+    await prisma.event.create({
+      data: {
+        title: data.title,
+        description: data.description,
+        location: data.location,
+        date: data.eventDate,
+        time: data.eventTime,
+        posterImage: data.posterImage,
+        galleryImages: data.galleryImages,
+        highlights: highlightArray,
+        thingsToKnow: data.thingsToKnow,
+        price: data.price,
+        totalTickets: data.totalTickets,
+        organizerId,
+      },
+    });
     res.json({
-        sucess: true,
-        message: "Event created successfully"
-    })
+      sucess: true,
+      message: "Event created successfully",
+    });
+  } catch (error) {
+    console.error("Error creating event:", error);
+    res.json({
+      success: false,
+      data: null,
+      message: "Failed to create event",
+    });
+  }
 };
