@@ -1,19 +1,24 @@
+
+
+import Link from "next/link";
+
 const navItems = [
-  "For you",
-  "Events",
-  "Your Tickets",
+ { name: "Home", href: "/" },
+ { name: "Events", href: "/events" },
+ { name: "About", href: "/about" },
 ];
 
 export function DistrictHeader() {
   return (
-    // TODO: remove debug background color from the page header container.
-    <header className="w-full border-b border-black/10 bg-[#fbf9ee]">
+    <header className="w-full border-b border-black/10 bg-white">
       <div className="mx-auto flex w-full max-w-8xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <div className="leading-none">
-            <p className="text-[38px] font-semibold lowercase tracking-[-0.06em] text-slate-900">
-              district
-            </p>
+            <Link href="/">
+              <p className="text-[38px] font-semibold lowercase tracking-[-0.06em] text-slate-900">
+                district
+              </p>
+            </Link>
             <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-800">
               by zomato
             </p>
@@ -42,21 +47,23 @@ export function DistrictHeader() {
         </div>
 
         <nav className="hidden items-center gap-7 lg:flex">
-          {navItems.map((item) => {
-            const isActive = item === "Events";
+          {navItems.map((item,indx) => {
+            const isActive = item.name === "Events";
 
             return (
-              <button
-                key={item}
-                type="button"
-                className={`rounded-full px-3 py-1.5 text-sm font-semibold transition ${
-                  isActive
-                    ? "bg-[#ece5be] text-slate-900"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                {item}
-              </button>
+              <Link href={item.href} key={indx}>
+                <button
+                  key={indx}
+                  type="button"
+                  className={`rounded-full px-3 py-1.5 text-sm font-semibold transition ${
+                    isActive
+                      ? "bg-[#dbbeec] text-black"
+                      : "text-black/70 hover:text-slate-900"
+                  }`}
+                >
+                  {item.name}
+                </button>
+              </Link>
             );
           })}
         </nav>
@@ -117,7 +124,7 @@ export function DistrictHeader() {
               />
             </svg>
           </button>)}
-          <button>Login</button>
+          <button className="text-black font-medium cursor-pointer">Login</button>
         </div>
       </div>
     </header>

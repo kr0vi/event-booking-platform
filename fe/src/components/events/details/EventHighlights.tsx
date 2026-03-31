@@ -7,7 +7,7 @@ export function EventHighlights({ event }: { event: eventType }) {
         Highlights
       </h2>
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {/* {event.highlights.map((highlight) => (
+        {event.highlights.map((highlight) => (
           <article
             key={highlight.title}
             className="rounded-2xl border border-slate-200 bg-white px-6 py-6"
@@ -19,8 +19,7 @@ export function EventHighlights({ event }: { event: eventType }) {
               {highlight.description}
             </p>
           </article>
-        ))} */}
-        event highlights section
+        ))}
       </div>
     </section>
   );

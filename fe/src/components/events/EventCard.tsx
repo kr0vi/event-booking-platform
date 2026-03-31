@@ -5,12 +5,12 @@ export function EventCard({ event }: { event: eventType }) {
   return (
     <Link
       href={`/events/${event.id}`}
-      className="block overflow-hidden rounded-2xl border border-slate-300/80 bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)] transition hover:-translate-y-0.5 hover:shadow-lg"
+      className="block overflow-hidden rounded-2xl border border-slate-300/80 bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)]"
     >
       <article>
         <div className={`relative h-80 w-full `}>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.35),transparent_55%)]" />
-          <div className="absolute inset-0 bg-linear-to-t from-black/35 to-transparent" />
+          <img src={event.posterImage} className="absolute inset-0 w-full h-full object-cover" />
           <p className="absolute bottom-3 left-3 rounded bg-black/55 px-2 py-1 text-[10px] font-bold tracking-[0.2em] text-white">
             EVENT POSTER
           </p>

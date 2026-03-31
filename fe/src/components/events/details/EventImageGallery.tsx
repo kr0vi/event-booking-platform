@@ -7,28 +7,20 @@ export function EventImageGallery({ event }: { event: eventType }) {
       <div
         className={`relative min-h-70 overflow-hidden rounded-2xl lg:min-h-90 `}
       >
-        <div className="absolute inset-0 bg-linear-to-t from-black/35 to-transparent" />
+        <img src={event.posterImage} className="w-full h-full object-cover" />
         <p className="absolute bottom-4 left-4 rounded bg-black/55 px-2 py-1 text-[10px] font-bold tracking-[0.2em] text-white">
-          EVENT POSTER
+          {event.galleryImages.length} PHOTOS
         </p>
       </div>
 
-      {/* {event.galleryClassNames.map((className, index) => (
+      {event.galleryImages.map((image, index) => (
         <div
           key={index}
-          className={`relative min-h-[220px] overflow-hidden rounded-2xl lg:min-h-[360px] ${className}`}
+          className={`relative min-h-55 overflow-hidden rounded-2xl lg:min-h-90 `}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-white/65 via-transparent to-black/20" />
-          {index === event.galleryClassNames.length - 1 ? (
-            <button
-              type="button"
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-xl bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 shadow"
-            >
-              Show all photos
-            </button>
-          ) : null}
+         <img src={image} className="h-full w-full object-cover" />
         </div>
-      ))} */}
+      ))}
     </section>
   );
 }

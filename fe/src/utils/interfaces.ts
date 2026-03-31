@@ -8,6 +8,10 @@ export interface eventType {
   totalTickets: number;
   ticketsSold: number;
   price: number;
+  posterImage: string;
+  galleryImages: string[];
+  highlights: { title: string; description: string }[];
+  thingsToKnow: string[];
   status: "OPEN" | "CLOSED" | "SOON";
   organizerId: number;
   createdAt: string;

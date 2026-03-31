@@ -18,11 +18,11 @@ export function EventFilters() {
           <button
             key={label}
             type="button"
-            className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-400"
+            className="inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-4 text-xs py-2 font-semibold text-slate-700 transition hover:border-slate-400"
           >
             {hasDropdown ? (
               <span
-                className="inline-block h-3 w-3 rounded-full border border-slate-500"
+                className="inline-block h-3 w-3 rounded-full border border-black "
                 aria-hidden="true"
               />
             ) : null}
