@@ -1,6 +1,6 @@
-import { eventType } from "@/utils/interfaces";
+import { EventType } from "@/utils/interfaces";
 
-export function EventAboutSection({ event }: { event: eventType }) {
+export function EventAboutSection({ event }: { event: EventType }) {
   return (
     <section className="mt-7">
       <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">

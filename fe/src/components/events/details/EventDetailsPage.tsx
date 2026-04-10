@@ -1,4 +1,4 @@
-import { eventType } from "@/utils/interfaces";
+import { EventType } from "@/utils/interfaces";
 import { EventAboutSection } from "./EventAboutSection";
 import { EventBookingCard } from "./EventBookingCard";
 import { EventDetailHeader } from "./EventDetailHeader";
@@ -6,7 +6,7 @@ import { EventHighlights } from "./EventHighlights";
 import { EventImageGallery } from "./EventImageGallery";
 import { EventThingsToKnow } from "./EventThingsToKnow";
 
-export function EventDetailsPage({ event }: { event: eventType }) {
+export function EventDetailsPage({ event }: { event: EventType }) {
   return (
     <div className="min-h-screen bg-white text-black [font-family:var(--font-geist-sans)]">
       <main className="mx-auto w-full max-w-330  px-4 pb-16 pt-10 sm:px-6 lg:px-8">

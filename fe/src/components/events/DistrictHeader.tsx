@@ -2,42 +2,26 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { AuthModal } from "./AuthModal";
+import { useAuth } from "@/utils/auth/AuthContext";
 
 const navItems = [
- { name: "Home", href: "/" },
- { name: "Events", href: "/events" },
- { name: "About", href: "/about" },
+  { name: "Home", href: "/" },
+  { name: "Events", href: "/events" },
+  { name: "My Tickets", href: "/tickets" },
+  { name: "About", href: "/about" },
 ];
 
 export function DistrictHeader() {
-  const [loginModal,setLoginModal] = useState(false);
+  const [loginModal, setLoginModal] = useState(false);
+  const pathname = usePathname();
+  const { isAuthenticated, logout, isBootstrapping } = useAuth();
 
   return (
     <>
-      {true && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm  text-black">
-          <div className=" w-[25vw] h-[60vh] bg-white rounded-lg">
-            <div className="w-full h-[55%] bg-violet-600"></div>
-            <h2 className="text-xl font-bold mb-4 text-center">Login</h2>
-            <div className="flex flex-col items-center justify-start gap-3">
-              <input
-                type="text"
-                placeholder="Username"
-                className="border border-violet-300 placeholder:text-violet-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-violet-500"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                className="border placeholder:text-violet-300 border-violet-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-violet-500"
-              />
-              <button className="bg-black text-white font-semibold py-2 w-2/3 rounded-md hover:bg-violet-700">
-                Login
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      <header className="w-full border-b border-black/10 ">
+      <AuthModal isOpen={loginModal} onClose={() => setLoginModal(false)} />
+      <header className="w-full border-b border-black/10 bg-white">
         <div className="mx-auto flex w-full max-w-8xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-8">
             <div className="leading-none">
@@ -75,7 +59,9 @@ export function DistrictHeader() {
 
           <nav className="hidden items-center gap-7 lg:flex">
             {navItems.map((item, indx) => {
-              const isActive = item.name === "Events";
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href));
 
               return (
                 <Link href={item.href} key={indx}>
@@ -95,7 +81,7 @@ export function DistrictHeader() {
             })}
           </nav>
 
-          <div className="flex items-center gap-12">
+          <div className="flex items-center gap-6">
             <button
               type="button"
               className="grid h-8 w-8 place-content-center rounded-full text-violet-600 transition hover:bg-violet-100"
@@ -123,38 +109,24 @@ export function DistrictHeader() {
                 />
               </svg>
             </button>
-            {false && (
+
+            {isBootstrapping ? (
+              <div className="h-8 w-20 animate-pulse rounded bg-slate-200" />
+            ) : isAuthenticated ? (
               <button
-                type="button"
-                className="grid h-9 w-9 place-content-center rounded-full bg-slate-200 text-slate-500"
-                aria-label="Profile"
+                onClick={logout}
+                className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-100"
               >
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <circle
-                    cx="12"
-                    cy="8"
-                    r="3"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                  />
-                  <path
-                    d="M5 19.5C6.5 16.8 9 15.5 12 15.5C15 15.5 17.5 16.8 19 19.5"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                Logout
+              </button>
+            ) : (
+              <button
+                onClick={() => setLoginModal(true)}
+                className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-semibold text-white hover:bg-slate-700"
+              >
+                Login
               </button>
             )}
-            <button className="text-black font-medium cursor-pointer">
-              Login
-            </button>
           </div>
         </div>
       </header>

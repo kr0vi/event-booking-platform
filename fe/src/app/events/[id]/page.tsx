@@ -1,6 +1,4 @@
-import { EventDetailsPage } from "@/components/events/details/EventDetailsPage";
-import { getEventById } from "@/components/events/events-data";
-import { notFound } from "next/navigation";
+import { EventDetailsClient } from "@/components/events/details/EventDetailsClient";
 
 type EventPageProps = {
   params: Promise<{ id: string }>;
@@ -8,17 +6,5 @@ type EventPageProps = {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { id: eventId } = await params;
-
-  const event = await getEventById(eventId);
-
-  if (!event) {
-    return (
-      <>
-        <h1>Event not found</h1>
-        <p>The event you are looking for does not exist.</p>
-      </>
-    );
-  }
-
-  return <EventDetailsPage event={event} />;
+  return <EventDetailsClient eventId={eventId} />;
 }

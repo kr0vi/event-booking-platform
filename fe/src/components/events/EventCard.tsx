@@ -1,7 +1,10 @@
 import Link from "next/link";
-import { eventType } from "@/utils/interfaces";
+import { EventType } from "@/utils/interfaces";
 
-export function EventCard({ event }: { event: eventType }) {
+const FALLBACK_POSTER =
+  "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1100&q=80";
+
+export function EventCard({ event }: { event: EventType }) {
   return (
     <Link
       href={`/events/${event.id}`}
@@ -10,7 +13,11 @@ export function EventCard({ event }: { event: eventType }) {
       <article>
         <div className={`relative h-80 w-full `}>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.35),transparent_55%)]" />
-          <img src={event.posterImage} className="absolute inset-0 w-full h-full object-cover" />
+          <img
+            src={event.posterImage || FALLBACK_POSTER}
+            className="absolute inset-0 h-full w-full object-cover"
+            alt={event.title}
+          />
           <p className="absolute bottom-3 left-3 rounded bg-black/55 px-2 py-1 text-[10px] font-bold tracking-[0.2em] text-white">
             EVENT POSTER
           </p>

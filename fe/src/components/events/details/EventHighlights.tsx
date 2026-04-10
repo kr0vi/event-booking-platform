@@ -1,13 +1,19 @@
-import { eventType } from "@/utils/interfaces";
+import { EventType } from "@/utils/interfaces";
 
-export function EventHighlights({ event }: { event: eventType }) {
+export function EventHighlights({ event }: { event: EventType }) {
+  const highlights = event.highlights || [];
+
+  if (highlights.length === 0) {
+    return null;
+  }
+
   return (
     <section className="mt-10">
       <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
         Highlights
       </h2>
       <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {event.highlights.map((highlight) => (
+        {highlights.map((highlight) => (
           <article
             key={highlight.title}
             className="rounded-2xl border border-slate-200 bg-white px-6 py-6"
