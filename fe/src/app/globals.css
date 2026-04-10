@@ -24,3 +24,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
 }
+
+::-webkit-slider-thumb {
+  background: transparent;
+}
+::-webkit-scrollbar {
+  background: transparent;
+}
