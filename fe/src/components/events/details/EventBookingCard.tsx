@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { api, getErrorMessage } from "@/utils/api";
-import { useAuth } from "@/utils/auth/AuthContext";
 import {
   ApiResponse,
   EventType,
@@ -17,7 +15,6 @@ type CreateOrderResponse = {
 };
 
 export function EventBookingCard({ event }: { event: EventType }) {
-  const { token, isAuthenticated } = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,49 +28,7 @@ export function EventBookingCard({ event }: { event: EventType }) {
     [numericPrice, quantity],
   );
 
-  const handleBook = async () => {
-    if (!isAuthenticated || !token) {
-      setError("Please login first to book tickets.");
-      return;
-    }
-
-    if (isSoldOut) {
-      setError("This event is sold out.");
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    setSuccessMessage(null);
-
-    try {
-      const { data } = await api.post<ApiResponse<CreateOrderResponse>>(
-        "/orders",
-        {
-          eventId: event.id,
-          quantity,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (!data.success) {
-        setError(data.message || "Failed to book tickets.");
-        return;
-      }
-
-      setSuccessMessage(
-        "Booking confirmed. Your ticket is now available in My Tickets.",
-      );
-    } catch (err) {
-      setError(getErrorMessage(err));
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleBook = async () => {};
 
   return (
     <aside className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_1px_0_rgba(15,23,42,0.04)]">

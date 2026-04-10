@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { DistrictHeader } from "@/components/events/DistrictHeader";
-import { AuthProvider } from "@/utils/auth/AuthContext";
+import { Footer } from "@/components/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,10 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-[#f8f9fa]">
-        <AuthProvider>
+        
           <DistrictHeader />
           {children}
-        </AuthProvider>
+        <Footer></Footer>
       </body>
     </html>
   );

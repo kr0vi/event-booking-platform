@@ -113,12 +113,27 @@ export default async function EventPage({ params }: EventPageProps) {
                   earum saepe est laboriosam ullam harum fuga minima illo
                   commodi, aspernatur ratione. Officiis, natus beatae fugit
                   voluptatem quis itaque nesciunt similique doloremque earum
-                  impedit? Maiores hic repudiandae, minima nam, repellat
-                  similit eligendi tempore laboriosam
-                  neque architecto. Id voluptas, magnam tenetur quibusdam
-                  exercitationem, ad sint nostrum numquam quo asperiores
-                  laudantium? Velit veritatis deleniti cum ipsam eum molestias.
+                  impedit? Maiores hic repudiandae, minima nam, repellat similit
+                  eligendi tempore laboriosam neque architecto. Id voluptas,
+                  magnam tenetur quibusdam exercitationem, ad sint nostrum
+                  numquam quo asperiores laudantium? Velit veritatis deleniti
+                  cum ipsam eum molestias.
                 </p>
+                <div className=" overflow-hidden my-20 ">
+                  <h1 className="font-semibold ml-3 text-white/80">Location</h1>
+                  <hr className="text-white/40 w-full mb-3" />
+                  <p className="text-white font-medium ml-3 mb-3">New Delhi, Delhi</p>
+                  <div className="border-2 border-white rounded-2xl overflow-hidden">
+                  <iframe
+                    width="100%"
+                    height="200"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    src="https://www.google.com/maps?q=28.6139,77.2090&z=15&output=embed"
+                  ></iframe>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { AuthModal } from "./AuthModal";
-import { useAuth } from "@/utils/auth/AuthContext";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -16,11 +14,9 @@ const navItems = [
 export function DistrictHeader() {
   const [loginModal, setLoginModal] = useState(false);
   const pathname = usePathname();
-  const { isAuthenticated, logout, isBootstrapping } = useAuth();
 
   return (
     <>
-      <AuthModal isOpen={loginModal} onClose={() => setLoginModal(false)} />
       <header className="w-full bg-[#1a56ff] text-white shadow-sm">
         <div className="mx-auto flex w-7xl  items-center justify-between py-6">
           <div className="flex items-center ">
