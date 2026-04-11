@@ -125,8 +125,8 @@ function FullTicketCard({ ticket }: { ticket: any }) {
         <p className="text-center text-sm text-white/70">
           Show this QR code at the event entrance
         </p>
-        <p className="text-center text-xs text-white/70">
-          {ticket.quantity} hello
+        <p className="text-center text-xs mt-2 text-white">
+          {ticket.quantity} x QUANTITY 
         </p>
       </div>
     </div>

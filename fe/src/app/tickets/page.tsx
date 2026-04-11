@@ -150,7 +150,7 @@ export default function TicketsPage() {
             </button>
           </div>
         ) : tickets.length === 0 ? (
-          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-16 text-center max-w-xl mx-auto mt-10 shadow-xl">
+          <div className=" p-16 text-center max-w-xl mx-auto mt-10 ">
             <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
               <TicketIcon size={40} className="text-white/40" />
             </div>
@@ -161,7 +161,7 @@ export default function TicketsPage() {
             </p>
             <Link
               href="/events"
-              className="inline-flex bg-[#fff201] text-black px-8 py-3 rounded-xl font-bold hover:bg-yellow-400 transition shadow-lg shadow-yellow-500/20"
+              className="inline-flex bg-white rounded-2xl text-black px-8 py-3 font-bold hover:bg-[#1a56ff] hover:text-white  transition shadow-yellow-500/20"
             >
               Explore Events
             </Link>
