@@ -24,7 +24,7 @@ export const login = async (email: string, password: string) => {
       password,
     },
   );
-  if (data.sucess) {
+  if (data.success) {
     setToken(data.token);
   }
   return data;

@@ -30,9 +30,9 @@ export default function Home() {
               Create Your First Event
             </button>
             <span className="font-light">or</span>
-            <button className="underline font-light cursor-pointer  text-white   outline-none rounded-2xl  relative z-10 text-sm">
+            <Link href={"/events"} className="underline font-light cursor-pointer  text-white   outline-none rounded-2xl  relative z-10 text-sm">
               explore Events
-            </button>
+            </Link>
             <ArrowUpRight className="-ml-3 underline" size={18} />
           </div>
         </article>

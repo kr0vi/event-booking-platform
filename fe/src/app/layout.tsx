@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "District Events",
-  description: "Browse and book live events in your city.",
+  title: "Moment",
+  description: "Browse and book live events in your university.",
 };
 
 export default function RootLayout({

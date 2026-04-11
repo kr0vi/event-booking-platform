@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  ApiResponse,
   EventType,
   OrderType,
   TicketType,
@@ -154,11 +153,11 @@ export function EventBookingCard({ event }: { event: EventType }) {
         Total: INR {totalAmount.toLocaleString("en-IN")}
       </p>
 
-      {!isAuthenticated ? (
+      {/* {!isAuthenticated ? (
         <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700">
           Login from the top-right to complete booking.
         </p>
-      ) : null}
+      ) : null} */}
 
       {error ? (
         <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">

@@ -12,10 +12,6 @@ const navItems = [
 
 export function DistrictHeader() {
   const { isSignedIn, isLoaded } = useUser();
-  const [loggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    setLoggedIn(isLoaded && isSignedIn);
-  }, [isLoaded, isSignedIn]);
   return (
     <>
       <header className="w-full bg-[#1a56ff] text-white shadow-sm">
@@ -37,19 +33,19 @@ export function DistrictHeader() {
             >
               All Events
             </Link>
-            {loggedIn ? (
+            {isSignedIn && isLoaded ? (
               <Link
-                href={"/tickets"}
+                href={"/me"}
                 className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
               >
-                My Tickets
+                Me
               </Link>
             ) : (
               <Link
-                href={"/signin"}
+                href={"/signup"}
                 className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
               >
-                Sign In
+                Sign Up
               </Link>
             )}
           </div>

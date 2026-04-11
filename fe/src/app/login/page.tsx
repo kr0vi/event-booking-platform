@@ -29,7 +29,7 @@ export default function LoginPage() {
   }, [isLoaded, isSignedIn])
 
   return (
-    <div className="flex-1 bg-[#1a56ff] text-white flex flex-col items-center justify-center py-24 px-6 overflow-hidden relative">
+    <div className="min-h-screen bg-[#1a56ff] text-white flex flex-col items-center justify-center py-24 px-6 overflow-hidden relative">
       {/* Background Watermark effect */}
       <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[120px] md:text-[200px] font-black text-white/5 whitespace-nowrap pointer-events-none tracking-tighter">
         moment
