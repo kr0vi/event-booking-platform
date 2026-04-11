@@ -15,7 +15,7 @@ export default async function EventsPage() {
     );
   }
   let allEvents = data.data || [];
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="min-h-screen flex flex-col font-sans overflow-x-hidden">
@@ -78,7 +78,7 @@ export default async function EventsPage() {
                   {/* Event Cards Set */}
                   <div className="flex flex-col gap-3.5">
                     <Link
-                      href={`/events`}
+                      href={`/events/${event.id}`}
                       className="block group focus:outline-none"
                     >
                       <div className="flex justify-between items-center bg-white/10 hover:bg-white/20 border border-white/30 rounded-2xl p-4 transition-all duration-300">

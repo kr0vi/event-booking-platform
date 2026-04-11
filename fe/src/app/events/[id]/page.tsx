@@ -1,16 +1,49 @@
+import axios from "axios";
+import { CalendarDays, MapPin } from "lucide-react";
+
 type EventPageProps = {
   params: Promise<{ id: string }>;
 };
 
 export default async function EventPage({ params }: EventPageProps) {
   const { id } = await params;
-
+  const { data } = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/events/${id}`,
+  );
+  console.log(data);
+  if (!data.success) {
+    console.error("Failed to fetch event details:", data.message);
+    return (
+      <div className="p-10 text-center text-red-500">
+        Failed to load event details. Please try again later.
+      </div>
+    );
+  }
+  const event = data.data;
+  console.log(event.highlights);
   return (
-    <main className="min-h-screen bg-[#1a56ff] text-white">
-      <div className="mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
+    <main className="relative  min-h-screen bg-[#1a56ff] text-white overflow-hidden">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="fixed opacity-50 block inset-0 h-full w-full  object-cover mix-blend-screen pointer-events-none"
+        src={"/assets/video/warp-effect.mp4"}
+      ></video>
+      <div className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
         <section className="grid gap-10 lg:grid-cols-2">
           <div>
-            <div className="h-95 w-full rounded-2xl border border-blue-300/40"></div>
+            <div className="h-95 w-full relative ">
+              <div className="absolute inset-0 bg-black opacity-20 blur-[80px]  -z-10" />
+              <div className="h-95 w-full rounded-2xl relative border  border-blue-300/40 overflow-hidden">
+                <img
+                  src={event.posterImage}
+                  alt={event.title}
+                  className="w-full object-cover h-full z-10"
+                />
+              </div>
+            </div>
 
             <div className="mt-8 space-y-5 text-sm">
               <div>
@@ -42,18 +75,32 @@ export default async function EventPage({ params }: EventPageProps) {
           </div>
 
           <div className=" h-screen overflow-y-auto">
-            <h1 className="text-4xl font-bold leading-tight ">
-              Behind The Designer w/
-              <br />
-              Gully Labs
-            </h1>
+            <h1 className="text-4xl font-bold leading-tight ">{event.title}</h1>
 
             <div className="mt-3 space-y-1 text-sm text-white/60 font-medium">
-              <p>Saturday, April 11</p>
-              <p>Location Block B</p>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="bg-white/10 border relative border-white/20  rounded-lg text-center w-8 h-8  text-[10px]">
+                  <div className="bg-white/20 w-full absolute top-0 left-0">
+                    Apr
+                  </div>
+                  <p className="absolute bottom-0 left-0 w-full text-center">
+                    11
+                  </p>
+                </div>
+                <div>
+                  <p>Saturday, {event.date.split("-").reverse()[1]} April</p>
+                  <p>{event.time}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="bg-white/10 border border-white/20  rounded-lg scale-90 p-1">
+                  <MapPin />
+                </div>
+                <p className="text-base">{event.location}</p>
+              </div>
             </div>
 
-            <div className="mt-6 rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm">
+            <div className="mt-6 rounded-xl border border-white/20 bg-white/10 backdrop-  sm">
               <div className="border-b border-blue-200/40 px-4 py-2 text-xs bg-white/20 text-white">
                 Registration
               </div>
@@ -72,66 +119,34 @@ export default async function EventPage({ params }: EventPageProps) {
                 About Event
               </h2>
               <div className="mt-4 space-y-3 text-sm leading-relaxed text-blue-50">
-                <p>
-                  THE 9-5 ALGO: Cracking the FAANG Code. A roadmap to big tech
-                  for developers and aspiring engineers.
-                </p>
-                <p>
-                  Join us for an insightful session designed to help you
-                  navigate your journey to top tech companies. This session
-                  covers practical strategy, roadmap planning, and FAANG-level
-                  preparation.
-                </p>
+                {event.description
+                  .split(".")
+                  .map((sentence: string, index: number) => (
+                    <p key={index}>{sentence.trim()}</p>
+                  ))}
                 <ul className="list-inside list-disc space-y-1 text-blue-100">
-                  <li>Speaker: Mr. Jatin Kumar</li>
-                  <li>4+ years of full-stack experience</li>
-                  <li>Built systems impacting $200M+</li>
-                  <li>Mentor and hackathon judge</li>
-                  <li>Time: 11:00 AM onwards</li>
-                  <li>Venue: PLH 102, Bennett University</li>
+                  {event.thingsToKnow.map(
+                    (highlight: string, index: number) => (
+                      <li key={index}>{highlight}</li>
+                    ),
+                  )}
                 </ul>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Officia incidunt nobis eum consectetur nam modi exercitationem
-                  quasi libero quaerat fuga! Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. Neque earum ullam ex officiis
-                  libero. Molestias corporis obcaecati vel praesentium suscipit
-                  fugit atque aliquid eveniet saepe quibusdam consequatur
-                  inventore fuga, voluptas blanditiis cumque dignissimos in,
-                  aspernatur itaque. Hic placeat ad quod incidunt nam optio!
-                  Alias, a sit. Voluptate esse libero unde dolor enim,
-                  dignissimos, id atque voluptates excepturi iste, eveniet quo
-                  laudantium. Quasi tenetur est id illum molestiae iste mollitia
-                  earum eveniet asperiores fugit eius dignissimos quos
-                  recusandae deserunt inventore nihil laborum, eligendi error
-                  enim maxime commodi beatae hic? Nulla id asperiores
-                  perspiciatis fugit enim tempore magni cumque repellat
-                  perferendis earum optio dignissimos quaerat, ut unde mollitia
-                  quia dolorum, voluptatum vero error totam architecto vitae
-                  blanditiis veritatis aperiam! Quibusdam laborum officia
-                  consectetur facilis itaque recusandae molestiae temporibus
-                  earum saepe est laboriosam ullam harum fuga minima illo
-                  commodi, aspernatur ratione. Officiis, natus beatae fugit
-                  voluptatem quis itaque nesciunt similique doloremque earum
-                  impedit? Maiores hic repudiandae, minima nam, repellat similit
-                  eligendi tempore laboriosam neque architecto. Id voluptas,
-                  magnam tenetur quibusdam exercitationem, ad sint nostrum
-                  numquam quo asperiores laudantium? Velit veritatis deleniti
-                  cum ipsam eum molestias.
-                </p>
+
                 <div className=" overflow-hidden my-20 ">
                   <h1 className="font-semibold ml-3 text-white/80">Location</h1>
                   <hr className="text-white/40 w-full mb-3" />
-                  <p className="text-white font-medium ml-3 mb-3">New Delhi, Delhi</p>
+                  <p className="text-white font-medium ml-3 mb-3">
+                    {event.location}
+                  </p>
                   <div className="border-2 border-white rounded-2xl overflow-hidden">
-                  <iframe
-                    width="100%"
-                    height="200"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                    allowFullScreen
-                    src="https://www.google.com/maps?q=28.6139,77.2090&z=15&output=embed"
-                  ></iframe>
+                    <iframe
+                      width="100%"
+                      height="200"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      src="https://www.google.com/maps?q=28.6139,77.2090&z=15&output=embed"
+                    ></iframe>
                   </div>
                 </div>
               </div>
