@@ -34,13 +34,14 @@ export default async function EventPage({ params }: EventPageProps) {
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
         <section className="grid gap-10 lg:grid-cols-2">
           <div>
-            <div className="h-95 w-full relative ">
-              <div className="absolute inset-0 bg-black opacity-20 blur-[80px]  -z-10" />
-              <div className="h-95 w-full rounded-2xl relative border  border-blue-300/40 overflow-hidden">
+            <div className="h-95 w-95 relative ">
+              <div className="absolute inset-0 bg-yellow-400 opacity-40 blur-[80px]  -z-10" />
+              <div className="h-95 w-95 rounded-2xl relative border  border-blue-300/40 overflow-hidden">
                 <img
-                  src={event.posterImage}
+                  // src={event.posterImage}
+                  src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
                   alt={event.title}
-                  className="w-full object-cover h-full z-10"
+                  className="w-full object-contain h-full z-10"
                 />
               </div>
             </div>

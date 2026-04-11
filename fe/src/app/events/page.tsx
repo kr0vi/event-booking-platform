@@ -19,12 +19,17 @@ export default async function EventsPage() {
 
   return (
     <div className="min-h-screen flex flex-col font-sans overflow-x-hidden">
-      <article className=" w-full h-[70vh]  border-white/70 border-b-2 bg-blue-900 relative p-1 flex overflow-hidden items-center justify-center">
-        {/* <img
-          src="/assets/images/graphic-buildings.jpg"
-          alt="Event Placeholder"
-          className="object-cover object-[0_0] w-full h-full m inset-0 mix-blend-screen absolute blur-lg"
-        /> */}
+      <article className=" w-full h-[70vh]  border-white/70 border-b-2 bg-[#1a56ff] relative p-1 flex overflow-hidden items-center justify-center">
+      <div>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          src="https://cdn.cosmos.so/57e43190-a12d-44eb-81ea-1e8e560d7176.mp4"
+          className=" top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-screen h-full w-full  object-cover absolute"
+        />
+        </div>
         <div className=" mr-80 z-20">
           <h3 className="text-2xl font-medium text-white/60">
             Whats Happening in
@@ -109,10 +114,10 @@ export default async function EventsPage() {
                         {/* Image right */}
                         <div className="w-[100px] h-[100px] sm:w-[124px] sm:h-[100px] bg-white/5 rounded-[12px] shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
                           <img
-                              src={event.posterImage}
-                              className="w-full h-full object-cover transition-transform duration-700 ease-out"
-                              alt="Event Cover"
-                            />
+                            src={event.posterImage}
+                            className="w-full h-full object-cover transition-transform duration-700 ease-out"
+                            alt="Event Cover"
+                          />
                         </div>
                       </div>
                     </Link>
