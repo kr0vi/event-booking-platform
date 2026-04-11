@@ -1,3 +1,4 @@
+import BuyEventForm from "@/components/events/BuyEventForm";
 import axios from "axios";
 import { CalendarDays, MapPin } from "lucide-react";
 
@@ -34,9 +35,9 @@ export default async function EventPage({ params }: EventPageProps) {
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
         <section className="grid gap-10 lg:grid-cols-2">
           <div>
-            <div className="h-95 w-95 relative ">
+            <div className="h-95 w-full bg-[#fff201] rounded-2xl relative ">
               <div className="absolute inset-0 bg-yellow-400 opacity-40 blur-[80px]  -z-10" />
-              <div className="h-95 w-95 rounded-2xl relative border  border-blue-300/40 overflow-hidden">
+              <div className="h-95 w-full rounded-2xl relative border  border-blue-300/40 overflow-hidden">
                 <img
                   // src={event.posterImage}
                   src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
@@ -46,10 +47,17 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
             </div>
 
-            <div className="mt-8 space-y-5 text-sm">
-              <div>
-                <p className="mb-2 text-blue-200">Hosted By</p>
-                <p className="font-semibold">Young Designers India UID</p>
+            <div className="mt-8 space-y-5 text-sm ">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="mb-2 text-blue-200">Hosted By</p>
+                  <p className="font-semibold">Young Designers India UID</p>
+                </div>
+                <div>
+                  <p className="mb-2 font-semibold text-xs rounded-full p-2 text-white/80 bg-white/10 border border-white/20">
+                    {event.totalTickets - event.ticketsSold} Slots Left
+                  </p>
+                </div>
               </div>
 
               <div>
@@ -101,19 +109,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
             </div>
 
-            <div className="mt-6 rounded-xl border border-white/20 bg-white/10 backdrop-  sm">
-              <div className="border-b border-blue-200/40 px-4 py-2 text-xs bg-white/20 text-white">
-                Registration
-              </div>
-              <div className="space-y-3 px-4 py-4">
-                <p className="text-sm font-medium">
-                  Welcome! To join the event, please register below.
-                </p>
-                <button className="w-full rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#1a56ff] transition hover:bg-blue-50">
-                  Get Your Tickets
-                </button>
-              </div>
-            </div>
+           <BuyEventForm />
 
             <div className="mt-8 ">
               <h2 className="border-b border-blue-200/40 pb-2 text-2xl font-semibold">
