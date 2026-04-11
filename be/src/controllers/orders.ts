@@ -63,7 +63,7 @@ export const createOrder = async (req: Request, res: Response) => {
   // createPayment(req, res, order.id);
 
   // For now, we will create ticket directly without payment
-  const ticket = await generateTicket(order.id, userId, order.eventId);
+  const ticket = await generateTicket(order.id, userId, order.eventId, order.quantity);
   if (!ticket) {
     return res.json({
       success: false,

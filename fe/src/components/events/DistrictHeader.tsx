@@ -1,14 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useUser } from "@/lib/auth/useUser";
 
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Events", href: "/events" },
-  { name: "My Tickets", href: "/tickets" },
-  { name: "About", href: "/about" },
-];
 
 export function DistrictHeader() {
   const { isSignedIn, isLoaded } = useUser();
@@ -34,19 +27,29 @@ export function DistrictHeader() {
               All Events
             </Link>
             {isSignedIn && isLoaded ? (
-              <Link
-                href={"/me"}
-                className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
-              >
-                Me
-              </Link>
+              <>
+                <Link
+                  href={"/tickets"}
+                  className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
+                >
+                  My Tickets
+                </Link>
+                <Link
+                  href={"/me"}
+                  className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
+                >
+                  Me
+                </Link>
+              </>
             ) : (
-              <Link
-                href={"/signup"}
-                className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
-              >
-                Sign Up
-              </Link>
+              <>
+                <Link
+                  href={"/signup"}
+                  className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
+                >
+                  Sign Up
+                </Link>
+              </>
             )}
           </div>
         </div>

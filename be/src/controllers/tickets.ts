@@ -8,6 +8,7 @@ export const generateTicket = async (
   orderId: string,
   userId: number,
   eventId: string,
+  quantity: number
 ) => {
   try {
     // already checked that order exists and is completed before calling this function
@@ -22,6 +23,7 @@ export const generateTicket = async (
         status: "VALID",
         qrToken,
         qrImage,
+        quantity, // default quantity is 1, can be updated later if needed
       },
     });
     return genTicket;
@@ -134,7 +136,7 @@ export const getTicketById = async (req: Request, res: Response) => {
       id: ticketId,
       userId,
     },
-    select: {
+    include: {
       event: true,
     },
   });

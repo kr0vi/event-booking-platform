@@ -22,16 +22,17 @@ export default function Home() {
             attend events that matter to you.
           </p>
           <div className="gap-3 flex items-center">
-            <button
+            <Link
+            href={"/events"}
               // value={email}
               // onChange={(event) => setEmail(event.target.value)}
               className="p-3 px-22 hover:bg-white/20 transition-all duration-300 cursor-pointer  text-white border-white/20 border backdrop-blur-sm bg-white/10 placeholder-white/60  outline-none rounded-2xl  relative z-10 text-sm"
             >
-              Create Your First Event
-            </button>
+             Explore Events
+            </Link>
             <span className="font-light">or</span>
             <Link href={"/events"} className="underline font-light cursor-pointer  text-white   outline-none rounded-2xl  relative z-10 text-sm">
-              explore Events
+              Create your own
             </Link>
             <ArrowUpRight className="-ml-3 underline" size={18} />
           </div>

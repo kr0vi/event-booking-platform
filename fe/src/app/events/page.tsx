@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search, MapPin, Landmark, Rss } from "lucide-react";
 import axios from "axios";
+import { getDayFromDate } from "@/utils/helper";
 
 export default async function EventsPage() {
   const { data } = await axios.get(
@@ -20,15 +21,15 @@ export default async function EventsPage() {
   return (
     <div className="min-h-screen flex flex-col font-sans overflow-x-hidden">
       <article className=" w-full h-[70vh]  border-white/70 border-b-2 bg-[#1a56ff] relative p-1 flex overflow-hidden items-center justify-center">
-      <div>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          src="https://cdn.cosmos.so/57e43190-a12d-44eb-81ea-1e8e560d7176.mp4"
-          className=" top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-screen h-full w-full  object-cover absolute"
-        />
+        <div>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            src="https://cdn.cosmos.so/57e43190-a12d-44eb-81ea-1e8e560d7176.mp4"
+            className=" top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-screen h-full w-full  object-cover absolute"
+          />
         </div>
         <div className=" mr-80 z-20">
           <h3 className="text-2xl font-medium text-white/60">
@@ -62,17 +63,17 @@ export default async function EventsPage() {
             {allEvents.map((event: any, index: number) => (
               <div
                 key={index}
-                className="relative border-l border-white/20 ml-2.5 pl-6 sm:pl-8 pb-12"
+                className="relative border-l border-white/20 ml-2.5 pl-6 sm:pl-8 pb-2"
               >
                 {/* CARD MARGIN SET */}
                 <div
-                  className={`${index === allEvents.length - 1 ? "" : "mb-10"}`}
+                  className={`${index === allEvents.length - 1 ? "" : "mb-5"}`}
                 >
                   {/* Date Header */}
-                  <div className="relative mb-5">
+                  <div className="relative mb-2">
                     <div className="absolute -left-[29px] sm:-left-[37px] top-2 w-2 h-2 rounded-full bg-[#1a56ff] border-[2px] border-white/70"></div>
                     <h3 className="text-white font-bold text-base flex items-baseline gap-2 leading-none">
-                      Saturday,
+                      {getDayFromDate(event.date)},{" "}
                       <span className="text-white/50 font-medium text-sm">
                         {event.date.split("-").reverse().join("-")}
                       </span>

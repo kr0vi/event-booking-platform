@@ -103,6 +103,8 @@ model Ticket {
   eventId String
   event   Event  @relation(fields: [eventId], references: [id])
 
+  quantity Int? @default(1)
+
   userId Int
   user   User @relation(fields: [userId], references: [id])
 
