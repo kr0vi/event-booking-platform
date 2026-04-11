@@ -31,14 +31,14 @@ export default function MePage() {
 
   return (
     <div className="flex min-h-screen  items-center justify-center bg-[#1a56ff] overflow-hidden ">
-      <div className="w-full max-w-4xl bg-white/10 rounded-3xl border border-white/20 backdrop-blur-sm  p-12">
-        <h1 className="text-white text-3xl font-bold mb-8">My Profile</h1>
-        <p className="text-white/80 mb-8">
+      <div className="w-full max-w-2xl bg-white/10 rounded-3xl border border-white/20 backdrop-blur-sm  p-12">
+        <h1 className="text-white text-xl font-bold mb-2">My Profile</h1>
+        <p className="text-white/80  mb-8">
           Here you can view and manage your profile information.
         </p>
-        <div className="flex items-center gap-12 mb-12 rounded-full bg-white/20 border border-white/30 px-6 py-3">
+        <div className="flex items-center gap-2 mb-10 rounded-full border border-white/30 px-3 py-2">
           <h5
-            className={`text-white text-xl font-medium cursor-pointer px-3 py-1 border rounded-full border-transparent transition-all duration-300 ${activeTab === "account" ? " bg-white/10 border-white/20" : ""}`}
+            className={`text-white  font-medium cursor-pointer px-3 py-1 border rounded-full border-transparent transition-all duration-300 ${activeTab === "account" ? " bg-white/10 border-white/20" : ""}`}
             onClick={() => {
               setActiveTab("account");
             }}
@@ -46,13 +46,13 @@ export default function MePage() {
             Account
           </h5>
           <h5
-            className={`text-white text-xl font-medium cursor-pointer px-3 py-1 border rounded-full border-transparent transition-all duration-300 ${activeTab === "tickets" ? " bg-white/10 border-white/20" : ""}`}
+            className={`text-white  font-medium cursor-pointer px-3 py-1 border rounded-full border-transparent transition-all duration-300 ${activeTab === "tickets" ? " bg-white/10 border-white/20" : ""}`}
             onClick={() => setActiveTab("tickets")}
           >
             Tickets
           </h5>
           <h5
-            className={`text-white text-xl font-medium cursor-pointer px-3 py-1 border rounded-full border-transparent transition-all duration-300 ${activeTab === "orders" ? " bg-white/10 border-white/20" : ""}`}
+            className={`text-white font-medium cursor-pointer px-3 py-1 border rounded-full border-transparent transition-all duration-300 ${activeTab === "orders" ? " bg-white/10 border-white/20" : ""}`}
             onClick={() => setActiveTab("orders")}
           >
             Orders
@@ -60,15 +60,15 @@ export default function MePage() {
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="relative group p-8 pb-10">
+          <div className="relative group p-4 pb-4">
             <div className="absolute inset-0 rounded-3xl border border-white/20 backdrop-blur-sm pointer-events-none transition-all"></div>
 
-            <div className="relative z-10 flex flex-col gap-6">
+            <div className="relative z-10 flex flex-col gap-3">
               <div className="flex flex-col gap-1">
-                <span className="text-white/60 text-sm font-medium uppercase tracking-wider">
+                <span className="text-white/60 text-xs font-medium uppercase tracking-wider">
                   Name
                 </span>
-                <span className="text-white text-xl font-medium">
+                <span className="text-white text-base font-medium">
                   {user?.name || "N/A"}
                 </span>
               </div>
@@ -76,10 +76,10 @@ export default function MePage() {
               <div className="h-px bg-white/20 w-full rounded-full"></div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-white/60 text-sm font-medium uppercase tracking-wider">
+                <span className="text-white/60 text-xs font-medium uppercase tracking-wider">
                   Email Address
                 </span>
-                <span className="text-white text-xl font-medium">
+                <span className="text-white text-base font-medium">
                   {user?.email || "N/A"}
                 </span>
               </div>
@@ -87,10 +87,10 @@ export default function MePage() {
               <div className="h-px bg-white/20 w-full rounded-full"></div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-white/60 text-sm font-medium uppercase tracking-wider">
+                <span className="text-white/60 text-xs font-medium uppercase tracking-wider">
                   User ID
                 </span>
-                <span className="text-white text-xl font-medium">
+                <span className="text-white text-base font-medium">
                   {user?.id || "N/A"}
                 </span>
               </div>

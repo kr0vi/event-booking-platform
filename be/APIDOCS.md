@@ -3,13 +3,13 @@
 ## Overview
 
 - Base URL: `/api/v1`
-- Content-Type: `application/json`
-- Auth style: `Authorization: Bearer <JWT_TOKEN>`
-- Current behavior: most endpoints return JSON with HTTP `200` even for failures (`success: false`).
+- Content type: `application/json` for most endpoints
+- Auth header format: `Authorization: Bearer <JWT_TOKEN>`
+- Most error cases currently still return HTTP `200` with `success: false`
 
-## Standard Response Shape
+## Response Patterns
 
-Most responses follow:
+There is no single strict response contract yet, but most routes use:
 
 ```json
 {
@@ -19,13 +19,22 @@ Most responses follow:
 }
 ```
 
-Some routes return slightly different keys (for example `auth/login` and `auth/signup`).
+Known variations:
 
-## Authentication and Roles
+- `GET /` returns plain text `Pong!`
+- `POST /auth/login` returns `token` (not `data`)
+- `GET /auth/me` returns `user` (not `data`)
+- `POST /events` returns `sucess` (typo) instead of `success`
 
-- `authMiddleware`: requires a valid JWT.
-- `adminMiddleware`: requires a valid JWT and user role `ORGANIZER`.
-- JWT payload currently contains user id as `{ "id": <number> }`.
+## Auth and Role Rules
+
+- `authMiddleware`: requires a valid JWT
+- `adminMiddleware`: requires valid JWT and user role `ORGANIZER`
+- JWT payload currently includes user id as:
+
+```json
+{ "id": 1 }
+```
 
 ---
 
@@ -33,17 +42,17 @@ Some routes return slightly different keys (for example `auth/login` and `auth/s
 
 ### GET `/`
 
-Health/ping endpoint.
+Ping endpoint mounted at `/api/v1/`.
 
-Important: this route currently creates a demo user before returning `Pong!`.
+Current implementation side effect: creates a user record each time it is called.
 
-#### Request Example
+#### Request
 
 ```bash
 curl -X GET http://localhost:3000/api/v1/
 ```
 
-#### Success Response Example
+#### Response
 
 ```text
 Pong!
@@ -55,7 +64,15 @@ Pong!
 
 ### POST `/auth/signup`
 
-Create a user account. Newly created users are assigned role `ORGANIZER`.
+Creates a user.
+
+Current implementation details:
+
+- Validation via Zod schema:
+  - `name`: string, min 2
+  - `email`: valid email
+  - `password`: string, min 6
+- New users are currently created with role `ORGANIZER`
 
 #### Request Body
 
@@ -67,19 +84,7 @@ Create a user account. Newly created users are assigned role `ORGANIZER`.
 }
 ```
 
-#### Request Example
-
-```bash
-curl -X POST http://localhost:3000/api/v1/auth/signup \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "John Organizer",
-    "email": "john@example.com",
-    "password": "strongpassword123"
-  }'
-```
-
-#### Success Response Example
+#### Success Response
 
 ```json
 {
@@ -97,18 +102,32 @@ curl -X POST http://localhost:3000/api/v1/auth/signup \
 }
 ```
 
-#### Failure Response Example (User Already Exists)
+#### Common Failure Responses
 
 ```json
 {
   "success": false,
+  "data": null,
+  "message": "Invalid input"
+}
+```
+
+```json
+{
+  "success": false,
+  "data": null,
   "message": "User already exists"
 }
 ```
 
 ### POST `/auth/login`
 
-Authenticate user and return JWT token.
+Authenticates user and returns JWT.
+
+Validation:
+
+- `email`: valid email
+- `password`: string, min 6
 
 #### Request Body
 
@@ -119,41 +138,30 @@ Authenticate user and return JWT token.
 }
 ```
 
-#### Request Example
-
-```bash
-curl -X POST http://localhost:3000/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "john@example.com",
-    "password": "strongpassword123"
-  }'
-```
-
-#### Success Response Example
+#### Success Response
 
 ```json
 {
-  "user": {
-    "id": 1,
-    "name": "John Organizer",
-    "email": "john@example.com",
-    "passwordHash": "$2b$10$...",
-    "role": "ORGANIZER",
-    "createdAt": "2026-03-29T10:00:00.000Z",
-    "updatedAt": "2026-03-29T10:00:00.000Z"
-  },
   "success": true,
   "message": "Login successful",
   "token": "<JWT_TOKEN>"
 }
 ```
 
-#### Failure Response Example (Invalid Credentials)
+#### Common Failure Responses
 
 ```json
 {
   "success": false,
+  "data": null,
+  "message": "Invalid input"
+}
+```
+
+```json
+{
+  "success": false,
+  "data": null,
   "message": "User does not exist"
 }
 ```
@@ -161,7 +169,45 @@ curl -X POST http://localhost:3000/api/v1/auth/login \
 ```json
 {
   "success": false,
+  "data": null,
   "message": "Invalid password"
+}
+```
+
+### GET `/auth/me`
+
+Returns current authenticated user.
+
+Auth required: Bearer token
+
+#### Request
+
+```bash
+curl -X GET http://localhost:3000/api/v1/auth/me \
+  -H "Authorization: Bearer <JWT_TOKEN>"
+```
+
+#### Success Response
+
+```json
+{
+  "success": true,
+  "user": {
+    "id": 1,
+    "email": "john@example.com",
+    "name": "John Organizer"
+  },
+  "message": "User fetched successfully"
+}
+```
+
+#### Failure Response
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Unauthorized"
 }
 ```
 
@@ -171,15 +217,15 @@ curl -X POST http://localhost:3000/api/v1/auth/login \
 
 ### GET `/events`
 
-Get all events.
+Returns all events.
 
-#### Request Example
+#### Request
 
 ```bash
 curl -X GET http://localhost:3000/api/v1/events
 ```
 
-#### Success Response Example
+#### Success Response
 
 ```json
 {
@@ -192,6 +238,10 @@ curl -X GET http://localhost:3000/api/v1/events
       "location": "Mumbai",
       "date": "2026-05-10",
       "time": "09:00",
+      "posterImage": "https://example.com/poster.jpg",
+      "galleryImages": ["https://example.com/1.jpg"],
+      "highlights": [{ "title": "Networking", "description": "Meet founders" }],
+      "thingsToKnow": ["Bring ID"],
       "totalTickets": 500,
       "ticketsSold": 120,
       "price": 2000,
@@ -205,7 +255,7 @@ curl -X GET http://localhost:3000/api/v1/events
 }
 ```
 
-#### Failure Response Example (No Events)
+#### Empty Response
 
 ```json
 {
@@ -217,43 +267,40 @@ curl -X GET http://localhost:3000/api/v1/events
 
 ### GET `/events/:id`
 
-Get one event by id.
+Returns one event by id.
 
 #### Path Params
 
-- `id` (string, required): event UUID
+- `id` (string, required)
 
-#### Request Example
+#### Request
 
 ```bash
 curl -X GET http://localhost:3000/api/v1/events/5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb
 ```
 
-#### Success Response Example
+#### Success Response
 
 ```json
 {
   "success": true,
   "data": {
     "id": "5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb",
-    "title": "Tech Summit 2026",
-    "description": "Annual conference",
-    "location": "Mumbai",
-    "date": "2026-05-10",
-    "time": "09:00",
-    "totalTickets": 500,
-    "ticketsSold": 120,
-    "price": 2000,
-    "status": "OPEN",
-    "organizerId": 1,
-    "createdAt": "2026-03-29T10:30:00.000Z",
-    "updatedAt": "2026-03-29T10:30:00.000Z"
+    "title": "Tech Summit 2026"
   },
   "message": "Event fetched successfully"
 }
 ```
 
-#### Failure Response Example (Not Found)
+#### Failure Responses
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Event ID is required"
+}
+```
 
 ```json
 {
@@ -265,46 +312,47 @@ curl -X GET http://localhost:3000/api/v1/events/5dc8e4cb-3458-4c15-a0bf-41f7a22b
 
 ### POST `/events`
 
-Create an event.
+Creates an event.
 
-Auth: `Bearer token` required and caller must have role `ORGANIZER`.
-
-#### Request Headers
-
-- `Authorization: Bearer <JWT_TOKEN>`
+Auth required: Bearer token + organizer role (`ORGANIZER`)
 
 #### Request Body
+
+Validation comes from `createEventSchema`:
+
+- `title`: string, min 1, max 100
+- `description`: string, min 10, max 200
+- `location`: string, min 1, max 100
+- `eventDate`: string, format `YYYY-MM-DD`
+- `eventTime`: string
+- `posterImage`: valid URL string
+- `galleryImages`: array of valid URL strings (optional, defaults to `[]`)
+- `highlights`: required array of objects:
+  - `title`: string, max 100
+  - `description`: string, max 200
+- `thingsToKnow`: array of strings max 100 each (optional, defaults to `[]`)
+- `price`: number, min 0
+- `totalTickets`: number, min 0
+
+#### Request Example
 
 ```json
 {
   "title": "Tech Summit 2026",
-  "description": "Annual conference",
+  "description": "A long enough event description",
   "location": "Mumbai",
-  "price": 2000,
   "eventDate": "2026-05-10",
   "eventTime": "09:00",
+  "posterImage": "https://example.com/poster.jpg",
+  "galleryImages": ["https://example.com/1.jpg"],
+  "highlights": [{ "title": "Networking", "description": "Meet founders" }],
+  "thingsToKnow": ["Bring ID"],
+  "price": 2000,
   "totalTickets": 500
 }
 ```
 
-#### Request Example
-
-```bash
-curl -X POST http://localhost:3000/api/v1/events \
-  -H "Authorization: Bearer <JWT_TOKEN>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Tech Summit 2026",
-    "description": "Annual conference",
-    "location": "Mumbai",
-    "price": 2000,
-    "eventDate": "2026-05-10",
-    "eventTime": "09:00",
-    "totalTickets": 500
-  }'
-```
-
-#### Success Response Example
+#### Success Response
 
 ```json
 {
@@ -313,9 +361,7 @@ curl -X POST http://localhost:3000/api/v1/events \
 }
 ```
 
-Note: response key is currently `sucess` (typo in implementation).
-
-#### Failure Response Example (Unauthorized)
+#### Failure Responses
 
 ```json
 {
@@ -325,19 +371,31 @@ Note: response key is currently `sucess` (typo in implementation).
 }
 ```
 
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Invalid event data"
+}
+```
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Failed to create event"
+}
+```
+
 ---
 
 ## Orders
 
 ### POST `/orders`
 
-Create an order for an event and auto-generate ticket(s).
+Creates an order and immediately generates one ticket record.
 
-Auth: `Bearer token` required.
-
-#### Request Headers
-
-- `Authorization: Bearer <JWT_TOKEN>`
+Auth required: Bearer token
 
 #### Request Body
 
@@ -348,19 +406,7 @@ Auth: `Bearer token` required.
 }
 ```
 
-#### Request Example
-
-```bash
-curl -X POST http://localhost:3000/api/v1/orders \
-  -H "Authorization: Bearer <JWT_TOKEN>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "eventId": "5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb",
-    "quantity": 2
-  }'
-```
-
-#### Success Response Example
+#### Success Response
 
 ```json
 {
@@ -391,17 +437,15 @@ curl -X POST http://localhost:3000/api/v1/orders \
 }
 ```
 
-#### Failure Response Example (Not Enough Tickets)
+#### Failure Responses
 
 ```json
 {
   "success": false,
   "data": null,
-  "message": "Not enough tickets available"
+  "message": "Unauthorized"
 }
 ```
-
-Other possible failures:
 
 ```json
 {
@@ -423,6 +467,14 @@ Other possible failures:
 {
   "success": false,
   "data": null,
+  "message": "Not enough tickets available"
+}
+```
+
+```json
+{
+  "success": false,
+  "data": null,
   "message": "Failed to generate ticket"
 }
 ```
@@ -433,26 +485,22 @@ Other possible failures:
 
 ### POST `/tickets/validate?code=<QR_TOKEN>`
 
-Validate ticket from QR token and mark it as `USED`.
+Validates ticket and marks it as used.
 
-Auth: `Bearer token` required and caller must have role `ORGANIZER`.
-
-#### Request Headers
-
-- `Authorization: Bearer <JWT_TOKEN>`
+Auth required: Bearer token + organizer role (`ORGANIZER`)
 
 #### Query Params
 
-- `code` (string, required): ticket QR token
+- `code` (string, required): QR token
 
-#### Request Example
+#### Request
 
 ```bash
 curl -X POST "http://localhost:3000/api/v1/tickets/validate?code=<QR_TOKEN>" \
   -H "Authorization: Bearer <JWT_TOKEN>"
 ```
 
-#### Success Response Example
+#### Success Response
 
 ```json
 {
@@ -466,13 +514,29 @@ curl -X POST "http://localhost:3000/api/v1/tickets/validate?code=<QR_TOKEN>" \
 }
 ```
 
-#### Failure Response Example
+#### Failure Responses
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Unauthorized"
+}
+```
 
 ```json
 {
   "success": false,
   "data": null,
   "message": "QR token is required"
+}
+```
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Ticket not found"
 }
 ```
 
@@ -494,18 +558,18 @@ curl -X POST "http://localhost:3000/api/v1/tickets/validate?code=<QR_TOKEN>" \
 
 ### GET `/tickets`
 
-Get all tickets for the currently logged-in user.
+Returns all tickets for current authenticated user.
 
-Auth: `Bearer token` required.
+Auth required: Bearer token
 
-#### Request Example
+#### Request
 
 ```bash
 curl -X GET http://localhost:3000/api/v1/tickets \
   -H "Authorization: Bearer <JWT_TOKEN>"
 ```
 
-#### Success Response Example
+#### Success Response
 
 ```json
 {
@@ -526,7 +590,7 @@ curl -X GET http://localhost:3000/api/v1/tickets \
 }
 ```
 
-#### Failure Response Example (Unauthorized)
+#### Failure Response
 
 ```json
 {
@@ -538,22 +602,22 @@ curl -X GET http://localhost:3000/api/v1/tickets \
 
 ### GET `/tickets/:id`
 
-Get one ticket by id for the currently logged-in user.
+Returns one ticket by id for current authenticated user.
 
-Auth: `Bearer token` required.
+Auth required: Bearer token
 
 #### Path Params
 
-- `id` (string, required): ticket UUID
+- `id` (string, required)
 
-#### Request Example
+#### Request
 
 ```bash
 curl -X GET http://localhost:3000/api/v1/tickets/fd3efecb-83cf-4f54-b599-53d578203dae \
   -H "Authorization: Bearer <JWT_TOKEN>"
 ```
 
-#### Success Response Example
+#### Success Response
 
 ```json
 {
@@ -572,7 +636,15 @@ curl -X GET http://localhost:3000/api/v1/tickets/fd3efecb-83cf-4f54-b599-53d5782
 }
 ```
 
-#### Failure Response Example (Not Found)
+#### Failure Responses
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Unauthorized"
+}
+```
 
 ```json
 {
@@ -584,10 +656,25 @@ curl -X GET http://localhost:3000/api/v1/tickets/fd3efecb-83cf-4f54-b599-53d5782
 
 ---
 
-## Notes and Implementation Caveats
+## Currently Mounted Routes Summary
 
-1. `GET /api/v1/` has a side effect (creates a user) and is not a pure health check.
-2. Auth endpoints do not return early after failure in current implementation, which can produce unintended behavior.
-3. `POST /events` success response key is `sucess` instead of `success`.
-4. Orders currently set `paymentStatus` directly to `COMPLETED` and generate tickets immediately.
-5. `POST /tickets/validate` consumes a query string token (`code`) rather than JSON body.
+- `GET /api/v1/`
+- `POST /api/v1/auth/signup`
+- `POST /api/v1/auth/login`
+- `GET /api/v1/auth/me`
+- `GET /api/v1/events`
+- `GET /api/v1/events/:id`
+- `POST /api/v1/events`
+- `POST /api/v1/orders`
+- `POST /api/v1/tickets/validate`
+- `GET /api/v1/tickets`
+- `GET /api/v1/tickets/:id`
+
+## Known Implementation Caveats
+
+1. `GET /api/v1/` has side effects (creates a user record).
+2. `POST /auth/signup` and `POST /auth/login` do not always return early after some failure responses, so behavior can be inconsistent in those edge cases.
+3. `POST /events` response key uses `sucess` (spelling typo).
+4. Order flow currently skips pending payment and sets `paymentStatus` to `COMPLETED` directly.
+5. Ticket validation expects QR token in query parameter `code`, not request body.
+6. Payment helpers exist in controllers, but no payment route is currently mounted.

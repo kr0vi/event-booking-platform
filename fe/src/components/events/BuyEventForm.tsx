@@ -3,14 +3,14 @@
 import { useUser } from "@/lib/auth/useUser";
 import { useRouter } from "next/navigation";
 
-function BuyEventForm() {
+function BuyEventForm({ eventId }: { eventId: string }) {
   const router = useRouter();
   const { isSignedIn, isLoaded } = useUser();
 
   const handleClick = () => {
     if (isSignedIn && isLoaded) {
       // Redirect to checkout page
-      router.push("/checkout");
+      router.push(`/checkout?eventId=${eventId}`);
     } else {
       // Redirect to login page
       router.push("/login");

@@ -116,6 +116,9 @@ export const getAllTickets = async (req: Request, res: Response) => {
     where: {
       userId,
     },
+    include: {
+      event: true,
+    },
   });
   return res.json({
     success: true,
@@ -130,6 +133,9 @@ export const getTicketById = async (req: Request, res: Response) => {
     where: {
       id: ticketId,
       userId,
+    },
+    select: {
+      event: true,
     },
   });
   if (!ticket) {

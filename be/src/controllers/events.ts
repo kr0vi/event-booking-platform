@@ -74,7 +74,7 @@ export const createEvents = async (req: Request, res: Response) => {
       },
     });
     res.json({
-      sucess: true,
+      success: true,
       message: "Event created successfully",
     });
   } catch (error) {

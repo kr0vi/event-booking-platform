@@ -109,7 +109,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
             </div>
 
-           <BuyEventForm />
+           <BuyEventForm eventId={event.id} />
 
             <div className="mt-8 ">
               <h2 className="border-b border-blue-200/40 pb-2 text-2xl font-semibold">
