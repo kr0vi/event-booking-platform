@@ -1,8 +1,7 @@
 "use client";
-
 import Link from "next/link";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useUser } from "@/lib/auth/useUser";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -12,9 +11,11 @@ const navItems = [
 ];
 
 export function DistrictHeader() {
-  const [loginModal, setLoginModal] = useState(false);
-  const pathname = usePathname();
-
+  const { isSignedIn, isLoaded } = useUser();
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    setLoggedIn(isLoaded && isSignedIn);
+  }, [isLoaded, isSignedIn]);
   return (
     <>
       <header className="w-full bg-[#1a56ff] text-white shadow-sm">
@@ -30,17 +31,27 @@ export function DistrictHeader() {
           </div>
 
           <div className="flex items-center gap-6">
-            <button
+            <Link
+              href={"/events"}
               className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
             >
               All Events
-            </button>
-            <button
-              onClick={() => setLoginModal(true)}
-              className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
-            >
-              Login
-            </button>
+            </Link>
+            {loggedIn ? (
+              <Link
+                href={"/tickets"}
+                className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
+              >
+                My Tickets
+              </Link>
+            ) : (
+              <Link
+                href={"/signin"}
+                className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       </header>

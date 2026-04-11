@@ -1,3 +1,4 @@
+"use client";
 import { getCurrentUser, logout } from "@/utils/api";
 import { createContext, useEffect, useState } from "react";
 

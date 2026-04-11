@@ -43,7 +43,7 @@ export const signup = async (email: string, password: string, name: string) => {
 
 // Me: fetch currently logged-in user from token.
 export const getCurrentUser = async () => {
-  const { data } = await api.get("/me");
+  const { data } = await api.get(process.env.NEXT_PUBLIC_API_ME_URL || "/auth/me");
   return data.user;
 };
 

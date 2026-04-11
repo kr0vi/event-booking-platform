@@ -70,7 +70,7 @@ export const login = async (req: Request, res: Response) => {
   if (!isPasswordValid) {
     res.json({
       success: false,
-      data: null, 
+      data: null,
       message: "Invalid password",
     });
   }
@@ -85,5 +85,25 @@ export const login = async (req: Request, res: Response) => {
     success: true,
     message: "Login successful",
     token,
+  });
+};
+
+export const me = async (req: Request, res: Response) => {
+  //@ts-ignore
+  const userId = req.userId;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+    },
+  });
+  res.json({
+    success: true,
+    user: user,
+    message: "User fetched successfully",
   });
 };
