@@ -57,7 +57,7 @@ function page({ params }: { params: Promise<{ id: string }> }) {
   console.log("Fetched ticket details:", ticket);
 
   return (
-    <div className="h-screen bg-[#1a56ff] flex items-center justify-center relative">
+    <div className="h-screen bg-[#131517] flex items-center justify-center relative">
       <div>{ticket && <FullTicketCard ticket={ticket} />}</div>
       <Link
         href="/tickets"
@@ -66,7 +66,6 @@ function page({ params }: { params: Promise<{ id: string }> }) {
         <ArrowLeft size={18} />
         Back to Tickets
       </Link>
-
     </div>
   );
 }
@@ -77,8 +76,8 @@ function FullTicketCard({ ticket }: { ticket: any }) {
   return (
     <div className="bg-white/10 w-[25vw] p-6 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden flex flex-col  relative shadow-lg  transition-all">
       {/* Deco dots */}
-      <div className="absolute top-[40%] -left-3 w-12 h-12 bg-[#1a56ff] rounded-full transform -translate-y-1/2 md:block hidden opacity-80 border-r border-white/20"></div>
-      <div className="absolute top-[40%] -right-3 w-12 h-12 bg-[#1a56ff] rounded-full transform -translate-y-1/2 md:block hidden opacity-80 border-l border-white/20"></div>
+      <div className="absolute top-[40%] -left-3 w-12 h-12 bg-[#131517] rounded-full transform -translate-y-1/2 md:block hidden opacity-80 border-r border-white/20"></div>
+      <div className="absolute top-[40%] -right-3 w-12 h-12 bg-[#131517] rounded-full transform -translate-y-1/2 md:block hidden opacity-80 border-l border-white/20"></div>
 
       <div className="">
         <div className="flex justify-between items-center  ">
@@ -126,7 +125,7 @@ function FullTicketCard({ ticket }: { ticket: any }) {
           Show this QR code at the event entrance
         </p>
         <p className="text-center text-xs mt-2 text-white">
-          {ticket.quantity} x QUANTITY 
+          {ticket.quantity} x QUANTITY
         </p>
       </div>
     </div>

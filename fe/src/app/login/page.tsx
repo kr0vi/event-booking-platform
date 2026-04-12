@@ -7,29 +7,29 @@ import { useUser } from "@/lib/auth/useUser";
 import { login } from "@/utils/api";
 
 export default function LoginPage() {
-  const [email,setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const {isSignedIn, isLoaded,refresh} = useUser();
+  const { isSignedIn, isLoaded, refresh } = useUser();
 
-  const handleLogin = async(e:React.FormEvent)=>{
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try{
-      await login(email,password);
+    try {
+      await login(email, password);
       await refresh();
-    }catch(err){
+    } catch (err) {
       console.error("Login failed:", err);
     }
-  }
-  useEffect(()=>{
-    if(isLoaded && isSignedIn){
-    window.location.href = "/events";
+  };
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      window.location.href = "/events";
     }
-  }, [isLoaded, isSignedIn])
+  }, [isLoaded, isSignedIn]);
 
   return (
-    <div className="min-h-screen bg-[#1a56ff] text-white flex flex-col items-center justify-center py-24 px-6 overflow-hidden relative">
+    <div className="min-h-screen bg-[#131517] text-white flex flex-col items-center justify-center py-24 px-6 overflow-hidden relative">
       {/* Background Watermark effect */}
       <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[120px] md:text-[200px] font-black text-white/5 whitespace-nowrap pointer-events-none tracking-tighter">
         moment
@@ -48,7 +48,7 @@ export default function LoginPage() {
             <input
               type="email"
               placeholder="Email"
-              className="w-full p-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-white/50 outline-none focus:border-white/40 focus:bg-white/20 transition-all font-medium"
+              className="w-full p-4 bg-white/10 border backdrop-blur-sm border-white/20  rounded-2xl text-white placeholder-white/50 outline-none focus:border-white/40 focus:bg-white/20 transition-all font-medium"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -57,12 +57,12 @@ export default function LoginPage() {
             <input
               type="password"
               placeholder="Password"
-              className="w-full p-4 bg-white/10 border border-white/20 rounded-2xl text-white placeholder-white/50 outline-none focus:border-white/40 focus:bg-white/20 transition-all font-medium"
+              className="w-full p-4 bg-white/10 border backdrop-blur-sm border-white/20  rounded-2xl text-white placeholder-white/50 outline-none focus:border-white/40 focus:bg-white/20 transition-all font-medium"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="w-full p-4 mt-2 bg-white text-[#1a56ff] font-bold rounded-2xl hover:bg-white/90 transition-all flex items-center justify-center gap-2">
+          <button className="w-full p-4 mt-2 bg-white text-[#131517] font-bold rounded-2xl hover:bg-white/90 transition-all flex items-center justify-center gap-2">
             Log in <ArrowRight size={18} />
           </button>
         </form>

@@ -20,7 +20,7 @@ export default async function EventsPage() {
 
   return (
     <div className="min-h-screen flex flex-col font-sans overflow-x-hidden">
-      <article className=" w-full h-[70vh]  border-white/70 border-b-2 bg-[#1a56ff] relative p-1 flex overflow-hidden items-center justify-center">
+      <article className=" w-full h-[70vh]  border-white/40 border-b bg-[#131517] relative p-1 flex overflow-hidden items-center justify-center">
         <div>
           <video
             autoPlay
@@ -28,7 +28,7 @@ export default async function EventsPage() {
             muted
             playsInline
             src="https://cdn.cosmos.so/57e43190-a12d-44eb-81ea-1e8e560d7176.mp4"
-            className=" top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mix-blend-screen h-full w-full  object-cover absolute"
+            className=" top-1/2 left-[40%] transform -translate-x-1/2 -translate-y-1/2 mix-blend-lighten h-full w-full  object-contain absolute"
           />
         </div>
         <div className=" mr-80 z-20">
@@ -42,7 +42,7 @@ export default async function EventsPage() {
       </article>
 
       {/* Main Content Section */}
-      <article className="flex-1 bg-[#1a56ff] w-full px-4 md:px-8 py-12">
+      <article className="flex-1 bg-[#131517] w-full px-4 md:px-8 py-12">
         <div className="max-w-[1100px] mx-auto flex flex-col lg:flex-row gap-10 lg:gap-20">
           {/* Left Column: Timeline & Events */}
           <div className="flex-1">
@@ -71,7 +71,7 @@ export default async function EventsPage() {
                 >
                   {/* Date Header */}
                   <div className="relative mb-2">
-                    <div className="absolute -left-[29px] sm:-left-[37px] top-2 w-2 h-2 rounded-full bg-[#1a56ff] border-[2px] border-white/70"></div>
+                    <div className="absolute -left-[29px] sm:-left-[37px] top-2 w-2 h-2 rounded-full bg-[#ffffff] border-[2px] border-white/70"></div>
                     <h3 className="text-white font-bold text-base flex items-baseline gap-2 leading-none">
                       {getDayFromDate(event.date)},{" "}
                       <span className="text-white/50 font-medium text-sm">
@@ -92,7 +92,7 @@ export default async function EventsPage() {
                           <span className="text-white/50 text-[13px] font-medium mb-1.5 tracking-wide">
                             {event.time}
                           </span>
-                          <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2 group-hover:text-amber-100 transition-colors line-clamp-2 pr-2">
+                          <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2 group-hover:my-5  transition-all duration-300 line-clamp-2 pr-2">
                             {event.title}
                           </h4>
                           <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">

@@ -12,9 +12,14 @@ export default async function CheckoutPage(props: { searchParams: SearchParams }
 
   if (!eventId) {
     return (
-      <main className="min-h-screen bg-[#1a56ff] text-white flex flex-col items-center justify-center p-6">
-        <p className="text-xl mb-4 font-semibold text-white/80">No event selected.</p>
-        <Link href="/events" className="text-blue-200 hover:text-white underline underline-offset-4 transition">
+      <main className="min-h-screen bg-[#131517] text-white flex flex-col items-center justify-center p-6">
+        <p className="text-xl mb-4 font-semibold text-white/80">
+          No event selected.
+        </p>
+        <Link
+          href="/events"
+          className="text-blue-200 hover:text-white underline underline-offset-4 transition"
+        >
           Return to Events
         </Link>
       </main>
@@ -25,7 +30,7 @@ export default async function CheckoutPage(props: { searchParams: SearchParams }
 
   if (!data.success) {
     return (
-      <main className="min-h-screen bg-[#1a56ff] text-white flex flex-col items-center justify-center p-6">
+      <main className="min-h-screen bg-[#131517] text-white flex flex-col items-center justify-center p-6">
         <p className="text-xl mb-4 font-semibold text-red-300">Failed to load event details.</p>
         <Link href="/events" className="text-blue-200 hover:text-white underline underline-offset-4 transition">
           Return to Events
@@ -37,7 +42,7 @@ export default async function CheckoutPage(props: { searchParams: SearchParams }
   const event = data.data;
 
   return (
-    <main className="relative  min-h-screen bg-[#1a56ff] text-white overflow-hidden">
+    <main className="relative  min-h-screen bg-[#131517] text-white overflow-hidden">
       <video
         autoPlay
         loop
@@ -49,9 +54,8 @@ export default async function CheckoutPage(props: { searchParams: SearchParams }
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
         <section className="grid gap-10 lg:grid-cols-2">
           <div>
-            <div className="h-95 w-full bg-[#fff201] rounded-2xl relative ">
-              <div className="absolute inset-0 bg-yellow-400 opacity-40 blur-[80px]  -z-10" />
-              <div className="h-95 w-full rounded-2xl relative border  border-blue-300/40 overflow-hidden">
+            <div className="h-95 w-full  rounded-2xl relative ">
+              <div className="h-95 w-full rounded-2xl relative border  border-white/20 overflow-hidden">
                 <img
                   src={event.posterImage}
                   // src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
@@ -126,16 +130,16 @@ export default async function CheckoutPage(props: { searchParams: SearchParams }
             <BuyEventForm eventId={event.id} />
 
             <div className="mt-8 ">
-              <h2 className="border-b border-blue-200/40 pb-2 text-2xl font-semibold">
+              <h2 className="border-b border-white/20 pb-2 text-2xl font-semibold">
                 About Event
               </h2>
-              <div className="mt-4 space-y-3 text-sm leading-relaxed text-blue-50">
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-white/80">
                 {event.description
                   .split(".")
                   .map((sentence: string, index: number) => (
                     <p key={index}>{sentence.trim()}</p>
                   ))}
-                <ul className="list-inside list-disc space-y-1 text-blue-100">
+                <ul className="list-inside list-disc space-y-1 text-white/80">
                   {event.thingsToKnow.map(
                     (highlight: string, index: number) => (
                       <li key={index}>{highlight}</li>

@@ -18,8 +18,8 @@ function BuyEventForm({ eventId }: { eventId: string }) {
   };
 
   return (
-    <div className="mt-6 rounded-xl border border-white/20 bg-white/10 backdrop-  sm">
-      <div className="border-b border-blue-200/40 px-4 py-2 text-xs bg-white/20 text-white">
+    <div className="mt-6 rounded-xl border border-white/20 bg-white/10 overflow-hidden  sm">
+      <div className="border-b border-white/20 px-4 py-2 text-xs bg-white/20 text-white">
         Registration
       </div>
       <div className="space-y-3 px-4 py-4">
@@ -28,7 +28,7 @@ function BuyEventForm({ eventId }: { eventId: string }) {
         </p>
         <button
           onClick={handleClick}
-          className="w-full rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#1a56ff] transition hover:bg-blue-50"
+          className="w-full rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#131517]  transition hover:bg-transparent hover:text-white border border-white/20"
         >
           Get Your Tickets
         </button>

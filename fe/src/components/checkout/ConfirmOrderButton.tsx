@@ -66,7 +66,7 @@ export default function ConfirmOrderButton({ eventId }: { eventId: string }) {
         <button
           onClick={handleOrder}
           disabled={loading}
-          className="w-full rounded-xl bg-white px-6 py-3 text-base font-bold text-[#1a56ff] transition hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-white/50 disabled:opacity-70 disabled:cursor-not-allowed"
+          className="w-full rounded-xl bg-white px-6 py-3 text-base font-bold text-[#131517] transition hover:bg-white/20 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/50 disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {loading ? "Processing..." : "Complete Order"}
         </button>

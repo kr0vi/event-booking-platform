@@ -1,4 +1,5 @@
 import BuyEventForm from "@/components/events/BuyEventForm";
+import { getDayFromDate } from "@/utils/helper";
 import axios from "axios";
 import { CalendarDays, MapPin } from "lucide-react";
 
@@ -23,25 +24,25 @@ export default async function EventPage({ params }: EventPageProps) {
   const event = data.data;
   console.log(event.organizer.name);
   return (
-    <main className="relative  min-h-screen bg-[#1a56ff] text-white overflow-hidden">
+    <main className="relative  min-h-screen bg-[#131517] text-white overflow-hidden">
       <video
         autoPlay
         loop
         muted
         playsInline
-        className="fixed opacity-50 block inset-0 h-full w-full  object-cover mix-blend-screen pointer-events-none"
+        className="fixed opacity-20 block inset-0 h-full w-full  object-cover mix-blend-screen pointer-events-none"
         src={"/assets/video/warp-effect.mp4"}
       ></video>
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
         <section className="grid gap-10 lg:grid-cols-2">
           <div>
             <div className="h-95 w-full rounded-2xl relative ">
-              <div className="h-95 w-full rounded-2xl relative border  border-blue-300/40 overflow-hidden">
+              <div className="h-95 w-full rounded-2xl relative border border-white/30 overflow-hidden">
                 <img
                   src={event.posterImage}
                   // src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
                   alt={event.title}
-                  className="w-full object-contain h-full z-[100]"
+                  className="w-full object-contain h-full z-100"
                 />
                 <img
                   src={event.posterImage}
@@ -55,8 +56,8 @@ export default async function EventPage({ params }: EventPageProps) {
             <div className="mt-8 space-y-5 text-sm ">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="mb-2 text-blue-200">Hosted By</p>
-                  <p className="font-semibold">{event.organizer.name}</p>
+                  <p className="mb-2 text-white/60">Hosted By</p>
+                  <p className="font-semibold ">{event.organizer.name}</p>
                 </div>
                 <div>
                   <p className="mb-2 font-semibold text-xs rounded-full p-2 text-white/80 bg-white/10 border border-white/20">
@@ -66,23 +67,27 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
 
               <div>
-                <p className="mb-2 text-blue-200">{event.ticketsSold == 0 ? "Be the first one to go!" : event.ticketsSold + " Going"} </p>
+                <p className="mb-2 text-white/60">
+                  {event.ticketsSold == 0
+                    ? "Be the first one to go!"
+                    : event.ticketsSold + " Going"}{" "}
+                </p>
                 <div className="flex -space-x-2">
                   {["A", "N", "R", "S", "+3"].map((name) => (
                     <div
                       key={name}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-blue-100/70 bg-white text-xs font-semibold text-blue-900"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/20 bg-white text-xs font-semibold text-black/60"
                     >
                       {name}
                     </div>
                   ))}
                 </div>
-                <p className="mt-2 text-blue-200">
+                <p className="mt-2 text-white/60">
                   Srishti, Namrta Banka and 31 others
                 </p>
               </div>
 
-              <p className="w-fit rounded-full border border-blue-300/40 px-3 py-1 text-xs text-blue-100">
+              <p className="w-fit rounded-full border border-white/20 px-3 py-1 text-xs text-white/60 bg-white/5">
                 # Arts &amp; Culture
               </p>
             </div>
@@ -98,11 +103,11 @@ export default async function EventPage({ params }: EventPageProps) {
                     Apr
                   </div>
                   <p className="absolute bottom-0 left-0 w-full text-center">
-                    11
+                    {event.date.split("-").reverse()[0]}
                   </p>
                 </div>
                 <div>
-                  <p>Saturday, {event.date.split("-").reverse()[1]} April</p>
+                  <p> {getDayFromDate(event.date)}, {event.date.split("-").reverse()[1]} April</p>
                   <p>{event.time}</p>
                 </div>
               </div>
@@ -114,19 +119,19 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
             </div>
 
-           <BuyEventForm eventId={event.id} />
+            <BuyEventForm eventId={event.id} />
 
             <div className="mt-8 ">
-              <h2 className="border-b border-blue-200/40 pb-2 text-2xl font-semibold">
+              <h2 className="border-b border-white/20 pb-2 text-2xl font-semibold">
                 About Event
               </h2>
-              <div className="mt-4 space-y-3 text-sm leading-relaxed text-blue-50">
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-white/80">
                 {event.description
                   .split(".")
                   .map((sentence: string, index: number) => (
                     <p key={index}>{sentence.trim()}</p>
                   ))}
-                <ul className="list-inside list-disc space-y-1 text-blue-100">
+                <ul className="list-inside list-disc space-y-1 text-white/80">
                   {event.thingsToKnow.map(
                     (highlight: string, index: number) => (
                       <li key={index}>{highlight}</li>

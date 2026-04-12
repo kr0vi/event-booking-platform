@@ -21,7 +21,7 @@ export default function MePage() {
 
   if (!isLoaded || !isSignedIn) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#1a56ff] px-6 md:px-12 font-sans overflow-hidden">
+      <div className="flex min-h-screen items-center justify-center bg-[#131517] px-6 md:px-12 font-sans overflow-hidden">
         <div className="text-white text-lg font-light animate-pulse">
           Loading your profile...
         </div>
@@ -30,7 +30,7 @@ export default function MePage() {
   }
 
   return (
-    <div className="flex min-h-screen  items-center justify-center bg-[#1a56ff] overflow-hidden ">
+    <div className="flex min-h-screen  items-center justify-center bg-[#131517] overflow-hidden ">
       <div className="w-full max-w-2xl bg-white/10 rounded-3xl border border-white/20 backdrop-blur-sm  p-12">
         <h1 className="text-white text-xl font-bold mb-2">My Profile</h1>
         <p className="text-white/80  mb-8">
@@ -100,7 +100,7 @@ export default function MePage() {
           <div className="mt-4 flex sm:flex-row items-center gap-6">
             <button
               onClick={handleLogout}
-              className="w-full sm:w-auto bg-white text-[#1a56ff] font-medium rounded-full px-8 py-3 hover:bg-gray-50 transition-colors shadow-sm text-sm cursor-pointer"
+              className="w-full sm:w-auto bg-white text-[#131517] font-medium rounded-full px-8 py-3 hover:bg-gray-50 transition-colors shadow-sm text-sm cursor-pointer"
             >
               Log Out
             </button>
