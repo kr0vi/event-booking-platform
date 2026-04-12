@@ -42,7 +42,7 @@ export const createOrder = async (req: Request, res: Response) => {
       eventId,
       quantity,
       totalAmount: totalPrice,
-      paymentStatus: "COMPLETED", // For simplicity, we are marking the order as completed. In a real application, this should be "PENDING" until payment is confirmed.
+      paymentStatus: "COMPLETED", // NO PAYMENTS FOR NOW
     },
   });
   // Update the tickets sold for the event
