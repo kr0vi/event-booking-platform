@@ -31,6 +31,13 @@ export const getEventById = async (req: Request, res: Response) => {
     where: {
       id: eventId,
     },
+    include:{
+      organizer:{
+        select:{
+          name:true,
+        }
+      }
+    }
   });
   if (!foundEvent) {
     return res.json({

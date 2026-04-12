@@ -21,7 +21,7 @@ export default async function EventPage({ params }: EventPageProps) {
     );
   }
   const event = data.data;
-  console.log(event.highlights);
+  console.log(event.organizer.name);
   return (
     <main className="relative  min-h-screen bg-[#1a56ff] text-white overflow-hidden">
       <video
@@ -35,14 +35,19 @@ export default async function EventPage({ params }: EventPageProps) {
       <div className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
         <section className="grid gap-10 lg:grid-cols-2">
           <div>
-            <div className="h-95 w-full bg-[#fff201] rounded-2xl relative ">
-              <div className="absolute inset-0 bg-yellow-400 opacity-40 blur-[80px]  -z-10" />
+            <div className="h-95 w-full rounded-2xl relative ">
               <div className="h-95 w-full rounded-2xl relative border  border-blue-300/40 overflow-hidden">
                 <img
-                  // src={event.posterImage}
-                  src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
+                  src={event.posterImage}
+                  // src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
                   alt={event.title}
-                  className="w-full object-contain h-full z-10"
+                  className="w-full object-contain h-full z-[100]"
+                />
+                <img
+                  src={event.posterImage}
+                  // src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
+                  alt={event.title}
+                  className="w-full object-cover h-full -z-[20] scale-120 absolute top-0 left-0 blur-sm"
                 />
               </div>
             </div>
@@ -51,7 +56,7 @@ export default async function EventPage({ params }: EventPageProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="mb-2 text-blue-200">Hosted By</p>
-                  <p className="font-semibold">Young Designers India UID</p>
+                  <p className="font-semibold">{event.organizer.name}</p>
                 </div>
                 <div>
                   <p className="mb-2 font-semibold text-xs rounded-full p-2 text-white/80 bg-white/10 border border-white/20">
@@ -61,7 +66,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
 
               <div>
-                <p className="mb-2 text-blue-200">33 Going</p>
+                <p className="mb-2 text-blue-200">{event.ticketsSold == 0 ? "Be the first one to go!" : event.ticketsSold + " Going"} </p>
                 <div className="flex -space-x-2">
                   {["A", "N", "R", "S", "+3"].map((name) => (
                     <div

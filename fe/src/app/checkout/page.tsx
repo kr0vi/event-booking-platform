@@ -53,10 +53,10 @@ export default async function CheckoutPage(props: { searchParams: SearchParams }
               <div className="absolute inset-0 bg-yellow-400 opacity-40 blur-[80px]  -z-10" />
               <div className="h-95 w-full rounded-2xl relative border  border-blue-300/40 overflow-hidden">
                 <img
-                  // src={event.posterImage}
-                  src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
+                  src={event.posterImage}
+                  // src="https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
                   alt={event.title}
-                  className="w-full object-contain h-full z-10"
+                  className="w-full object-cover h-full z-10"
                 />
               </div>
             </div>
@@ -186,8 +186,8 @@ export default async function CheckoutPage(props: { searchParams: SearchParams }
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl bg-white/5 border border-white/10 overflow-hidden shrink-0">
                 <img
                   src={
-                    // event.posterImage ||
-                    "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
+                    event.posterImage 
+                    // "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,background=white,quality=75,width=400,height=400/gallery-images/ta/8c12c847-8485-42ff-ab48-eaf02538477a"
                   }
                   alt={event.title}
                   className="w-full h-full object-cover"
