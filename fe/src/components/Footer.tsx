@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-[#1a56ff] border-t text-white pt-24 pb-8 px-6 md:px-16 w-full mt-auto">
+    <footer className="bg-[#131517] border-t text-white pt-24 pb-8 px-6 md:px-16 w-full mt-auto">
       <div className="max-w-[1400px] mx-auto w-full">
         {/* Top section */}
         <div className="flex flex-col md:flex-row justify-between w-full mb-20 gap-16 md:gap-8">
@@ -25,26 +25,17 @@ export function Footer() {
               </h3>
               <ul className="flex flex-col gap-3 text-sm md:text-[15px] font-medium text-white/80">
                 <li>
-                  <Link
-                    href="#"
-                    className="hover:text-white transition-colors"
-                  >
+                  <Link href="#" className="hover:text-white transition-colors">
                     Features
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="#"
-                    className="hover:text-white transition-colors"
-                  >
+                  <Link href="#" className="hover:text-white transition-colors">
                     About
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="#"
-                    className="hover:text-white transition-colors"
-                  >
+                  <Link href="#" className="hover:text-white transition-colors">
                     Pricing
                   </Link>
                 </li>
@@ -58,10 +49,7 @@ export function Footer() {
               </h3>
               <ul className="flex flex-col gap-3 text-sm md:text-[15px] font-medium text-white/80">
                 <li>
-                  <Link
-                    href="#"
-                    className="hover:text-white transition-colors"
-                  >
+                  <Link href="#" className="hover:text-white transition-colors">
                     Feedback
                   </Link>
                 </li>
@@ -75,18 +63,12 @@ export function Footer() {
               </h3>
               <ul className="flex flex-col gap-3 text-sm md:text-[15px] font-medium text-white/80">
                 <li>
-                  <Link
-                    href="#"
-                    className="hover:text-white transition-colors"
-                  >
+                  <Link href="#" className="hover:text-white transition-colors">
                     Contact
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href="#"
-                    className="hover:text-white transition-colors"
-                  >
+                  <Link href="#" className="hover:text-white transition-colors">
                     Github
                   </Link>
                 </li>

@@ -7,7 +7,7 @@ export function DistrictHeader() {
   const { isSignedIn, isLoaded } = useUser();
   return (
     <>
-      <header className="w-full bg-[#1a56ff] text-white shadow-sm border-b border-white/20">
+      <header className="w-full bg-[#131517] text-white shadow-sm border-b border-white/20">
         <div className="mx-auto flex w-7xl  items-center justify-between py-6">
           <div className="flex items-center ">
             <div className="leading-none">
