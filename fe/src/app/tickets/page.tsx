@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import Link from "next/link";
 import { ArrowLeft, Ticket as TicketIcon } from "lucide-react";
+import { useUser } from "@/lib/auth/useUser";
 
 function TicketCard({ ticket }: { ticket: any }) {
   const ticketIdPrefix = ticket?.id ? String(ticket.id).split("-")[0] : "N/A";
@@ -13,6 +14,7 @@ function TicketCard({ ticket }: { ticket: any }) {
   const eventTime = ticket?.event?.time || "Time TBD";
   const eventLocation = ticket?.event?.location || "Location TBD";
   const eventHref = ticket?.eventId ? `/events/${ticket.eventId}` : "/events";
+
   // console.log("Rendering TicketCard for ticket ID:", ticket);
   return (
     <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden flex flex-col md:flex-row relative shadow-lg hover:shadow-xl transition-all">
@@ -88,10 +90,16 @@ function TicketCard({ ticket }: { ticket: any }) {
 }
 
 export default function TicketsPage() {
+  const { user, isLoaded, isSignedIn, logout } = useUser();
   const [tickets, setTickets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      window.location.href = "/login";
+    }
+  }, [isLoaded, isSignedIn]);
   useEffect(() => {
     const fetchTickets = async () => {
       try {
@@ -115,7 +123,6 @@ export default function TicketsPage() {
     fetchTickets();
   }, []);
 
-  console.log("Current tickets state after fetch call:", tickets);
   return (
     <main className="relative min-h-screen bg-[#131517] text-white overflow-hidden py-12 px-6">
       <div className="relative z-10 max-w-4xl mx-auto">
