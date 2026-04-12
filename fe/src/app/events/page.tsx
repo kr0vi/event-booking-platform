@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Search, MapPin, Landmark, Rss } from "lucide-react";
 import axios from "axios";

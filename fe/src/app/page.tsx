@@ -1,4 +1,3 @@
-import { EventsHomePage } from "@/components/events/EventsHomePage";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 

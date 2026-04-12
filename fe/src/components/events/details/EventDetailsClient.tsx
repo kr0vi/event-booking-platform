@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { EventType } from "@/utils/interfaces";
 import { EventDetailsPage } from "./EventDetailsPage";
-import { getEventById } from "../events-data";
 import { getErrorMessage } from "@/utils/api";
 
 type EventDetailsClientProps = {
@@ -15,24 +14,24 @@ export function EventDetailsClient({ eventId }: EventDetailsClientProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadEvent() {
-      try {
-        const response = await getEventById(eventId);
-        if (!response) {
-          setError("Event not found.");
-          return;
-        }
-        setEvent(response);
-      } catch (err) {
-        setError(getErrorMessage(err));
-      } finally {
-        setLoading(false);
-      }
-    }
+  // useEffect(() => {
+  //   async function loadEvent() {
+  //     try {
+  //       const response = await getEventById(eventId);
+  //       if (!response) {
+  //         setError("Event not found.");
+  //         return;
+  //       }
+  //       setEvent(response);
+  //     } catch (err) {
+  //       setError(getErrorMessage(err));
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
 
-    void loadEvent();
-  }, [eventId]);
+  //   void loadEvent();
+  // }, [eventId]);
 
   if (loading) {
     return (
