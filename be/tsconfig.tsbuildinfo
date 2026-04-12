@@ -1,0 +1,22 @@
+{
+  "root": [
+    "./src/index.ts",
+    "./src/secrets.ts",
+    "./src/controllers/auth.ts",
+    "./src/controllers/events.ts",
+    "./src/controllers/orders.ts",
+    "./src/controllers/payment.ts",
+    "./src/controllers/pingcontroller.ts",
+    "./src/controllers/tickets.ts",
+    "./src/lib/createrazorpay.ts",
+    "./src/middleware/user.ts",
+    "./src/routes/auth.ts",
+    "./src/routes/events.ts",
+    "./src/routes/index.ts",
+    "./src/routes/order.ts",
+    "./src/routes/tickets.ts",
+    "./src/schemas/auht.ts",
+    "./src/schemas/events.ts"
+  ],
+  "version": "6.0.2"
+}
