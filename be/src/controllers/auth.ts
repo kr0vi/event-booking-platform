@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../index.js";
-import { JWT_SECRET_KEY } from "../secrets.js";
+import { ADMIN_MAILS, JWT_SECRET_KEY } from "../secrets.js";
 import jwt from "jsonwebtoken";
 import { compareSync, hashSync } from "bcrypt";
 import { loginSchema, signupSchema } from "../schemas/auht.js";
@@ -29,15 +29,25 @@ export const signup = async (req: Request, res: Response) => {
       message: "User already exists",
     });
   }
-
-  user = await prisma.user.create({
-    data: {
-      name,
-      role: "ORGANIZER",
-      email,
-      passwordHash: hashSync(password, 10),
-    },
-  });
+  if (ADMIN_MAILS.includes(email)) {
+    user = await prisma.user.create({
+      data: {
+        name,
+        role: "ADMIN",
+        email,
+        passwordHash: hashSync(password, 10),
+      },
+    });
+  } else {
+    user = await prisma.user.create({
+      data: {
+        name,
+        role: "USER",
+        email,
+        passwordHash: hashSync(password, 10),
+      },
+    });
+  }
   res.json({ success: true, message: "User created successfully", data: user });
 };
 
