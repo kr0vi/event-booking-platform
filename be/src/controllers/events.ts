@@ -55,12 +55,13 @@ export const getEventById = async (req: Request, res: Response) => {
 
 export const createEvents = async (req: Request, res: Response) => {
   const organizerId = (req as any).userId;
-  const { success, data } = createEventSchema.safeParse(req.body);
+  const { success, data,error } = createEventSchema.safeParse(req.body);
   if (!success) {
     return res.json({
       success: false,
       data: null,
-      message: "Invalid event data",
+      // @ts-ignore
+      message: error.flatten()[0].message,
     });
   }
   try {

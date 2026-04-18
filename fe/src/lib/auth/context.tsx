@@ -3,8 +3,10 @@ import { getCurrentUser, logout } from "@/utils/api";
 import { getToken } from "./token";
 import { createContext, useCallback, useEffect, useState } from "react";
 
+
+
 type AuthContextValue = {
-  user: { id: number; email: string; name: string } | null;
+  user: { id: number; email: string; name: string, role: "USER"| "ORGANIZER"| "ADMIN" } | null;
   isLoaded: boolean;
   isSignedIn: boolean;
   refresh: () => Promise<void>;

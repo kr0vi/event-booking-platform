@@ -108,6 +108,7 @@ export const me = async (req: Request, res: Response) => {
     select: {
       id: true,
       email: true,
+      role:true,
       name: true,
     },
   });

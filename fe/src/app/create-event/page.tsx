@@ -1,12 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MapPin, Image as ImageIcon, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/lib/auth/useUser";
+import { api } from "@/utils/api";
 
 export default function CreateEventPage() {
   const router = useRouter();
+  const { user, isLoaded, isSignedIn } = useUser();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -24,18 +27,32 @@ export default function CreateEventPage() {
     price: 0,
     totalTickets: 0,
   });
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push("/login");
+    } else {
+      if (isLoaded && user?.role !== "ORGANIZER") {
+        router.push("/events");
+      }
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "price" || name === "totalTickets" ? Number(value) : value,
+      [name]:
+        name === "price" || name === "totalTickets" ? Number(value) : value,
     }));
   };
 
-  const handleHighlightChange = (index: number, field: "title" | "description", value: string) => {
+  const handleHighlightChange = (
+    index: number,
+    field: "title" | "description",
+    value: string,
+  ) => {
     const newHighlights = [...formData.highlights];
     newHighlights[index][field] = value;
     setFormData({ ...formData, highlights: newHighlights });
@@ -44,7 +61,7 @@ export default function CreateEventPage() {
   const addHighlight = () => {
     setFormData({
       ...formData,
-      highlights: [...formData.highlights, { title: "", description: "" }]
+      highlights: [...formData.highlights, { title: "", description: "" }],
     });
   };
 
@@ -62,7 +79,7 @@ export default function CreateEventPage() {
   const addThingToKnow = () => {
     setFormData({
       ...formData,
-      thingsToKnow: [...formData.thingsToKnow, ""]
+      thingsToKnow: [...formData.thingsToKnow, ""],
     });
   };
 
@@ -78,32 +95,20 @@ export default function CreateEventPage() {
     setSuccess("");
 
     try {
-      const token = localStorage.getItem("token"); // Assuming token is stored in localStorage
-      if (!token) {
-        setError("You must be logged in as an organizer to create an event.");
-        setLoading(false);
-        return;
-      }
-
       // Filter out empty thingsToKnow
-      const cleanThingsToKnow = formData.thingsToKnow.filter(t => t.trim() !== "");
-      
+      const cleanThingsToKnow = formData.thingsToKnow.filter(
+        (t) => t.trim() !== "",
+      );
+
       const payload = {
         ...formData,
         thingsToKnow: cleanThingsToKnow,
       };
 
-      const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/events`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
+      const { data } = await api.post("/events", payload);
 
-      if (data.sucess || data.success) { // API docs state 'sucess' typo
+      if (data.sucess || data.success) {
+        // API docs state 'sucess' typo
         setSuccess("Event created successfully!");
         setTimeout(() => {
           router.push("/events");
@@ -119,8 +124,12 @@ export default function CreateEventPage() {
   };
 
   // Helper to extract day and date nicely for preview
-  const previewMonth = formData.eventDate ? new Date(formData.eventDate).toLocaleString('default', { month: 'short' }) : "Mth";
-  const previewDate = formData.eventDate ? formData.eventDate.split("-")[2] : "DD";
+  const previewMonth = formData.eventDate
+    ? new Date(formData.eventDate).toLocaleString("default", { month: "short" })
+    : "Mth";
+  const previewDate = formData.eventDate
+    ? formData.eventDate.split("-")[2]
+    : "DD";
 
   return (
     <main className="relative min-h-screen bg-[#131517] text-white overflow-hidden pb-20">
@@ -133,14 +142,16 @@ export default function CreateEventPage() {
         src={"/assets/video/warp-effect.mp4"}
       ></video>
 
-      <form onSubmit={handleSubmit} className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10">
-        
+      <form
+        onSubmit={handleSubmit}
+        className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10"
+      >
         {error && (
           <div className="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-200">
             {error}
           </div>
         )}
-        
+
         {success && (
           <div className="mb-6 p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-200">
             {success}
@@ -148,14 +159,14 @@ export default function CreateEventPage() {
         )}
 
         <div className="mb-6 flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Create New Event</h1>
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition disabled:opacity-50"
-            >
-              {loading ? "Publishing..." : "Publish Event"}
-            </button>
+          <h1 className="text-2xl font-bold">Create New Event</h1>
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-white text-black px-6 py-2 rounded-lg font-semibold hover:bg-gray-200 transition disabled:opacity-50"
+          >
+            {loading ? "Publishing..." : "Publish Event"}
+          </button>
         </div>
 
         <section className="grid gap-10 lg:grid-cols-2">
@@ -169,7 +180,7 @@ export default function CreateEventPage() {
                     alt="Poster Preview"
                     className="w-full object-contain h-full z-10"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).style.display = "none";
                     }}
                   />
                   <img
@@ -177,7 +188,7 @@ export default function CreateEventPage() {
                     alt=""
                     className="w-full object-cover h-full -z-0 scale-120 absolute top-0 left-0 blur-sm opacity-50"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).style.display = "none";
                     }}
                   />
                 </>
@@ -187,7 +198,7 @@ export default function CreateEventPage() {
                   <p>Poster Image Preview</p>
                 </div>
               )}
-              
+
               <div className="absolute bottom-4 left-4 right-4 z-20">
                 <input
                   type="url"
@@ -204,7 +215,9 @@ export default function CreateEventPage() {
             <div className="mt-8 space-y-5 text-sm">
               <div className="flex items-center justify-between">
                 <div className="w-1/2 pr-2">
-                  <label className="block mb-2 text-white/60">Total Tickets</label>
+                  <label className="block mb-2 text-white/60">
+                    Total Tickets
+                  </label>
                   <input
                     type="number"
                     name="totalTickets"
@@ -217,7 +230,9 @@ export default function CreateEventPage() {
                   />
                 </div>
                 <div className="w-1/2 pl-2">
-                  <label className="block mb-2 text-white/60">Price (in currency)</label>
+                  <label className="block mb-2 text-white/60">
+                    Price (in currency)
+                  </label>
                   <input
                     type="number"
                     name="price"
@@ -241,7 +256,6 @@ export default function CreateEventPage() {
 
           {/* Right Column */}
           <div className="h-auto lg:h-screen lg:overflow-y-auto lg:pr-4 custom-scrollbar">
-            
             <input
               type="text"
               name="title"
@@ -288,7 +302,7 @@ export default function CreateEventPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2 mb-6">
                 <div className="bg-white/10 border border-white/20 rounded-lg scale-90 p-2">
                   <MapPin size={18} />
@@ -310,7 +324,7 @@ export default function CreateEventPage() {
               <h2 className="border-b border-white/20 pb-2 text-2xl font-semibold mb-4">
                 About Event
               </h2>
-              
+
               <textarea
                 name="description"
                 value={formData.description}
@@ -325,19 +339,28 @@ export default function CreateEventPage() {
               <div className="mt-8">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="font-semibold text-white/80">Highlights</h3>
-                  <button type="button" onClick={addHighlight} className="text-xs flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2 py-1 rounded">
+                  <button
+                    type="button"
+                    onClick={addHighlight}
+                    className="text-xs flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2 py-1 rounded"
+                  >
                     <Plus size={12} /> Add
                   </button>
                 </div>
                 <div className="space-y-3">
                   {formData.highlights.map((item, idx) => (
-                    <div key={idx} className="flex gap-2 items-start bg-white/5 p-3 rounded-lg border border-white/10">
+                    <div
+                      key={idx}
+                      className="flex gap-2 items-start bg-white/5 p-3 rounded-lg border border-white/10"
+                    >
                       <div className="flex-1 space-y-2">
                         <input
                           type="text"
                           placeholder="Highlight Title (e.g. Networking)"
                           value={item.title}
-                          onChange={(e) => handleHighlightChange(idx, "title", e.target.value)}
+                          onChange={(e) =>
+                            handleHighlightChange(idx, "title", e.target.value)
+                          }
                           required
                           maxLength={100}
                           className="w-full bg-transparent border-b border-white/20 px-2 py-1 text-sm focus:outline-none focus:border-white/50"
@@ -346,14 +369,24 @@ export default function CreateEventPage() {
                           type="text"
                           placeholder="Short description"
                           value={item.description}
-                          onChange={(e) => handleHighlightChange(idx, "description", e.target.value)}
+                          onChange={(e) =>
+                            handleHighlightChange(
+                              idx,
+                              "description",
+                              e.target.value,
+                            )
+                          }
                           required
                           maxLength={200}
                           className="w-full bg-transparent border-b border-white/20 px-2 py-1 text-xs text-white/60 focus:outline-none focus:border-white/50"
                         />
                       </div>
                       {formData.highlights.length > 1 && (
-                        <button type="button" onClick={() => removeHighlight(idx)} className="text-red-400 hover:text-red-300 p-1">
+                        <button
+                          type="button"
+                          onClick={() => removeHighlight(idx)}
+                          className="text-red-400 hover:text-red-300 p-1"
+                        >
                           <Trash2 size={16} />
                         </button>
                       )}
@@ -364,8 +397,14 @@ export default function CreateEventPage() {
 
               <div className="mt-8 mb-12">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-semibold text-white/80">Things to Know</h3>
-                  <button type="button" onClick={addThingToKnow} className="text-xs flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2 py-1 rounded">
+                  <h3 className="font-semibold text-white/80">
+                    Things to Know
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={addThingToKnow}
+                    className="text-xs flex items-center gap-1 bg-white/10 hover:bg-white/20 px-2 py-1 rounded"
+                  >
                     <Plus size={12} /> Add
                   </button>
                 </div>
@@ -377,12 +416,18 @@ export default function CreateEventPage() {
                         type="text"
                         placeholder="e.g. Bring ID Proof"
                         value={item}
-                        onChange={(e) => handleThingToKnowChange(idx, e.target.value)}
+                        onChange={(e) =>
+                          handleThingToKnowChange(idx, e.target.value)
+                        }
                         maxLength={100}
                         className="flex-1 bg-white/5 border border-white/10 rounded px-3 py-1.5 text-sm focus:outline-none focus:border-white/40"
                       />
                       {formData.thingsToKnow.length > 1 && (
-                        <button type="button" onClick={() => removeThingToKnow(idx)} className="text-red-400 hover:text-red-300 p-1">
+                        <button
+                          type="button"
+                          onClick={() => removeThingToKnow(idx)}
+                          className="text-red-400 hover:text-red-300 p-1"
+                        >
                           <Trash2 size={16} />
                         </button>
                       )}
@@ -390,7 +435,6 @@ export default function CreateEventPage() {
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
         </section>
