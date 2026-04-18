@@ -60,8 +60,7 @@ export const createEvents = async (req: Request, res: Response) => {
     return res.json({
       success: false,
       data: null,
-      // @ts-ignore
-      message: error.flatten()[0].message,
+      message: error.message,
     });
   }
   try {

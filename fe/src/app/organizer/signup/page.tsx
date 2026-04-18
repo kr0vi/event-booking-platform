@@ -16,18 +16,18 @@ export default function OrganizerSignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#131517] text-white flex flex-col items-center justify-center overflow-hidden relative">
+    <div className="min-h-screen bg-[#131517] text-white flex flex items-center justify-center overflow-hidden relative">
       {/* Background Watermark/blur effect */}
       <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[120px] md:text-[200px] font-black text-white/5 whitespace-nowrap pointer-events-none tracking-tighter">
         moment
       </h1>
 
-      <main className="w-full max-w-md relative z-10 flex flex-col items-center mt-8">
+      <main className="w-full max-w-md relative z-10 flex flex-col items-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight text-center">
           Start Hosting Events.
         </h1>
         <p className="text-white/60 mb-10 text-center text-lg">
-          Join us as an organizer to start creating and managing your own events.
+          Join us as an organizer to start hosting events in your own university.
         </p>
 
         <form className="w-full space-y-4" onSubmit={handleSignup}>

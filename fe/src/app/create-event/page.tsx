@@ -29,7 +29,7 @@ export default function CreateEventPage() {
   });
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
-      router.push("/login");
+      router.push("/organizer/signup");
     } else {
       if (isLoaded && user?.role !== "ORGANIZER") {
         router.push("/events");
