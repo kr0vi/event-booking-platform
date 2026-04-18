@@ -117,3 +117,49 @@ export const me = async (req: Request, res: Response) => {
     message: "User fetched successfully",
   });
 };
+
+export const organizerSignup = async (req: Request, res: Response) => {
+  const { success, data } = signupSchema.safeParse(req.body);
+  if (!success) {
+    res.json({
+      success: false,
+      data: null,
+      message: "Invalid input",
+    });
+    return;
+  }
+  const { email, password, name } = data;
+  let user = await prisma.user.findFirst({
+    where: {
+      email,
+    },
+  });
+  if (user) {
+    if (user.role == "ORGANIZER") {
+      res.json({
+        success: false,
+        data: null,
+        message: "User already exists",
+      });
+    } else {
+      let updatedUser = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          role: "ORGANIZER",
+        },
+      });
+    }
+  } else {
+    user = await prisma.user.create({
+      data: {
+        name,
+        role: "ORGANIZER",
+        email,
+        passwordHash: hashSync(password, 10),
+      },
+    });
+  }
+  res.json({ success: true, message: "ORGANIZER created successfully", data: user });
+};

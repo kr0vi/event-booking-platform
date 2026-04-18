@@ -2,10 +2,10 @@
 
 ## Overview
 
-- Base URL: `/api/v1`
-- Content type: `application/json` for most endpoints
-- Auth header format: `Authorization: Bearer <JWT_TOKEN>`
-- Most error cases currently still return HTTP `200` with `success: false`
+- Base URL: /api/v1
+- Content type: application/json for most endpoints
+- Auth header format: Authorization: Bearer <JWT_TOKEN>
+- Most failure cases currently return HTTP 200 with success: false
 
 ## Response Patterns
 
@@ -21,15 +21,14 @@ There is no single strict response contract yet, but most routes use:
 
 Known variations:
 
-- `GET /` returns plain text `Pong!`
-- `POST /auth/login` returns `token` (not `data`)
-- `GET /auth/me` returns `user` (not `data`)
-- `POST /events` returns `sucess` (typo) instead of `success`
+- GET / returns plain text Pong!
+- POST /auth/login returns token (not data)
+- GET /auth/me returns user (not data)
 
 ## Auth and Role Rules
 
-- `authMiddleware`: requires a valid JWT
-- `adminMiddleware`: requires valid JWT and user role `ORGANIZER`
+- authMiddleware: requires a valid JWT
+- adminMiddleware: requires valid JWT and user role ORGANIZER
 - JWT payload currently includes user id as:
 
 ```json
@@ -40,9 +39,9 @@ Known variations:
 
 ## Health
 
-### GET `/`
+### GET /
 
-Ping endpoint mounted at `/api/v1/`.
+Ping endpoint mounted at /api/v1/.
 
 Current implementation side effect: creates a user record each time it is called.
 
@@ -62,23 +61,26 @@ Pong!
 
 ## Auth
 
-### POST `/auth/signup`
+### POST /auth/signup
 
-Creates a user.
+Creates a regular user account (or admin account if email is allowlisted in ADMIN_MAILS).
 
-Current implementation details:
+Validation via Zod schema:
 
-- Validation via Zod schema:
-  - `name`: string, min 2
-  - `email`: valid email
-  - `password`: string, min 6
-- New users are currently created with role `ORGANIZER`
+- name: string, min 2
+- email: valid email
+- password: string, min 6
+
+Role assignment behavior:
+
+- If email is in ADMIN_MAILS, role is ADMIN
+- Otherwise role is USER
 
 #### Request Body
 
 ```json
 {
-  "name": "John Organizer",
+  "name": "John User",
   "email": "john@example.com",
   "password": "strongpassword123"
 }
@@ -92,10 +94,10 @@ Current implementation details:
   "message": "User created successfully",
   "data": {
     "id": 1,
-    "name": "John Organizer",
+    "name": "John User",
     "email": "john@example.com",
     "passwordHash": "$2b$10$...",
-    "role": "ORGANIZER",
+    "role": "USER",
     "createdAt": "2026-03-29T10:00:00.000Z",
     "updatedAt": "2026-03-29T10:00:00.000Z"
   }
@@ -120,14 +122,73 @@ Current implementation details:
 }
 ```
 
-### POST `/auth/login`
+### POST /auth/org/signup
+
+Creates an organizer account, or upgrades an existing USER/ADMIN account to ORGANIZER.
+
+Validation via the same signup schema:
+
+- name: string, min 2
+- email: valid email
+- password: string, min 6
+
+Behavior:
+
+- If user does not exist: creates user with role ORGANIZER
+- If user exists with ORGANIZER role: returns failure
+- If user exists with another role: updates role to ORGANIZER
+
+#### Request Body
+
+```json
+{
+  "name": "John Organizer",
+  "email": "john@example.com",
+  "password": "strongpassword123"
+}
+```
+
+#### Success Response
+
+```json
+{
+  "success": true,
+  "message": "ORGANIZER created successfully",
+  "data": {
+    "id": 1,
+    "name": "John Organizer",
+    "email": "john@example.com",
+    "role": "ORGANIZER"
+  }
+}
+```
+
+#### Common Failure Responses
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "Invalid input"
+}
+```
+
+```json
+{
+  "success": false,
+  "data": null,
+  "message": "User already exists"
+}
+```
+
+### POST /auth/login
 
 Authenticates user and returns JWT.
 
 Validation:
 
-- `email`: valid email
-- `password`: string, min 6
+- email: valid email
+- password: string, min 6
 
 #### Request Body
 
@@ -174,7 +235,7 @@ Validation:
 }
 ```
 
-### GET `/auth/me`
+### GET /auth/me
 
 Returns current authenticated user.
 
@@ -195,7 +256,7 @@ curl -X GET http://localhost:3000/api/v1/auth/me \
   "user": {
     "id": 1,
     "email": "john@example.com",
-    "name": "John Organizer"
+    "name": "John User"
   },
   "message": "User fetched successfully"
 }
@@ -215,7 +276,7 @@ curl -X GET http://localhost:3000/api/v1/auth/me \
 
 ## Events
 
-### GET `/events`
+### GET /events
 
 Returns all events.
 
@@ -265,13 +326,13 @@ curl -X GET http://localhost:3000/api/v1/events
 }
 ```
 
-### GET `/events/:id`
+### GET /events/:id
 
-Returns one event by id.
+Returns one event by id, including organizer name.
 
 #### Path Params
 
-- `id` (string, required)
+- id (string, required)
 
 #### Request
 
@@ -286,7 +347,10 @@ curl -X GET http://localhost:3000/api/v1/events/5dc8e4cb-3458-4c15-a0bf-41f7a22b
   "success": true,
   "data": {
     "id": "5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb",
-    "title": "Tech Summit 2026"
+    "title": "Tech Summit 2026",
+    "organizer": {
+      "name": "John Organizer"
+    }
   },
   "message": "Event fetched successfully"
 }
@@ -310,29 +374,29 @@ curl -X GET http://localhost:3000/api/v1/events/5dc8e4cb-3458-4c15-a0bf-41f7a22b
 }
 ```
 
-### POST `/events`
+### POST /events
 
 Creates an event.
 
-Auth required: Bearer token + organizer role (`ORGANIZER`)
+Auth required: Bearer token + organizer role (ORGANIZER)
 
 #### Request Body
 
-Validation comes from `createEventSchema`:
+Validation comes from createEventSchema:
 
-- `title`: string, min 1, max 100
-- `description`: string, min 10, max 200
-- `location`: string, min 1, max 100
-- `eventDate`: string, format `YYYY-MM-DD`
-- `eventTime`: string
-- `posterImage`: valid URL string
-- `galleryImages`: array of valid URL strings (optional, defaults to `[]`)
-- `highlights`: required array of objects:
-  - `title`: string, max 100
-  - `description`: string, max 200
-- `thingsToKnow`: array of strings max 100 each (optional, defaults to `[]`)
-- `price`: number, min 0
-- `totalTickets`: number, min 0
+- title: string, min 1, max 100
+- description: string, min 10, max 200
+- location: string, min 1, max 100
+- eventDate: string, format YYYY-MM-DD
+- eventTime: string
+- posterImage: valid URL string
+- galleryImages: array of valid URL strings (optional, defaults to [])
+- highlights: required array of objects:
+  - title: string, max 100
+  - description: string, max 200
+- thingsToKnow: array of strings max 100 each (optional, defaults to [])
+- price: number, min 0
+- totalTickets: number, min 0
 
 #### Request Example
 
@@ -356,7 +420,7 @@ Validation comes from `createEventSchema`:
 
 ```json
 {
-  "sucess": true,
+  "success": true,
   "message": "Event created successfully"
 }
 ```
@@ -391,7 +455,7 @@ Validation comes from `createEventSchema`:
 
 ## Orders
 
-### POST `/orders`
+### POST /orders
 
 Creates an order and immediately generates one ticket record.
 
@@ -426,6 +490,7 @@ Auth required: Bearer token
       "id": "fd3efecb-83cf-4f54-b599-53d578203dae",
       "orderId": "b8f26f89-d7e0-4fb2-a845-2a8947b61039",
       "eventId": "5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb",
+      "quantity": 2,
       "userId": 1,
       "qrToken": "<JWT_QR_TOKEN>",
       "qrImage": "data:image/png;base64,iVBORw0KGgo...",
@@ -483,15 +548,15 @@ Auth required: Bearer token
 
 ## Tickets
 
-### POST `/tickets/validate?code=<QR_TOKEN>`
+### POST /tickets/validate?code=<QR_TOKEN>
 
 Validates ticket and marks it as used.
 
-Auth required: Bearer token + organizer role (`ORGANIZER`)
+Auth required: Bearer token + organizer role (ORGANIZER)
 
 #### Query Params
 
-- `code` (string, required): QR token
+- code (string, required): QR token
 
 #### Request
 
@@ -556,7 +621,7 @@ curl -X POST "http://localhost:3000/api/v1/tickets/validate?code=<QR_TOKEN>" \
 }
 ```
 
-### GET `/tickets`
+### GET /tickets
 
 Returns all tickets for current authenticated user.
 
@@ -571,6 +636,8 @@ curl -X GET http://localhost:3000/api/v1/tickets \
 
 #### Success Response
 
+Includes related event object for each ticket.
+
 ```json
 {
   "success": true,
@@ -579,11 +646,19 @@ curl -X GET http://localhost:3000/api/v1/tickets \
       "id": "fd3efecb-83cf-4f54-b599-53d578203dae",
       "orderId": "b8f26f89-d7e0-4fb2-a845-2a8947b61039",
       "eventId": "5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb",
+      "quantity": 2,
       "userId": 1,
       "qrToken": "<JWT_QR_TOKEN>",
       "qrImage": "data:image/png;base64,iVBORw0KGgo...",
       "status": "VALID",
-      "usedAt": null
+      "usedAt": null,
+      "event": {
+        "id": "5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb",
+        "title": "Tech Summit 2026",
+        "location": "Mumbai",
+        "date": "2026-05-10",
+        "time": "09:00"
+      }
     }
   ],
   "message": "Tickets retrieved successfully"
@@ -600,7 +675,7 @@ curl -X GET http://localhost:3000/api/v1/tickets \
 }
 ```
 
-### GET `/tickets/:id`
+### GET /tickets/:id
 
 Returns one ticket by id for current authenticated user.
 
@@ -608,7 +683,7 @@ Auth required: Bearer token
 
 #### Path Params
 
-- `id` (string, required)
+- id (string, required)
 
 #### Request
 
@@ -619,6 +694,8 @@ curl -X GET http://localhost:3000/api/v1/tickets/fd3efecb-83cf-4f54-b599-53d5782
 
 #### Success Response
 
+Includes related event object.
+
 ```json
 {
   "success": true,
@@ -626,11 +703,19 @@ curl -X GET http://localhost:3000/api/v1/tickets/fd3efecb-83cf-4f54-b599-53d5782
     "id": "fd3efecb-83cf-4f54-b599-53d578203dae",
     "orderId": "b8f26f89-d7e0-4fb2-a845-2a8947b61039",
     "eventId": "5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb",
+    "quantity": 2,
     "userId": 1,
     "qrToken": "<JWT_QR_TOKEN>",
     "qrImage": "data:image/png;base64,iVBORw0KGgo...",
     "status": "VALID",
-    "usedAt": null
+    "usedAt": null,
+    "event": {
+      "id": "5dc8e4cb-3458-4c15-a0bf-41f7a22bc3bb",
+      "title": "Tech Summit 2026",
+      "location": "Mumbai",
+      "date": "2026-05-10",
+      "time": "09:00"
+    }
   },
   "message": "Ticket retrieved successfully"
 }
@@ -658,23 +743,24 @@ curl -X GET http://localhost:3000/api/v1/tickets/fd3efecb-83cf-4f54-b599-53d5782
 
 ## Currently Mounted Routes Summary
 
-- `GET /api/v1/`
-- `POST /api/v1/auth/signup`
-- `POST /api/v1/auth/login`
-- `GET /api/v1/auth/me`
-- `GET /api/v1/events`
-- `GET /api/v1/events/:id`
-- `POST /api/v1/events`
-- `POST /api/v1/orders`
-- `POST /api/v1/tickets/validate`
-- `GET /api/v1/tickets`
-- `GET /api/v1/tickets/:id`
+- GET /api/v1/
+- POST /api/v1/auth/signup
+- POST /api/v1/auth/org/signup
+- POST /api/v1/auth/login
+- GET /api/v1/auth/me
+- GET /api/v1/events
+- GET /api/v1/events/:id
+- POST /api/v1/events
+- POST /api/v1/orders
+- POST /api/v1/tickets/validate
+- GET /api/v1/tickets
+- GET /api/v1/tickets/:id
 
 ## Known Implementation Caveats
 
-1. `GET /api/v1/` has side effects (creates a user record).
-2. `POST /auth/signup` and `POST /auth/login` do not always return early after some failure responses, so behavior can be inconsistent in those edge cases.
-3. `POST /events` response key uses `sucess` (spelling typo).
-4. Order flow currently skips pending payment and sets `paymentStatus` to `COMPLETED` directly.
-5. Ticket validation expects QR token in query parameter `code`, not request body.
+1. GET /api/v1/ has side effects (creates a user record).
+2. POST /auth/signup and POST /auth/login do not always return early after some failure responses, so behavior can be inconsistent in those edge cases.
+3. POST /auth/org/signup may return a stale user object in data after role-upgrade path because updated user is not assigned back to response variable.
+4. Order flow currently skips pending payment and sets paymentStatus to COMPLETED directly.
+5. Ticket validation expects QR token in query parameter code, not request body.
 6. Payment helpers exist in controllers, but no payment route is currently mounted.
