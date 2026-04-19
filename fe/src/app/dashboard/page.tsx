@@ -45,8 +45,8 @@ export default function DashboardPage() {
 
   if (!isLoaded || (isLoaded && (!isSignedIn || user?.role !== "ORGANIZER"))) {
     return (
-      <div className="flex h-screen items-center justify-center bg-slate-900">
-        <p className="text-slate-400">Loading...</p>
+      <div className="flex h-screen items-center justify-center bg-[#131517]">
+        <p className="text-white/50">Loading...</p>
       </div>
     );
   }
@@ -140,7 +140,7 @@ export default function DashboardPage() {
                               <span className="text-white/50 text-[13px] font-medium mb-1.5 tracking-wide">
                                 {event.time}
                               </span>
-                              <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2 group-hover:my-5  transition-all duration-300 line-clamp-2 pr-2">
+                              <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2  transition-all duration-300 line-clamp-2 pr-2">
                                 {event.title}
                               </h4>
                               <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
