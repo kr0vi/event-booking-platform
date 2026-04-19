@@ -29,7 +29,7 @@ export default function DashboardPage() {
   const fetchOrganizerEvents = async (organizerId: number) => {
     try {
       setLoadingEvents(true);
-      const res = await api.get(`/events?organizerId=${organizerId}`);
+      const res = await api.get(`/organiser/events`);
       if (res.data.success) {
         setEvents(res.data.data);
       } else {
@@ -67,7 +67,7 @@ export default function DashboardPage() {
             href="/create-event"
             className="rounded-lg bg-white/10 border border-white/10 hover:bg-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors"
           >
-            + Create New Event
+            + New Event
           </Link>
         </div>
 
@@ -76,8 +76,11 @@ export default function DashboardPage() {
             Loading your events...
           </p>
         ) : events.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-white/20 bg-white/5 p-12 text-center">
-            <h3 className="mt-2 text-sm font-medium text-white">No events</h3>
+          <div className="lp-12 text-center">
+            <div className="w-40 h-40 mx-auto bg-white/10 border border-dashed border-white/40 rounded-full flex items-center justify-center">
+              <Landmark className="text-white/50 w-30 h-30" />
+            </div>
+            <h3 className=" text-2xl font-medium mt-4 text-white">No events</h3>
             <p className="mt-1 text-sm text-white/50">
               You haven't created any events yet.
             </p>
