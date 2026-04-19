@@ -1,7 +1,5 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { MapPin, Image as ImageIcon, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/auth/useUser";

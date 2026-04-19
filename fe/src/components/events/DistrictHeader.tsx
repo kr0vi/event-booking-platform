@@ -1,10 +1,16 @@
 "use client";
 import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
-
+import { useEffect, useState } from "react";
 
 export function DistrictHeader() {
-  const { isSignedIn, isLoaded } = useUser();
+  const { isSignedIn, isLoaded, user } = useUser();
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    if (isLoaded) {
+      setIsAdmin(user?.role === "ORGANIZER" || user?.role === "ADMIN");
+    }
+  }, [isLoaded]);
   return (
     <>
       <header className="w-full bg-[#131517] text-white shadow-sm border-b border-white/20">
@@ -24,15 +30,24 @@ export function DistrictHeader() {
               href={"/events"}
               className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
             >
-              All Events
+              Discover
             </Link>
+            {isAdmin && (
+              <Link
+                href={"/dashboard"}
+                className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
+                
+              >
+                Your Events
+              </Link>
+            )}
             {isSignedIn && isLoaded ? (
               <>
                 <Link
                   href={"/tickets"}
                   className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
                 >
-                  My Tickets
+                  Tickets
                 </Link>
                 <Link
                   href={"/me"}

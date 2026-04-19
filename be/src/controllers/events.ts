@@ -31,13 +31,13 @@ export const getEventById = async (req: Request, res: Response) => {
     where: {
       id: eventId,
     },
-    include:{
-      organizer:{
-        select:{
-          name:true,
-        }
-      }
-    }
+    include: {
+      organizer: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
   if (!foundEvent) {
     return res.json({
@@ -55,7 +55,7 @@ export const getEventById = async (req: Request, res: Response) => {
 
 export const createEvents = async (req: Request, res: Response) => {
   const organizerId = (req as any).userId;
-  const { success, data,error } = createEventSchema.safeParse(req.body);
+  const { success, data, error } = createEventSchema.safeParse(req.body);
   if (!success) {
     return res.json({
       success: false,

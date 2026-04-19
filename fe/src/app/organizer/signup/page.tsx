@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { api } from "@/utils/api";
 
 export default function OrganizerSignupPage() {
   const [fullName, setFullName] = useState("");
@@ -12,7 +13,21 @@ export default function OrganizerSignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     // UI only - does nothing for now
-    console.log("Organizer signup attempted with:", { fullName, email, password });
+    console.log("Organizer signup attempted with:", {
+      fullName,
+      email,
+      password,
+    });
+    const { data } = await api.post("/auth/org/signup", {
+      name: fullName,
+      email,
+      password,
+    });
+    if (data.success) {
+      window.location.href = "/login";
+    } else {
+      alert("Signup failed: " + data.message);
+    }
   };
 
   return (
@@ -27,7 +42,8 @@ export default function OrganizerSignupPage() {
           Start Hosting Events.
         </h1>
         <p className="text-white/60 mb-10 text-center text-lg">
-          Join us as an organizer to start hosting events in your own university.
+          Join us as an organizer to start hosting events in your own
+          university.
         </p>
 
         <form className="w-full space-y-4" onSubmit={handleSignup}>
