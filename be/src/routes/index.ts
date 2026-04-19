@@ -4,6 +4,7 @@ import eventsRouter from "./events.js";
 import authRouter from "./auth.js";
 import orderRouter from "./order.js";
 import ticketsRouter from "./tickets.js";
+import organiserRouter from "./organiser.js";
 
 const rootRouter = Router();
 
@@ -12,5 +13,6 @@ rootRouter.use("/events", eventsRouter);
 rootRouter.use("/auth", authRouter);
 rootRouter.use("/orders", orderRouter);
 rootRouter.use("/tickets", ticketsRouter);
+rootRouter.use("/organiser", organiserRouter);
 
 export default rootRouter;

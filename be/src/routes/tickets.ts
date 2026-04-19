@@ -4,11 +4,11 @@ import {
   getTicketById,
   validateTicket,
 } from "../controllers/tickets.js";
-import { adminMiddleware, authMiddleware } from "../middleware/user.js";
+import { organizerMiddleware, authMiddleware } from "../middleware/user.js";
 
 const ticketsRouter = Router();
 
-ticketsRouter.post("/validate", adminMiddleware, validateTicket); // only organizers can validate tickets
+ticketsRouter.post("/validate", organizerMiddleware, validateTicket); // only organizers can validate tickets
 ticketsRouter.get("/", authMiddleware, getAllTickets);
 ticketsRouter.get("/:id", authMiddleware, getTicketById);
 

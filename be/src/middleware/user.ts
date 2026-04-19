@@ -3,7 +3,7 @@ import { JWT_SECRET_KEY } from "../secrets.js";
 import { prisma } from "../index.js";
 // @ts-ignore
 import jwt, { type JwtPayload } from "jsonwebtoken";
-export const adminMiddleware = async (
+export const organizerMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -45,7 +45,7 @@ export const adminMiddleware = async (
     }
     next();
   } catch (error) {
-    console.error("Error in adminMiddleware:", error);
+    console.error("Error in organizerMiddleware:", error);
     res.json({
       success: false,
       data: null,
@@ -53,6 +53,8 @@ export const adminMiddleware = async (
     });
   }
 };
+
+
 export const authMiddleware = async (
   req: Request,
   res: Response,
@@ -80,7 +82,7 @@ export const authMiddleware = async (
     req.userId = payload.id;
     next();
   } catch (error) {
-    console.error("Error in adminMiddleware:", error);
+    console.error("Error in authMiddleware:", error);
     res.json({
       success: false,
       data: null,
