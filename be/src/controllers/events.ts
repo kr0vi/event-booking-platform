@@ -93,3 +93,36 @@ export const createEvents = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getUserEvents = async (req: Request, res: Response) => {
+  const userId = (req as any).userId;
+  const events = await prisma.ticket.findMany({
+    where: {
+      userId: userId,
+    },
+    select: {
+      event: {
+        select:{
+          date: true,
+          time: true,
+          title:true,
+          location:true,
+          price:true,
+          posterImage:true,
+        }
+      },
+    },
+  });
+  if (events.length === 0) {
+    return res.json({
+      success: false,
+      data: [],
+      message: "No events found for the user",
+    });
+  }
+  res.json({
+    success: true,
+    data: events,
+    message: "User events fetched successfully",
+  });
+};

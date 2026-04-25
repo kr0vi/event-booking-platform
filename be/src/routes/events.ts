@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { createEvents, getAllEvents, getEventById } from "../controllers/events.js";
-import { organizerMiddleware } from "../middleware/user.js";
+import { createEvents, getAllEvents, getEventById, getUserEvents } from "../controllers/events.js";
+import { authMiddleware, organizerMiddleware } from "../middleware/user.js";
 
 
 const eventsRouter = Router();
 
 eventsRouter.get("/",getAllEvents);
+eventsRouter.get("/my-events",authMiddleware,getUserEvents)
 eventsRouter.get("/:id",getEventById);
 eventsRouter.post("/",organizerMiddleware,createEvents);
 
