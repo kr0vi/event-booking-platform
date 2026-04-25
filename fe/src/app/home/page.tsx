@@ -22,12 +22,15 @@ export default function HomePage() {
         router.push("/login");
       }
     }
+    else{
+      fetchMyEvents();
+    }
   }, [isLoaded, isSignedIn, user, router]);
 
-  const fetchOrganizerEvents = async (organizerId: number) => {
+  const fetchMyEvents = async () => {
     try {
       setLoadingEvents(true);
-      const res = await api.get(`/organiser/events`);
+      const res = await api.get(`/events/my-events`);
       if (res.data.success) {
         setEvents(res.data.data);
       } else {
@@ -48,24 +51,24 @@ export default function HomePage() {
       </div>
     );
   }
-
+console.log(events[0]);
   return (
     <div className="min-h-screen bg-[#131517] pt-24 pb-12 font-sans">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center mb-8 border-b border-white/10 pb-6">
+        <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white tracking-tight">
-              Your Events
+              Events
             </h1>
-            <p className="text-white/60 mt-1 font-medium">
-              Manage your events or create new ones.
+            <p className="text-white/60 mt-1 text-sm font-medium">
+              All Events you are going to.
             </p>
           </div>
           <Link
-            href="/create-event"
+            href="/events"
             className="rounded-lg bg-white/10 border border-white/10 hover:bg-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors"
           >
-            + New Event
+            + Discover
           </Link>
         </div>
 
@@ -94,16 +97,18 @@ export default function HomePage() {
         ) : (
           <article className="flex-1 bg-[#131517] w-full px-4 md:px-8 py-12">
             <div className=" w-275 mx-auto relative mb-12 flex items-center justify-end">
-              <div className="flex items-center justify-evenly bg-white/5 w-[18%] rounded-lg gap-4">
+              {/* <div className="flex items-center justify-evenly bg-white/5 w-[18%] rounded-lg gap-4">
                 <p className=" font-medium text-white tracking-tight px-3 py-2 bg-white/10 rounded-lg flex-1">
                   Upcoming
                 </p>
                 <p className="  text-white tracking-tight px-3 flex-1 ">Past</p>
-              </div>
+              </div> */} {/*UPCOMING PAST CARD*/}
             </div>
             <div className="max-w-275 mx-auto flex flex-col lg:flex-row gap-10 lg:gap-20">
               <div className="flex-1 max-w-2xl mx-auto">
-                {events.map((event: any, index: number) => (
+                {events.map((evn: any, index: number) => {
+                let event = evn.event;
+                return(
                   <div
                     key={index}
                     className="relative border-l border-white/20  ml-2.5 pl-6 sm:pl-8 pb-2"
@@ -133,12 +138,12 @@ export default function HomePage() {
                           href={`/events/${event.id}`}
                           className="block group focus:outline-none"
                         >
-                          <div className="flex justify-between items-center bg-white/10 hover:bg-white/20 border border-white/30 rounded-2xl p-4 transition-all duration-300">
-                            <div className="flex flex-col pr-4 overflow-hidden flex-1">
-                              <span className="text-white/50 text-[13px] font-medium mb-1.5 tracking-wide">
+                          <div className="flex justify-between items-center  bg-white/3 hover:bg-white/10 border border-white/20 rounded-2xl p-6 transition-all duration-300">
+                            <div className="flex flex-col pr-4 overflow-hidden flex-1 ">
+                              <span className="text-white/50 text-base font-medium mb-1.5 tracking-wide">
                                 {event.time}
                               </span>
-                              <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2  transition-all duration-300 line-clamp-2 pr-2">
+                              <h4 className="text-white font-semibold text-xl pb-3 leading-snug tracking-tight mb-2  transition-all duration-300 line-clamp-2 pr-2">
                                 {event.title}
                               </h4>
                               <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
@@ -158,6 +163,7 @@ export default function HomePage() {
                                   {event.location}
                                 </span>
                               </div>
+                              <div className="bg-green-500 p-1 mt-4 text-white rounded-sm w-fit text-xs font-semibold "> Going</div>
                             </div>
 
                             {/* Image right */}
@@ -174,7 +180,7 @@ export default function HomePage() {
                     </div>
                     {/* CARD MARGIN SET */}
                   </div>
-                ))}
+                )})}
               </div>
             </div>
           </article>
