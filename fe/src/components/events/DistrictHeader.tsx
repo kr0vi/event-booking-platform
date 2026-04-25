@@ -15,7 +15,7 @@ export function DistrictHeader() {
     <>
       <header className="w-full bg-[#131517] text-white shadow-sm border-b border-white/20">
         <div className="mx-auto flex w-7xl  items-center justify-between py-6">
-          <div className="flex items-center ">
+          <div className="flex items-center">
             <div className="leading-none">
               <Link href="/">
                 <p className="text-[20px] font-black  tracking-[-0.06em] ">
@@ -36,7 +36,6 @@ export function DistrictHeader() {
               <Link
                 href={"/dashboard"}
                 className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
-                
               >
                 Your Events
               </Link>

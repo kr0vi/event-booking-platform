@@ -23,8 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.className} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[#f8f9fa]">
+      <body className="min-h-full flex flex-col bg-[#f8f9fa] relative">
         <AuthProvider>
+          <div className="bg-linear-to-b from-[#426384]/40  to-transparent w-full absolute h-20"></div>
           <DistrictHeader />
           {children}
           <Footer></Footer>
