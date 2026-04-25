@@ -1,7 +1,7 @@
 import BuyEventForm from "@/components/events/BuyEventForm";
 import { getDayFromDate } from "@/utils/helper";
 import axios from "axios";
-import { CalendarDays, MapPin } from "lucide-react";
+import {  MapPin } from "lucide-react";
 
 type EventPageProps = {
   params: Promise<{ id: string }>;
