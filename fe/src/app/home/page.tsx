@@ -66,7 +66,7 @@ console.log(events[0]);
           </div>
           <Link
             href="/events"
-            className="rounded-lg bg-white/10 border border-white/10 hover:bg-white/20 px-5 py-2.5 text-sm font-semibold text-white transition-colors"
+            className="rounded-lg bg-white/3 border border-white/10 hover:bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition-colors"
           >
             + Discover
           </Link>

@@ -1,11 +1,20 @@
+"use client";
+
+import { useUser } from "@/lib/auth/useUser";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Home() {
+  const { isSignedIn, isLoaded } = useUser();
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      window.location.href = "/home";
+    }
+  }, [isLoaded, isSignedIn]);
   // return <EventsHomePage />;
   return (
     <div className="min-h-screen bg-[#131517] text-white  px-6 md:px-12    relative overflow-hidden">
-    
       <main className="flex items-center justify-center max-w-7xl mx-auto">
         <article className="max-w-350 w-full mx-auto pb-20 md:pb-32 mt-20 ">
           <p className="text-[18px] text-white/40 ml-2 -mt-10 mb-10 font-black  tracking-[-0.06em] ">
