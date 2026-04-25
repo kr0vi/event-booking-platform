@@ -88,12 +88,13 @@ export default async function EventsPage() {
                       href={`/events/${event.id}`}
                       className="block group focus:outline-none"
                     >
-                      <div className="flex justify-between items-center bg-white/10 hover:bg-white/20 border border-white/30 rounded-2xl p-4 transition-all duration-300">
+                      <div className="flex justify-between items-center mb-10 bg-white/3 hover:bg-white/10 border border-white/20 rounded-2xl p-6 transition-all duration-300">
                         <div className="flex flex-col pr-4 overflow-hidden flex-1">
-                          <span className="text-white/50 text-[13px] font-medium mb-1.5 tracking-wide">
+                          <span className="text-white/50 text-base font-medium mb-1.5 tracking-wide">
                             {event.time}
-                          </span>
-                          <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2 group-hover:my-5  transition-all duration-300 line-clamp-2 pr-2">
+                          </span>{" "}
+                          h-[100px]
+                          <h4 className="text-white font-semibold text-xl pb-3 leading-snug tracking-tight mb-4 transition-all duration-300 line-clamp-2 pr-2">
                             {event.title}
                           </h4>
                           <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
@@ -114,7 +115,7 @@ export default async function EventsPage() {
                         </div>
 
                         {/* Image right */}
-                        <div className="w-[100px] h-[100px] sm:w-[124px] sm:h-[100px] bg-white/5 rounded-[12px] shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
+                        <div className="w-35 h-35  bg-white/5 rounded-xl shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
                           <img
                             src={event.posterImage}
                             className="w-full h-full object-cover transition-transform duration-700 ease-out"

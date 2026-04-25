@@ -7,7 +7,7 @@ import { api } from "@/utils/api";
 import { EventCard } from "@/components/events/EventCard";
 import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
-import { Landmark, MapPin } from "lucide-react";
+import { Compass, Landmark, MapPin } from "lucide-react";
 import { getDayFromDate } from "@/utils/helper";
 
 export default function HomePage() {
@@ -66,9 +66,11 @@ console.log(events[0]);
           </div>
           <Link
             href="/events"
-            className="rounded-lg bg-white/3 border border-white/10 hover:bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition-colors"
+            className="rounded-lg text-sm font-semibold text-white transition-colors"
           >
-            + Discover
+            <div className="flex items-center justify-center gap-2">
+              <Compass size={18} /> <p>Discover</p>
+            </div>
           </Link>
         </div>
 
@@ -102,85 +104,90 @@ console.log(events[0]);
                   Upcoming
                 </p>
                 <p className="  text-white tracking-tight px-3 flex-1 ">Past</p>
-              </div> */} {/*UPCOMING PAST CARD*/}
+              </div> */}{" "}
+              {/*UPCOMING PAST CARD*/}
             </div>
             <div className="max-w-275 mx-auto flex flex-col lg:flex-row gap-10 lg:gap-20">
               <div className="flex-1 max-w-2xl mx-auto">
                 {events.map((evn: any, index: number) => {
-                let event = evn.event;
-                return(
-                  <div
-                    key={index}
-                    className="relative border-l border-white/20  ml-2.5 pl-6 sm:pl-8 pb-2"
-                  >
+                  let event = evn.event;
+                  return (
                     <div
-                      className={`${index === events.length - 1 ? "" : "mb-5"} `}
+                      key={index}
+                      className="relative border-l border-white/20  ml-2.5 pl-6 sm:pl-8 pb-2"
                     >
-                      {/* Date Header */}
-                      <div className="mb-2 absolute top-[20%] -left-[35%]">
-                        <h3 className="text-white font-bold text-base flex items-baseline gap-2 leading-none">
-                          {getDayFromDate(event.date)},{" "}
-                          <span className="text-white/50 font-medium ">
-                            {event.date
-                              .split("-")
-                              .reverse()
-                              .join("-")
-                              .slice(0, 5)}
-                          </span>
-                        </h3>
-                      </div>
+                      <div
+                        className={`${index === events.length - 1 ? "" : "mb-5"} `}
+                      >
+                        {/* Date Header */}
+                        <div className="mb-2 absolute top-[20%] -left-[35%]">
+                          <h3 className="text-white font-bold text-base flex items-baseline gap-2 leading-none">
+                            {getDayFromDate(event.date)},{" "}
+                            <span className="text-white/50 font-medium ">
+                              {event.date
+                                .split("-")
+                                .reverse()
+                                .join("-")
+                                .slice(0, 5)}
+                            </span>
+                          </h3>
+                        </div>
 
-                      <div className="absolute sm:-left-1 top-2 w-2 h-2 rounded-full bg-[#ffffff] border-2 border-white/70"></div>
+                        <div className="absolute sm:-left-1 top-2 w-2 h-2 rounded-full bg-[#ffffff] border-2 border-white/70"></div>
 
-                      {/* Event Cards Set */}
-                      <div className="flex flex-col gap-3.5 mb-15">
-                        <Link
-                          href={`/events/${event.id}`}
-                          className="block group focus:outline-none"
-                        >
-                          <div className="flex justify-between items-center  bg-white/3 hover:bg-white/10 border border-white/20 rounded-2xl p-6 transition-all duration-300">
-                            <div className="flex flex-col pr-4 overflow-hidden flex-1 ">
-                              <span className="text-white/50 text-base font-medium mb-1.5 tracking-wide">
-                                {event.time}
-                              </span>
-                              <h4 className="text-white font-semibold text-xl pb-3 leading-snug tracking-tight mb-2  transition-all duration-300 line-clamp-2 pr-2">
-                                {event.title}
-                              </h4>
-                              <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
-                                <div className="w-[18px] h-[18px] rounded-full bg-indigo-500/80 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">
-                                  H
+                        {/* Event Cards Set */}
+                        <div className="flex flex-col gap-3.5 mb-15">
+                          <Link
+                            href={`/events/${event.id}`}
+                            className="block group focus:outline-none"
+                          >
+                            <div className="flex justify-between items-center  bg-white/3 hover:bg-white/10 border border-white/20 rounded-2xl p-6 transition-all duration-300">
+                              <div className="flex flex-col pr-4 overflow-hidden flex-1 ">
+                                <span className="text-white/50 text-base font-medium mb-1.5 tracking-wide">
+                                  {event.time}
+                                </span>
+                                <h4 className="text-white font-semibold text-xl pb-3 leading-snug tracking-tight mb-2  transition-all duration-300 line-clamp-2 pr-2">
+                                  {event.title}
+                                </h4>
+                                <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
+                                  <div className="w-[18px] h-[18px] rounded-full bg-indigo-500/80 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">
+                                    H
+                                  </div>
+                                  <span className="truncate pr-2">
+                                    By Host Name
+                                  </span>
                                 </div>
-                                <span className="truncate pr-2">
-                                  By Host Name
-                                </span>
+                                <div className="flex items-center text-white/50 text-[13px]">
+                                  <MapPin
+                                    size={13}
+                                    className="mr-2 shrink-0 opacity-70"
+                                  />
+                                  <span className="truncate pr-2">
+                                    {event.location}
+                                  </span>
+                                </div>
+                                <div className="bg-green-500 p-1 mt-4 text-white rounded-sm w-fit text-xs font-semibold ">
+                                  {" "}
+                                  Going
+                                </div>
                               </div>
-                              <div className="flex items-center text-white/50 text-[13px]">
-                                <MapPin
-                                  size={13}
-                                  className="mr-2 shrink-0 opacity-70"
-                                />
-                                <span className="truncate pr-2">
-                                  {event.location}
-                                </span>
-                              </div>
-                              <div className="bg-green-500 p-1 mt-4 text-white rounded-sm w-fit text-xs font-semibold "> Going</div>
-                            </div>
 
-                            {/* Image right */}
-                            <div className="w-[100px] h-[100px] sm:w-[124px] sm:h-[100px] bg-white/5 rounded-[12px] shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
-                              <img
-                                src={event.posterImage}
-                                className="w-full h-full object-cover transition-transform duration-700 ease-out"
-                                alt="Event Cover"
-                              />
+                              {/* Image right */}
+                              <div className="w-[100px] h-[100px] sm:w-[124px] sm:h-[100px] bg-white/5 rounded-[12px] shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
+                                <img
+                                  src={event.posterImage}
+                                  className="w-full h-full object-cover transition-transform duration-700 ease-out"
+                                  alt="Event Cover"
+                                />
+                              </div>
                             </div>
-                          </div>
-                        </Link>
+                          </Link>
+                        </div>
                       </div>
+                      {/* CARD MARGIN SET */}
                     </div>
-                    {/* CARD MARGIN SET */}
-                  </div>
-                )})}
+                  );
+                })}
               </div>
             </div>
           </article>
