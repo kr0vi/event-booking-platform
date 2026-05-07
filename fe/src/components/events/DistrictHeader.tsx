@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
 import { useEffect, useState } from "react";
 import { Bell, Compass, House, Settings, Ticket } from "lucide-react";
+import Logo from "../Logo";
 
 export function DistrictHeader() {
   const { isSignedIn, isLoaded, user } = useUser();
@@ -19,19 +20,9 @@ export function DistrictHeader() {
           <div className="flex items-center">
             <div className="leading-none">
               {isSignedIn && isLoaded ? (
-                <Link href="/home">
-                  <img src="/logo.png" alt="" className="w-5" />
-                  <p className="text-[20px] font-black  tracking-[-0.06em] ">
-                    moment
-                  </p>
-                </Link>
+                <Logo href="/home" />
               ) : (
-                <Link href="/" className="flex items-center gap-1">
-                  <img src="/logo.png" alt="" className="w-5" />
-                  <p className="text-[20px] font-black  tracking-[-0.06em] ">
-                    moment
-                  </p>
-                </Link>
+                <Logo href="/" />
               )}
             </div>
           </div>
