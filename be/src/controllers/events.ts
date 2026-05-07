@@ -3,7 +3,11 @@ import { prisma } from "../index.js";
 import { createEventSchema } from "../schemas/events.js";
 
 export const getAllEvents = async (req: Request, res: Response) => {
-  const allEvents = await prisma.event.findMany();
+  const allEvents = await prisma.event.findMany({
+    orderBy:{
+      date:"asc"
+    }
+  });
   if (allEvents.length === 0) {
     return res.json({
       success: false,
