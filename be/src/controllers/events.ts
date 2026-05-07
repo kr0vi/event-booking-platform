@@ -113,14 +113,19 @@ export const getUserEvents = async (req: Request, res: Response) => {
     },
     select: {
       event: {
-        select:{
+        select: {
           date: true,
           time: true,
-          title:true,
-          location:true,
-          price:true,
-          posterImage:true,
-        }
+          title: true,
+          location: true,
+          price: true,
+          posterImage: true,
+          organizer: {
+            select: {
+              name: true,
+            },
+          },
+        },
       },
     },
   });

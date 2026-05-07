@@ -5,7 +5,7 @@ import { api } from "@/utils/api";
 import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
 import { Compass, Landmark, MapPin } from "lucide-react";
-import { getDayFromDate } from "@/utils/helper";
+import { changeTimeFormat, getDayFromDate, getMonthFromDate } from "@/utils/helper";
 
 export default function HomePage() {
   const { isSignedIn, isLoaded, user } = useUser();
@@ -39,7 +39,7 @@ export default function HomePage() {
     }
   };
 
-  if (!isLoaded) {
+  if (!isLoaded || loadingEvents) {
     return (
       <div className="flex h-screen items-center justify-center bg-[#131517]">
         <p className="text-white/50">Loading...</p>
@@ -119,11 +119,8 @@ export default function HomePage() {
                           <h3 className="text-white font-bold text-base flex items-baseline gap-2 leading-none">
                             {getDayFromDate(event.date)},{" "}
                             <span className="text-white/50 font-medium ">
-                              {event.date
-                                .split("-")
-                                .reverse()
-                                .join("-")
-                                .slice(0, 5)}
+                              {event.date.split("-")[1]}{" "}
+                              {getMonthFromDate(event.date)}
                             </span>
                           </h3>
                         </div>
@@ -139,14 +136,16 @@ export default function HomePage() {
                             <div className="flex justify-between items-center  bg-white/3 hover:bg-white/10 border border-white/20 rounded-2xl p-6 transition-all duration-300">
                               <div className="flex flex-col pr-4 overflow-hidden flex-1 ">
                                 <span className="text-white/50 text-base font-medium mb-1.5 tracking-wide">
-                                  {event.time}
+                                  {changeTimeFormat(event.time)}
                                 </span>
                                 <h4 className="text-white font-semibold text-xl pb-3 leading-snug tracking-tight mb-2  transition-all duration-300 line-clamp-2 pr-2">
                                   {event.title}
                                 </h4>
                                 <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
                                   <div className="w-[18px] h-[18px] rounded-full bg-indigo-500/80 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">
-                                    H
+                                    {event.organizer.name
+                                      .charAt(0)
+                                      .toUpperCase()}
                                   </div>
                                   <span className="truncate pr-2">
                                     By Host Name
