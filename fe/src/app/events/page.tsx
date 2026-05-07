@@ -2,7 +2,11 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Search, MapPin, Landmark, Rss } from "lucide-react";
 import axios from "axios";
-import { changeTimeFormat, getDayFromDate, getMonthFromDate } from "@/utils/helper";
+import {
+  changeTimeFormat,
+  getDayFromDate,
+  getMonthFromDate,
+} from "@/utils/helper";
 
 export default async function EventsPage() {
   const { data } = await axios.get(
@@ -53,10 +57,13 @@ export default async function EventsPage() {
                 Events
               </h2>
               <div className="flex items-center gap-1.5">
-                <button className="bg-white/10 hover:bg-white/20 text-white px-3.5 py-1.5 rounded-lg text-[13px] font-medium transition-colors border border-white/10 flex items-center gap-1.5">
+                <Link
+                  href={"/create-event"}
+                  className="bg-white/10 hover:bg-white/20 text-white px-3.5 py-1.5 rounded-lg text-[13px] font-medium transition-colors border border-white/10 flex items-center gap-1.5"
+                >
                   <span className="text-lg leading-none mb-0.5">+</span> Submit
                   Event
-                </button>
+                </Link>
               </div>
             </div>
 
