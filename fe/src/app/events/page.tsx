@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Search, MapPin, Landmark, Rss } from "lucide-react";
 import axios from "axios";
-import { getDayFromDate, getMonthFromDate } from "@/utils/helper";
+import { changeTimeFormat, getDayFromDate, getMonthFromDate } from "@/utils/helper";
 
 export default async function EventsPage() {
   const { data } = await axios.get(
@@ -92,7 +92,7 @@ export default async function EventsPage() {
                       <div className="flex justify-between items-center mb-10 bg-white/3 hover:bg-white/10 border border-white/20 rounded-2xl p-6 transition-all duration-300">
                         <div className="flex flex-col pr-4 overflow-hidden flex-1">
                           <span className="text-white/50 text-base font-medium mb-1.5 tracking-wide">
-                            {event.time}
+                            {changeTimeFormat(event.time)}
                           </span>
                           <h4 className="text-white font-semibold text-xl pb-3 leading-snug tracking-tight mb-4 transition-all duration-300 line-clamp-2 pr-2">
                             {event.title}
