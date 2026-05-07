@@ -5,27 +5,46 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useUser } from "@/lib/auth/useUser";
 import { signup } from "@/utils/api";
+import { toast } from "sonner";
 
 export default function SignupPage() {
+  const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isLoaded, isSignedIn, refresh } = useUser();
-useEffect(() => {
-  if (isLoaded && isSignedIn) {
-    window.location.href = "/events";
-  }
-}, [isLoaded, isSignedIn]);
-const handleSignup = async (e: React.FormEvent) => {
-  e.preventDefault();
-  // Implement your signup logic here, e.g., call an API to create a new user
-  // After successful signup, you might wantb to refresh the user context or redirect
-  try {
-    await signup(email, password,fullName );
-    await refresh(); // Refresh user data after signup
-  } catch (err) {
-    console.error("Signup failed:", err);
-  }};
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      window.location.href = "/events";
+    }
+  }, [isLoaded, isSignedIn]);
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    if (!email || !password || !fullName) {
+      toast.error("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
+    // Implement your signup logic here, e.g., call an API to create a new user
+    // After successful signup, you might wantb to refresh the user context or redirect
+    try {
+      const data = await signup(email, password, fullName);
+      if (!data.success) {
+        toast.error(data.message || "Signup failed");
+        return;
+      }
+      toast.success("Signup successful! Please log in.");
+      await refresh(); // Refresh user data after signup
+    } catch (err) {
+      toast.error("Signup failed");
+      console.error("Signup failed:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen  bg-[#131517] text-white flex flex-col items-center justify-center overflow-hidden relative">
       {/* Background Watermark/blur effect */}
@@ -69,8 +88,13 @@ const handleSignup = async (e: React.FormEvent) => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="w-full p-4 mt-2 bg-white text-[#131517] font-bold rounded-2xl hover:bg-white/90 transition-all flex items-center justify-center gap-2">
-            Register <ArrowRight size={18} />
+          <button 
+            type="submit"
+            className="w-full p-4 mt-2 bg-white text-[#131517] font-bold rounded-2xl hover:bg-white/90 transition-all flex items-center justify-center gap-2"
+            disabled={loading}
+          >
+            {loading ? "Signing up..." : "Register"}
+            <ArrowRight size={18} />
           </button>
         </form>
 

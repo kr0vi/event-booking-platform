@@ -5,8 +5,10 @@ import { ArrowRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useUser } from "@/lib/auth/useUser";
 import { login } from "@/utils/api";
+import { toast } from "sonner";
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,12 +16,26 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      setLoading(false);
+      return;
+    }
     try {
-      await login(email, password);
+      const data = await login(email, password);
+      if (!data.success) {
+        toast.error(data.message || "Login failed");
+        setLoading(false);
+        return;
+      }
+      toast.success("Login successful!");
       await refresh();
     } catch (err) {
       console.error("Login failed:", err);
+    }
+    finally{
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -62,8 +78,8 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button className="w-full p-4 mt-2 bg-white text-[#131517] font-bold rounded-2xl hover:bg-white/90 transition-all flex items-center justify-center gap-2">
-            Log in <ArrowRight size={18} />
+          <button disabled={loading} className="w-full p-4 mt-2 bg-white text-[#131517] font-bold rounded-2xl hover:bg-white/90 transition-all flex items-center justify-center gap-2">
+            {loading ? "Logging in..." : "Login"} <ArrowRight size={18} />
           </button>
         </form>
 

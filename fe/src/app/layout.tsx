@@ -4,6 +4,7 @@ import "./globals.css";
 import { DistrictHeader } from "@/components/events/DistrictHeader";
 import { Footer } from "@/components/Footer";
 import { AuthProvider } from "@/lib/auth/context";
+import { AppToaster } from "@/components/Toaster";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,6 +31,7 @@ export default function RootLayout({
           {children}
           <Footer></Footer>
         </AuthProvider>
+        <AppToaster />
       </body>
     </html>
   );
