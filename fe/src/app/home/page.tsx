@@ -1,10 +1,7 @@
 "use client";
-
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/lib/auth/context";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { EventCard } from "@/components/events/EventCard";
 import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
 import { Compass, Landmark, MapPin } from "lucide-react";
@@ -17,17 +14,15 @@ export default function HomePage() {
   const [loadingEvents, setLoadingEvents] = useState(true);
 
   useEffect(() => {
-    if (isLoaded) {
-      if (!isSignedIn) {
-        router.push("/login");
-      }
-    }
-    else{
-      fetchMyEvents();
-    }
+    fetchMyEvents();
   }, [isLoaded, isSignedIn, user, router]);
 
   const fetchMyEvents = async () => {
+    if (!isLoaded) return; // Wait until auth state is loaded
+    if (!isSignedIn) {
+      router.push("/login");
+      return;
+    }
     try {
       setLoadingEvents(true);
       const res = await api.get(`/events/my-events`);
@@ -51,7 +46,7 @@ export default function HomePage() {
       </div>
     );
   }
-console.log(events[0]);
+  console.log(events[0]);
   return (
     <div className="min-h-screen bg-[#131517] pt-24 pb-12 font-sans">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
