@@ -148,7 +148,9 @@ export default function HomePage() {
                                       .toUpperCase()}
                                   </div>
                                   <span className="truncate pr-2">
-                                    By Host Name
+                                    By {event.organizer.name
+                                      .charAt(0)
+                                      .toUpperCase() + event.organizer.name.slice(1)}
                                   </span>
                                 </div>
                                 <div className="flex items-center text-white/50 text-[13px]">
