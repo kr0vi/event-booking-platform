@@ -9,3 +9,12 @@ export const  getDayFromDate = (dateStr:string) => {
 
   return days[date.getDay()];
 }
+
+
+export const getMonthFromDate = (dateStr:string) => {
+  const [year, month, day] = dateStr.split("-").map(Number);
+
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  return months[month - 1];
+};
