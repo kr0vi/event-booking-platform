@@ -98,10 +98,14 @@ export default async function EventsPage() {
                             {event.title}
                           </h4>
                           <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
-                            <div className="w-[18px] h-[18px] rounded-full bg-indigo-500/80 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">
-                              H
+                            <div className="w-[18px] h-[18px] rounded-full bg-black/40 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-medium shadow-sm">
+                              {event.organizer.name.charAt(0).toUpperCase()}
                             </div>
-                            <span className="truncate pr-2">By Host Name</span>
+                            <span className="truncate pr-2">
+                              By{" "}
+                              {event.organizer.name.charAt(0).toUpperCase() +
+                                event.organizer.name.slice(1)}
+                            </span>
                           </div>
                           <div className="flex items-center text-white/50 text-[13px]">
                             <MapPin
