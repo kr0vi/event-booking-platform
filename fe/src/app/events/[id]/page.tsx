@@ -1,7 +1,7 @@
 import BuyEventForm from "@/components/events/BuyEventForm";
-import { getDayFromDate } from "@/utils/helper";
+import { changeTimeFormat, getDayFromDate, getMonthFromDate } from "@/utils/helper";
 import axios from "axios";
-import {  MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 type EventPageProps = {
   params: Promise<{ id: string }>;
@@ -57,7 +57,10 @@ export default async function EventPage({ params }: EventPageProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="mb-2 text-white/60">Hosted By</p>
-                  <p className="font-semibold ">{event.organizer.name}</p>
+                  <p className="font-semibold ">
+                    {event.organizer.name.charAt(0).toUpperCase() +
+                      event.organizer.name.slice(1)}
+                  </p>
                 </div>
                 <div>
                   <p className="mb-2 font-semibold text-xs rounded-full p-2 text-white/80 bg-white/10 border border-white/20">
@@ -100,15 +103,20 @@ export default async function EventPage({ params }: EventPageProps) {
               <div className="flex items-center gap-2 mb-3">
                 <div className="bg-white/10 border relative border-white/20  rounded-lg text-center w-8 h-8  text-[10px]">
                   <div className="bg-white/20 w-full absolute top-0 left-0">
-                    Apr
+                    {getMonthFromDate(event.date)}
                   </div>
                   <p className="absolute bottom-0 left-0 w-full text-center">
                     {event.date.split("-").reverse()[0]}
                   </p>
                 </div>
                 <div>
-                  <p> {getDayFromDate(event.date)}, {event.date.split("-").reverse()[1]} April</p>
-                  <p>{event.time}</p>
+                  <p>
+                    {" "}
+                    {getDayFromDate(event.date)},{" "}
+                    {event.date.split("-").reverse()[0]}{" "}
+                    {getMonthFromDate(event.date)}
+                  </p>
+                  <p>{changeTimeFormat(event.time)}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
