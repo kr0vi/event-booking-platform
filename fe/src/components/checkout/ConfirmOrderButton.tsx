@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { api } from "@/utils/api";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function ConfirmOrderButton({ eventId }: { eventId: string }) {
   const [loading, setLoading] = useState(false);
@@ -48,11 +49,18 @@ export default function ConfirmOrderButton({ eventId }: { eventId: string }) {
             </button>
             <span className="font-semibold w-4 text-center">{quantity}</span>
             <button
-              onClick={() => setQuantity((q) => Math.min(5, q + 1))}
+              onClick={() =>{
+                if(quantity == 5) {
+                  toast.error("Maximum quantity is 5");
+                  return;
+                }
+                 setQuantity((q) => Math.min(5, q + 1))
+              }}
               className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition cursor-pointer font-bold select-none"
             >
               +
             </button>
+            
           </div>
         </div>
         <div className="flex justify-between items-center text-lg mt-2">
