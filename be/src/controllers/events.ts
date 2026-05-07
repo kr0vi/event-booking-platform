@@ -114,6 +114,7 @@ export const getUserEvents = async (req: Request, res: Response) => {
     select: {
       event: {
         select: {
+          id: true,
           date: true,
           time: true,
           title: true,

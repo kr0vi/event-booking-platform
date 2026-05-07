@@ -106,6 +106,7 @@ export default function HomePage() {
               <div className="flex-1 max-w-2xl mx-auto">
                 {events.map((evn: any, index: number) => {
                   let event = evn.event;
+                  console.log(event);
                   return (
                     <div
                       key={index}
