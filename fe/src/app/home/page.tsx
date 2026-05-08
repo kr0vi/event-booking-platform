@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
 import { Compass, Landmark, MapPin } from "lucide-react";
 import { changeTimeFormat, getDayFromDate, getMonthFromDate } from "@/utils/helper";
+import Avatar from "boring-avatars";
 
 export default function HomePage() {
   const { isSignedIn, isLoaded, user } = useUser();
@@ -75,19 +76,21 @@ export default function HomePage() {
           </p>
         ) : events.length === 0 ? (
           <div className="lp-12 text-center">
-            <div className="w-40 h-40 mx-auto bg-white/10 border border-dashed border-white/40 rounded-full flex items-center justify-center">
+            <div className="w-40 h-40 mx-auto bg-white/10 border-white/40 rounded-full flex items-center justify-center">
               <Landmark className="text-white/50 w-30 h-30" />
             </div>
             <h3 className=" text-2xl font-medium mt-4 text-white">No events</h3>
             <p className="mt-1 text-sm text-white/50">
-              You haven't created any events yet.
+              You have no upcoming events. Why not attend one?
             </p>
             <div className="mt-6">
               <Link
-                href="/create-event"
-                className="inline-flex items-center rounded-lg bg-white/10 border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20 transition-colors"
+                href="/events"
+                className="rounded-lg mt-6  text-sm font-semibold text-white transition-colors"
               >
-                + New Event
+                <div className="flex items-center justify-center gap-2 bg-white/2 border border-white/10 w-fit mx-auto px-4 py-2 rounded-lg hover:bg-white/10 transition-colors">
+                  <Compass size={18} /> <p>Discover</p>
+                </div>
               </Link>
             </div>
           </div>
@@ -143,15 +146,17 @@ export default function HomePage() {
                                   {event.title}
                                 </h4>
                                 <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
-                                  <div className="w-[18px] h-[18px] rounded-full bg-indigo-500/80 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">
+                                  <Avatar
+                                    className="w-[18px] h-[18px] rounded-full  mr-2 shrink-0 flex items-center justify-center text-[8px] text-white font-bold shadow-sm"
+                                    size={18}
+                                    name={event.organizer.name}
+                                  />
+                                  <span className="truncate pr-2">
+                                    By{" "}
                                     {event.organizer.name
                                       .charAt(0)
-                                      .toUpperCase()}
-                                  </div>
-                                  <span className="truncate pr-2">
-                                    By {event.organizer.name
-                                      .charAt(0)
-                                      .toUpperCase() + event.organizer.name.slice(1)}
+                                      .toUpperCase() +
+                                      event.organizer.name.slice(1)}
                                   </span>
                                 </div>
                                 <div className="flex items-center text-white/50 text-[13px]">

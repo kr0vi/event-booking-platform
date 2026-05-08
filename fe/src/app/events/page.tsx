@@ -8,6 +8,7 @@ import {
   getMonthFromDate,
 } from "@/utils/helper";
 import type { EventType } from "@/utils/interfaces";
+import Avatar from "boring-avatars";
 
 interface EventsPageProps {
   searchParams?: {
@@ -142,9 +143,11 @@ export default async function EventsPage({ searchParams }: { searchParams?: Prom
                             {event.title}
                           </h4>
                           <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
-                            <div className="w-[18px] h-[18px] rounded-full bg-black/40 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-medium shadow-sm">
-                              {event.organizer.name.charAt(0).toUpperCase()}
-                            </div>
+                            <Avatar
+                              className="w-[18px] h-[18px] rounded-full  mr-2 shrink-0 flex items-center justify-center text-[8px] text-white font-bold shadow-sm"
+                              size={18}
+                              name={event.organizer.name}
+                            />
                             <span className="truncate pr-2">
                               By{" "}
                               {event.organizer.name.charAt(0).toUpperCase() +

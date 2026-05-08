@@ -164,14 +164,14 @@ export default function MePage() {
   return (
     <main className="min-h-screen bg-[#131517] text-white px-4 py-10 md:px-8 md:py-14">
       <div className="mx-auto w-full max-w-6xl">
-        <header className="mb-8 rounded-3xl border border-white/15 bg-linear-to-br from-white/15 via-white/7 to-transparent p-6 md:p-8">
+        <header className="mb-8 rounded-3xl border border-white/15 p-6 md:p-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-4">
               <UserAvatar
                 userId={user?.id}
                 name={user?.name}
                 size={56}
-                className="shrink-0 overflow-hidden rounded-2xl border border-white/15 bg-white/5"
+                className="shrink-0 overflow-hidden"
               />
               <div>
                 <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
@@ -184,21 +184,21 @@ export default function MePage() {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/events"
-                className="rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/20 transition-colors"
+                className="rounded-xl border border-white/20 bg-white/2 px-4 py-2.5 text-sm font-medium hover: transition-colors"
               >
                 Explore Events
               </Link>
 
               <Link
                 href="/tickets"
-                className="rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-medium hover:bg-white/20 transition-colors"
+                className="rounded-xl border border-white/20 bg-white/2 px-4 py-2.5 text-sm font-medium hover: transition-colors"
               >
                 My Tickets
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center gap-2 rounded-xl border border-rose-400/40 bg-rose-500/20 px-4 py-2.5 text-sm font-medium text-rose-100 hover:bg-rose-500/30 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl border border-rose-400/20 bg-rose-500/10 px-4 py-2.5 text-sm font-medium text-rose-100 hover:bg-rose-500/30 transition-colors cursor-pointer"
               >
                 <LogOut size={16} />
                 Log out
@@ -208,28 +208,28 @@ export default function MePage() {
         </header>
 
         <section className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-5">
+          <div className="rounded-2xl border border-white/15  p-5">
             <p className="text-xs uppercase tracking-wider text-white/55">
               Tickets Owned
             </p>
             <p className="mt-2 text-3xl font-semibold">{tickets.length}</p>
           </div>
 
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-5">
+          <div className="rounded-2xl border border-white/15  p-5">
             <p className="text-xs uppercase tracking-wider text-white/55">
               Valid Tickets
             </p>
             <p className="mt-2 text-3xl font-semibold">{validTicketsCount}</p>
           </div>
 
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-5">
+          <div className="rounded-2xl border border-white/15  p-5">
             <p className="text-xs uppercase tracking-wider text-white/55">
               Used Tickets
             </p>
             <p className="mt-2 text-3xl font-semibold">{usedTicketsCount}</p>
           </div>
 
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-5">
+          <div className="rounded-2xl border border-white/15  p-5">
             <p className="text-xs uppercase tracking-wider text-white/55">
               Bookings
             </p>
@@ -238,7 +238,7 @@ export default function MePage() {
         </section>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          <section className="rounded-2xl border border-white/15 bg-white/5 p-6 lg:col-span-1">
+          <section className="rounded-2xl border border-white/15  p-6 lg:col-span-1">
             <h2 className="text-lg font-semibold tracking-tight">
               Account Details
             </h2>
@@ -268,12 +268,6 @@ export default function MePage() {
                 </p>
               </div>
               <div className="h-px bg-white/10" />
-              <div>
-                <p className="text-xs uppercase text-white/55 tracking-wider">
-                  User ID
-                </p>
-                <p className="mt-1 text-sm font-medium">#{user?.id}</p>
-              </div>
             </div>
 
             <div className="mt-6 rounded-xl border border-emerald-400/20 bg-emerald-500/10 p-4">
@@ -305,7 +299,7 @@ export default function MePage() {
             )}
           </section>
 
-          <section className="rounded-2xl border border-white/15 bg-white/5 p-6 lg:col-span-2">
+          <section className="rounded-2xl border border-white/15  p-6 lg:col-span-2">
             <div className="mb-5 flex items-center justify-between gap-3">
               <h2 className="text-lg font-semibold tracking-tight">
                 Upcoming Events From Your Tickets
@@ -324,7 +318,7 @@ export default function MePage() {
                 {[1, 2, 3].map((item) => (
                   <div
                     key={item}
-                    className="h-24 rounded-xl border border-white/10 bg-white/5 animate-pulse"
+                    className="h-24 rounded-xl border border-white/10  animate-pulse"
                   />
                 ))}
               </div>
@@ -333,7 +327,7 @@ export default function MePage() {
                 {ticketsError}
               </div>
             ) : upcomingTickets.length === 0 ? (
-              <div className="rounded-xl border border-white/10 bg-white/5 p-8 text-center">
+              <div className="rounded-xl border border-white/10  p-8 text-center">
                 <Ticket className="mx-auto mb-3 opacity-60" size={26} />
                 <p className="font-medium">No upcoming events booked yet.</p>
                 <p className="mt-2 text-sm text-white/65">
@@ -341,7 +335,7 @@ export default function MePage() {
                 </p>
                 <Link
                   href="/events"
-                  className="mt-4 inline-flex rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium hover:bg-white/20"
+                  className="mt-4 inline-flex rounded-lg border border-white/5 bg-white/5 px-4 py-2 text-sm font-medium hover:bg-white/20"
                 >
                   Browse Events
                 </Link>
@@ -352,7 +346,7 @@ export default function MePage() {
                   <Link
                     key={ticket.id}
                     href={`/tickets/${ticket.id}`}
-                    className="block rounded-xl border border-white/15 bg-white/5 p-4 hover:bg-white/10 transition-colors"
+                    className="block rounded-xl border border-white/15  p-4 hover:bg-white/10 transition-colors"
                   >
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div>
@@ -395,7 +389,7 @@ export default function MePage() {
           </section>
         </div>
 
-        <section className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-6">
+        <section className="mt-6 rounded-2xl border border-white/15  p-6">
           <h2 className="text-lg font-semibold tracking-tight">
             Recent Booking Activity
           </h2>
@@ -410,7 +404,7 @@ export default function MePage() {
                 <Link
                   key={`${ticket.id}-activity`}
                   href={`/tickets/${ticket.id}`}
-                  className="rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors"
+                  className="rounded-xl border border-white/10  p-4 hover:bg-white/10 transition-colors"
                 >
                   <p className="font-medium">
                     {ticket.event?.title || "Event"}
