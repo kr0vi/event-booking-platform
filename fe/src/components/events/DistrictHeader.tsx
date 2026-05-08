@@ -2,8 +2,9 @@
 import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
 import { useEffect, useState } from "react";
-import { Bell, Compass, House, Settings, Ticket } from "lucide-react";
+import { Compass, House, Ticket } from "lucide-react";
 import Logo from "../Logo";
+import { UserAvatar } from "@/components/UserAvatar";
 
 export function DistrictHeader() {
   const { isSignedIn, isLoaded, user } = useUser();
@@ -15,7 +16,7 @@ export function DistrictHeader() {
   }, [isLoaded]);
   return (
     <>
-      <header className="w-full bg-[#131517] text-white shadow-sm border-b border-white/20">
+      <header className="w-full bg-[#131517] text-white shadow-sm borderb border-white/20">
         <div className="mx-auto flex w-7xl  items-center justify-between py-6">
           <div className="flex items-center">
             <div className="leading-none">
@@ -79,15 +80,14 @@ export function DistrictHeader() {
               <>
                 <Link
                   href={"/me"}
-                  className="rounded-lg  text-sm font-semibold text-white"
+                  className="group flex items-center gap-2 rounded-full  px-2 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                 >
-                  <Bell size={18} />
-                </Link>
-                <Link
-                  href={"/me"}
-                  className="rounded-lg  text-sm font-semibold text-white"
-                >
-                  <Settings size={18} />
+                  <UserAvatar userId={user?.id} name={user?.name} size={28} />
+                  <span className="overflow-hidden max-w-0 opacity-0 transition-all duration-500 group-hover:max-w-28 group-hover:opacity-100">
+                    <span className="block whitespace-nowrap -translate-x-2 transition-transform duration-500 group-hover:translate-x-0">
+                      My Account
+                    </span>
+                  </span>
                 </Link>
               </>
             ) : (

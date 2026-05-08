@@ -5,6 +5,7 @@ import { api } from "@/utils/api";
 import Link from "next/link";
 import { ArrowLeft, Ticket as TicketIcon } from "lucide-react";
 import { useUser } from "@/lib/auth/useUser";
+import { UserAvatar } from "@/components/UserAvatar";
 
 function TicketCard({ ticket }: { ticket: any }) {
   const ticketIdPrefix = ticket?.id ? String(ticket.id).split("-")[0] : "N/A";
@@ -126,18 +127,35 @@ export default function TicketsPage() {
   return (
     <main className="relative min-h-screen bg-[#131517] text-white overflow-hidden py-12 px-6">
       <div className="relative z-10 max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-10 pb-6 border-b border-white/10">
-          <h1 className="text-3xl md:text-4xl font-bold flex items-center gap-3">
+        <div className="flex items-center justify-between mb-10 pb-6 border-b border-white/10 gap-4">
+          <div className="flex items-center gap-3">
             <TicketIcon size={32} className="opacity-80" />
-            My Tickets
-          </h1>
-          <Link
-            href="/events"
-            className="text-sm font-medium text-white/70 hover:text-white transition flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full"
-          >
-            Browse Events <ArrowLeft size={14} className="rotate-180" />
-          </Link>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold leading-tight">
+                My Tickets
+              </h1>
+              <p className="text-sm text-white/50 mt-1">
+                Your booked events and entry passes.
+              </p>
+            </div>
+          </div>
+          {isSignedIn && isLoaded ? (
+            <Link
+              href="/me"
+              className="flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-2 py-1.5 text-sm font-medium text-white/75 hover:bg-white/10 transition-colors"
+            >
+              <UserAvatar userId={user?.id} name={user?.name} size={28} />
+              <span className="hidden sm:inline">{user?.name || "My Account"}</span>
+            </Link>
+          ) : null}
         </div>
+
+        <Link
+          href="/events"
+          className="mb-10 inline-flex text-sm font-medium text-white/70 hover:text-white transition items-center gap-1.5 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full"
+        >
+          Browse Events <ArrowLeft size={14} className="rotate-180" />
+        </Link>
 
         {loading ? (
           <div className="flex flex-col gap-5">
