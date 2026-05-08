@@ -93,10 +93,10 @@ export function DistrictHeader() {
             ) : (
               <>
                 <Link
-                  href={"/signup"}
+                  href={"/login"}
                   className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
                 >
-                  Sign Up
+                  Sign In
                 </Link>
               </>
             )}
