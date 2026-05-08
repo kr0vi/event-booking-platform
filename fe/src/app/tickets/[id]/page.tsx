@@ -3,6 +3,8 @@ import { api } from "@/utils/api";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import React, { use, useEffect } from "react";
+import { useUser } from "@/lib/auth/useUser";
+import { UserAvatar } from "@/components/UserAvatar";
 
 // const ticket = {
 //   event: {
@@ -43,6 +45,7 @@ import React, { use, useEffect } from "react";
 // };
 
 function page({ params }: { params: Promise<{ id: string }> }) {
+  const { user } = useUser();
   const id = use(params).id;
   const [ticket, setTicket] = React.useState<any>(null);
   useEffect(() => {
@@ -58,7 +61,7 @@ function page({ params }: { params: Promise<{ id: string }> }) {
 
   return (
     <div className="h-screen bg-[#131517] flex items-center justify-center relative">
-      <div>{ticket && <FullTicketCard ticket={ticket} />}</div>
+      <div>{ticket && <FullTicketCard ticket={ticket} user={user} />}</div>
       <Link
         href="/tickets"
         className="absolute top-[5%] left-[15%] text-white/80 hover:text-white transition-colors flex items-center gap-1"
@@ -72,7 +75,15 @@ function page({ params }: { params: Promise<{ id: string }> }) {
 
 export default page;
 
-function FullTicketCard({ ticket }: { ticket: any }) {
+function FullTicketCard({
+  ticket,
+  user,
+}: {
+  ticket: any;
+  user: { id: number; name: string } | null;
+}) {
+  const attendeeName = user?.name || `User #${ticket.userId}`;
+
   return (
     <div className="bg-white/10 w-[25vw] p-6 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden flex flex-col  relative shadow-lg  transition-all">
       {/* Deco dots */}
@@ -119,7 +130,17 @@ function FullTicketCard({ ticket }: { ticket: any }) {
               QR Pending
             </div>
           )}
-          <p className="text-center font-semibold">Krishna Vohra</p>
+          <div className="mt-2 flex items-center justify-center gap-2 rounded-lg  px-2 py-1.5">
+            <UserAvatar
+              userId={user?.id ?? ticket.userId}
+              name={attendeeName}
+              size={22}
+              className="overflow-hidden rounded-full border border-black/10"
+            />
+            <p className="text-center text-sm font-semibold text-black/80">
+              {attendeeName}
+            </p>
+          </div>
         </div>
         <p className="text-center text-sm text-white/70">
           Show this QR code at the event entrance
