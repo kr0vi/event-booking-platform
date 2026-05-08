@@ -1,18 +1,51 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
-import { Search, MapPin, Landmark, Rss } from "lucide-react";
+import { MapPin, Landmark } from "lucide-react";
 import axios from "axios";
 import {
   changeTimeFormat,
   getDayFromDate,
   getMonthFromDate,
 } from "@/utils/helper";
+import type { EventType } from "@/utils/interfaces";
 
-export default async function EventsPage() {
+interface EventsPageProps {
+  searchParams?: {
+    page?: string;
+  };
+}
+
+interface PaginatedEventsResponse {
+  success: boolean;
+  message: string;
+  data: (EventType & { organizer: { name: string } })[];
+  pagination?: {
+    currentPage: number;
+    pageSize: number;
+    hasNextPage: boolean;
+  };
+}
+
+export default async function EventsPage({ searchParams }: { searchParams?: Promise<{ page: string }> }) {
+  const requestedPage = parseInt((await searchParams)?.page || "1");
+  console.log("Requested page:", requestedPage);
+  const page =
+    Number.isFinite(requestedPage) && requestedPage > 0
+      ? Math.floor(requestedPage)
+      : 1;
+
   const { data } = await axios.get(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/events`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/events?page=${page}`,
   );
-  if (!data.success) {
+
+  // console.log("Fetched events data:", data);
+  const response = data as PaginatedEventsResponse;
+  const noEventsFound =
+    !response.success &&
+    response.message === "No events found" &&
+    Array.isArray(response.data);
+
+  if (!response.success && !noEventsFound) {
     console.error("Failed to fetch events:", data.message);
     return (
       <div className="p-10 text-center text-red-500">
@@ -20,8 +53,12 @@ export default async function EventsPage() {
       </div>
     );
   }
-  let allEvents = data.data || [];
-  // console.log(data);
+
+
+  const allEvents = response.data || [];
+  const pagination = response.pagination;
+  const hasNextPage = Boolean(pagination?.hasNextPage);
+  const currentPage = pagination?.currentPage || page;
 
   return (
     <div className="min-h-screen flex flex-col font-sans overflow-x-hidden">
@@ -68,7 +105,7 @@ export default async function EventsPage() {
             </div>
 
             {/* One Event Set */}
-            {allEvents.map((event: any, index: number) => (
+            {allEvents.map((event, index: number) => (
               <div
                 key={index}
                 className="relative border-l border-white/20 ml-2.5 pl-6 sm:pl-8 pb-2"
@@ -128,7 +165,10 @@ export default async function EventsPage() {
                         {/* Image right */}
                         <div className="w-35 h-35  bg-white/5 rounded-xl shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
                           <img
-                            src={event.posterImage}
+                            src={
+                              event.posterImage ||
+                              "https://placehold.co/300x300/131517/FFFFFF?text=Event"
+                            }
                             className="w-full h-full object-cover transition-transform duration-700 ease-out"
                             alt="Event Cover"
                           />
@@ -140,6 +180,44 @@ export default async function EventsPage() {
                 {/* CARD MARGIN SET */}
               </div>
             ))}
+
+            {allEvents.length === 0 && (
+              <div className="rounded-xl border border-white/15 bg-white/5 p-6 text-white/70">
+                No events found for this page.
+              </div>
+            )}
+
+            <div className="mt-8 flex items-center justify-between gap-3 border-t border-white/10 pt-6">
+              <Link
+                href={
+                  currentPage > 1
+                    ? `/events?page=${currentPage - 1}`
+                    : "/events?page=1"
+                }
+                aria-disabled={currentPage === 1}
+                className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                  currentPage === 1
+                    ? "pointer-events-none border-white/10 bg-white/5 text-white/35"
+                    : "border-white/20 bg-white/10 text-white hover:bg-white/20"
+                }`}
+              >
+                Previous
+              </Link>
+
+              <p className="text-sm text-white/60">Page {currentPage}</p>
+
+              <Link
+                href={`/events?page=${currentPage + 1}`}
+                aria-disabled={!hasNextPage}
+                className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                  !hasNextPage
+                    ? "pointer-events-none border-white/10 bg-white/5 text-white/35"
+                    : "border-white/20 bg-white/10 text-white hover:bg-white/20"
+                }`}
+              >
+                Next
+              </Link>
+            </div>
           </div>
 
           {/* Right Column: Sidebar */}

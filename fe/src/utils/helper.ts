@@ -1,5 +1,5 @@
 export const getDayFromDate = (dateStr: string) => {
-  console.log("Received date string:", dateStr);
+  // console.log("Received date string:", dateStr);
   const [year, month, day] = dateStr.split("-").map(Number);
 
   // JS Date uses 0-based months (0 = Jan, 11 = Dec)
