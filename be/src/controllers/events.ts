@@ -4,7 +4,7 @@ import { createEventSchema } from "../schemas/events.js";
 
 export const getAllEvents = async (req: Request, res: Response) => {
   const pageNumber = Math.min(parseInt(req.query.page as string) || 1, 100); // Limit to 100 pages to prevent abuse
-  const pageSize = 10; // Number of events per page
+  const pageSize = 6; // Number of events per page
   const skip = (pageNumber - 1) * pageSize;
   const allEvents = await prisma.event.findMany({
     orderBy: {
