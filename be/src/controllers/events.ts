@@ -7,6 +7,10 @@ export const getAllEvents = async (req: Request, res: Response) => {
   const pageSize = 6; // Number of events per page
   const skip = (pageNumber - 1) * pageSize;
   const allEvents = await prisma.event.findMany({
+    where: {
+      isDeleted: false,
+      status: "PUBLISHED",
+    },
     orderBy: {
       date: "asc",
     },
@@ -53,9 +57,11 @@ export const getEventById = async (req: Request, res: Response) => {
       message: "Event ID is required",
     });
   }
-  const foundEvent = await prisma.event.findUnique({
+  const foundEvent = await prisma.event.findFirst({
     where: {
       id: eventId,
+      isDeleted: false,
+      status: "PUBLISHED",
     },
     include: {
       host: {
@@ -208,14 +214,31 @@ export const updateEvent = async (req: Request, res: Response) => {
         "Cannot update a cancelled or completed event or an event that is deleted",
     });
   }
+  const updatedEventData = {
+    ...(data.title !== undefined ? { title: data.title } : {}),
+    ...(data.description !== undefined ? { description: data.description } : {}),
+    ...(data.location !== undefined ? { location: data.location } : {}),
+    ...(data.eventDate !== undefined ? { date: data.eventDate } : {}),
+    ...(data.eventTime !== undefined ? { time: data.eventTime } : {}),
+    ...(data.posterImage !== undefined ? { posterImage: data.posterImage } : {}),
+    ...(data.highlights !== undefined ? { highlights: data.highlights } : {}),
+    ...(data.thingsToKnow !== undefined
+      ? { thingsToKnow: data.thingsToKnow }
+      : {}),
+    ...(data.price !== undefined ? { price: data.price } : {}),
+    ...(data.totalTickets !== undefined
+      ? { totalTickets: data.totalTickets }
+      : {}),
+    ...(data.ticketPerStudent !== undefined
+      ? { ticketPerStudent: data.ticketPerStudent }
+      : {}),
+  };
   const updatedEvent = await prisma.event.update({
     where: {
       id: eventId,
       hostId,
     },
-    data: Object.fromEntries(
-      Object.entries(validData).filter(([, value]) => value !== undefined),
-    ),
+     data: updatedEventData,
   });
   res.json({
     success: true,
@@ -245,6 +268,13 @@ export const cancelEvent = async (req: Request, res: Response) => {
       success: false,
       data: null,
       message: "Event not found or you are not the host",
+    });
+  }
+  if (findEvent.isDeleted) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Cannot cancel a deleted event",
     });
   }
   if (findEvent.status === "CANCELLED" || findEvent.status === "COMPLETED") {
@@ -291,6 +321,13 @@ export const deleteEvent = async (req: Request, res: Response) => {
       success: false,
       data: null,
       message: "Event not found or you are not the host",
+    });
+  }
+  if (findEvent.isDeleted) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Cannot delete an already deleted event",
     });
   }
   if (findEvent.status === "COMPLETED") {

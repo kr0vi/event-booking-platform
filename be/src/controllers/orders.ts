@@ -26,6 +26,18 @@ export const createOrder = async (req: Request, res: Response) => {
       message: "Event not found",
     });
   }
+  if (
+    foundEvent.isDeleted ||
+    foundEvent.status === "CANCELLED" ||
+    foundEvent.status === "COMPLETED" ||
+    foundEvent.status !== "PUBLISHED"
+  ) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event is not available for booking",
+    });
+  }
   // Check if there are enough tickets available
   if (!(foundEvent.totalTickets - foundEvent.ticketsSold >= quantity)) {
     return res.json({
