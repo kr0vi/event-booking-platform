@@ -8,7 +8,7 @@ export const createEventSchema = z.object({
   description: z
     .string()
     .min(10, "Description is required")
-    .max(200, "Description must be less than 200 characters"),
+    .max(800, "Description must be less than 800 characters"),
   location: z
     .string()
     .min(1, "Location is required")
