@@ -4,13 +4,14 @@ import { MapPin, Image as ImageIcon, Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/auth/useUser";
 import { api } from "@/utils/api";
+import { toast } from "sonner";
 
 export default function CreateEventPage() {
   const router = useRouter();
   const { user, isLoaded, isSignedIn } = useUser();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  // const [error, setError] = useState("");
+  // const [success, setSuccess] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
@@ -97,8 +98,7 @@ export default function CreateEventPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-    setSuccess("");
+   
 
     try {
       // Filter out empty thingsToKnow
@@ -115,15 +115,17 @@ export default function CreateEventPage() {
 
       if (data.sucess || data.success) {
         // API docs state 'sucess' typo
-        setSuccess("Event created successfully!");
+        toast.success("Event created successfully!");
         setTimeout(() => {
           router.push("/events");
         }, 2000);
       } else {
-        setError(data.message || "Failed to create event");
+        // setError(data.message || "Failed to create event");
+          toast.error(data.message || "Failed to create event");
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "An error occurred");
+      // setError(err.response?.data?.message || "An error occurred");
+      toast.error(err.response?.data?.message || "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -152,17 +154,9 @@ export default function CreateEventPage() {
         onSubmit={handleSubmit}
         className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10"
       >
-        {error && (
-          <div className="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-200">
-            {error}
-          </div>
-        )}
 
-        {success && (
-          <div className="mb-6 p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-200">
-            {success}
-          </div>
-        )}
+
+       
 
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold">Create New Event</h1>

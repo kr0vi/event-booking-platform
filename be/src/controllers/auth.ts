@@ -6,12 +6,12 @@ import { compareSync, hashSync } from "bcrypt";
 import { loginSchema, signupSchema } from "../schemas/auht.js";
 
 export const signup = async (req: Request, res: Response) => {
-  const { success, data } = signupSchema.safeParse(req.body);
+  const { success, data, error } = signupSchema.safeParse(req.body);
   if (!success) {
     res.json({
       success: false,
       data: null,
-      message: "Invalid input",
+      message: error.issues[0]?.message ?? "Invalid input",
     });
     return;
   }
@@ -52,12 +52,12 @@ export const signup = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { success, data } = loginSchema.safeParse(req.body);
+  const { success, data, error } = loginSchema.safeParse(req.body);
   if (!success) {
     res.json({
       success: false,
       data: null,
-      message: "Invalid input",
+      message: error.issues[0]?.message ?? "Invalid input",
     });
     return;
   }
@@ -108,7 +108,7 @@ export const me = async (req: Request, res: Response) => {
     select: {
       id: true,
       email: true,
-      role:true,
+      role: true,
       name: true,
     },
   });
@@ -120,12 +120,12 @@ export const me = async (req: Request, res: Response) => {
 };
 
 export const organizerSignup = async (req: Request, res: Response) => {
-  const { success, data } = signupSchema.safeParse(req.body);
+  const { success, data, error } = signupSchema.safeParse(req.body);
   if (!success) {
     res.json({
       success: false,
       data: null,
-      message: "Invalid input",
+      message: error.issues[0]?.message ?? "Invalid input",
     });
     return;
   }
@@ -162,5 +162,9 @@ export const organizerSignup = async (req: Request, res: Response) => {
       },
     });
   }
-  res.json({ success: true, message: "ORGANIZER created successfully", data: user });
+  res.json({
+    success: true,
+    message: "ORGANIZER created successfully",
+    data: user,
+  });
 };

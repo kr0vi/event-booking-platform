@@ -11,7 +11,7 @@ export const getAllEvents = async (req: Request, res: Response) => {
       date: "asc",
     },
     skip,
-    take: pageSize, 
+    take: pageSize,
     include: {
       organizer: {
         select: {
@@ -83,10 +83,11 @@ export const createEvents = async (req: Request, res: Response) => {
   const organizerId = (req as any).userId;
   const { success, data, error } = createEventSchema.safeParse(req.body);
   if (!success) {
+    const message = error.issues[0]?.message ?? "Invalid input";
     return res.json({
       success: false,
       data: null,
-      message: error.message,
+      message,
     });
   }
   try {
