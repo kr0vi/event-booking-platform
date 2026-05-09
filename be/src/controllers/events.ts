@@ -104,6 +104,7 @@ export const createEvents = async (req: Request, res: Response) => {
         price: data.price,
         totalTickets: data.totalTickets,
         organizerId,
+        ticketPerStudent: data.ticketPerStudent,
       },
     });
     res.json({

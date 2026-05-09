@@ -5,7 +5,7 @@ import { api } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export default function ConfirmOrderButton({ eventId }: { eventId: string }) {
+export default function ConfirmOrderButton({ eventId, maxQuantity }: { eventId: string; maxQuantity: number }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -50,11 +50,11 @@ export default function ConfirmOrderButton({ eventId }: { eventId: string }) {
             <span className="font-semibold w-4 text-center">{quantity}</span>
             <button
               onClick={() =>{
-                if(quantity == 5) {
-                  toast.error("Maximum quantity is 5");
+                if(quantity == maxQuantity) {
+                  toast.error(`Maximum quantity is ${maxQuantity}`);
                   return;
                 }
-                 setQuantity((q) => Math.min(5, q + 1))
+                 setQuantity((q) => Math.min(maxQuantity, q + 1))
               }}
               className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition cursor-pointer font-bold select-none"
             >

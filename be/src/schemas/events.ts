@@ -34,4 +34,5 @@ export const createEventSchema = z.object({
     .default([]),
   price: z.number().min(0, "Price must be a positive number"),
   totalTickets: z.number().min(0, "Total tickets must be a positive number"),
+  ticketPerStudent: z.number().min(1, "Ticket per student must be at least 1").max(8, "We dont recommed setting more than 8").default(1),
 });

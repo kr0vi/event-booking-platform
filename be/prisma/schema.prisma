@@ -49,6 +49,7 @@ model Event {
 
   totalTickets Int
   ticketsSold  Int @default(0)
+  ticketPerStudent Int @default(1)
 
   price  Int
   status eventStatus @default(OPEN)

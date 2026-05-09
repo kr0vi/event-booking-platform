@@ -220,7 +220,7 @@ export default async function CheckoutPage(props: { searchParams: SearchParams }
               </div>
             </div>
 
-            <ConfirmOrderButton eventId={eventId} />
+            <ConfirmOrderButton eventId={eventId} maxQuantity = {event.ticketPerStudent} />
           </div>
         </div>
       </div>
