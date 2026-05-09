@@ -24,6 +24,7 @@ export default function CreateEventPage() {
     thingsToKnow: [""],
     price: 0,
     totalTickets: 0,
+    ticketPerStudent: 1,
   });
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -39,11 +40,18 @@ export default function CreateEventPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        name === "price" || name === "totalTickets" ? Number(value) : value,
-    }));
+    setFormData((prev) => {
+      let newValue: any = value;
+      if (name === "price" || name === "totalTickets") {
+        newValue = Number(value);
+      } else if (name === "ticketPerStudent") {
+        newValue = Math.min(Number(value), 8);
+      }
+      return {
+        ...prev,
+        [name]: newValue,
+      };
+    });
   };
 
   const handleHighlightChange = (
@@ -211,8 +219,8 @@ export default function CreateEventPage() {
             </div>
 
             <div className="mt-8 space-y-5 text-sm">
-              <div className="flex items-center justify-between">
-                <div className="w-1/2 pr-2">
+              <div className="flex items-center justify-between gap-2">
+                <div className="w-1/3 pr-1">
                   <label className="block mb-2 text-white/60">
                     Total Tickets
                   </label>
@@ -227,7 +235,7 @@ export default function CreateEventPage() {
                     className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-2 focus:outline-none focus:border-white/50"
                   />
                 </div>
-                <div className="w-1/2 pl-2">
+                <div className="w-1/3 px-1">
                   <label className="block mb-2 text-white/60">
                     Price (in currency)
                   </label>
@@ -239,6 +247,22 @@ export default function CreateEventPage() {
                     required
                     min="0"
                     placeholder="e.g. 2000"
+                    className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-2 focus:outline-none focus:border-white/50"
+                  />
+                </div>
+                <div className="w-1/3 pl-1">
+                  <label className="block mb-2 text-white/60">
+                    Max Tickets/Student
+                  </label>
+                  <input
+                    type="number"
+                    name="ticketPerStudent"
+                    value={formData.ticketPerStudent || ""}
+                    onChange={handleChange}
+                    required
+                    min="1"
+                    max="8"
+                    placeholder="e.g. 2"
                     className="w-full bg-transparent border border-white/20 rounded-lg px-4 py-2 focus:outline-none focus:border-white/50"
                   />
                 </div>
