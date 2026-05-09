@@ -269,3 +269,49 @@ export const cancelEvent = async (req: Request, res: Response) => {
     message: "Event cancelled successfully",
   });
 };
+
+export const deleteEvent = async (req: Request, res: Response) => {
+  const eventId = req.params.id;
+  if (!eventId || Array.isArray(eventId)) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event ID is required",
+    });
+  }
+  const hostId = (req as any).userId;
+  const findEvent = await prisma.event.findUnique({
+    where: {
+      id: eventId,
+      hostId: hostId,
+    },
+  });
+  if (!findEvent) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event not found or you are not the host",
+    });
+  }
+  if (findEvent.status === "COMPLETED") {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Cannot delete a completed event",
+    });
+  }
+  await prisma.event.update({
+    where: {
+      id: eventId,
+      hostId,
+    },
+    data: {
+      isDeleted: true,
+      deletedAt: new Date(),
+    },
+  });
+  res.json({
+    success: true,
+    message: "Event deleted successfully",
+  });
+};
