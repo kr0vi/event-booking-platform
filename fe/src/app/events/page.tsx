@@ -19,7 +19,7 @@ interface EventsPageProps {
 interface PaginatedEventsResponse {
   success: boolean;
   message: string;
-  data: (EventType & { organizer: { name: string } })[];
+  data: (EventType & { host: { name: string } })[];
   pagination?: {
     currentPage: number;
     pageSize: number;
@@ -27,7 +27,11 @@ interface PaginatedEventsResponse {
   };
 }
 
-export default async function EventsPage({ searchParams }: { searchParams?: Promise<{ page: string }> }) {
+export default async function EventsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ page: string }>;
+}) {
   const requestedPage = parseInt((await searchParams)?.page || "1");
   console.log("Requested page:", requestedPage);
   const page =
@@ -54,7 +58,6 @@ export default async function EventsPage({ searchParams }: { searchParams?: Prom
       </div>
     );
   }
-
 
   const allEvents = response.data || [];
   const pagination = response.pagination;
@@ -146,12 +149,12 @@ export default async function EventsPage({ searchParams }: { searchParams?: Prom
                             <Avatar
                               className="w-[18px] h-[18px] rounded-full  mr-2 shrink-0 flex items-center justify-center text-[8px] text-white font-bold shadow-sm"
                               size={18}
-                              name={event.organizer.name}
+                              name={event.host.name}
                             />
                             <span className="truncate pr-2">
                               By{" "}
-                              {event.organizer.name.charAt(0).toUpperCase() +
-                                event.organizer.name.slice(1)}
+                              {event.host.name.charAt(0).toUpperCase() +
+                                event.host.name.slice(1)}
                             </span>
                           </div>
                           <div className="flex items-center text-white/50 text-[13px]">

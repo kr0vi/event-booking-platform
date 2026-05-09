@@ -13,6 +13,6 @@ rootRouter.use("/events", eventsRouter);
 rootRouter.use("/auth", authRouter);
 rootRouter.use("/orders", orderRouter);
 rootRouter.use("/tickets", ticketsRouter);
-rootRouter.use("/organiser", organiserRouter);
+rootRouter.use("/host", organiserRouter);
 
 export default rootRouter;

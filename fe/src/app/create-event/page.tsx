@@ -29,9 +29,9 @@ export default function CreateEventPage() {
   });
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
-      router.push("/organizer/signup");
+      router.push("/host/signup");
     } else {
-      if (isLoaded && user?.role !== "ORGANIZER") {
+      if (isLoaded && user?.role !== "HOST") {
         router.push("/events");
       }
     }
@@ -98,7 +98,6 @@ export default function CreateEventPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-   
 
     try {
       // Filter out empty thingsToKnow
@@ -121,7 +120,7 @@ export default function CreateEventPage() {
         }, 2000);
       } else {
         // setError(data.message || "Failed to create event");
-          toast.error(data.message || "Failed to create event");
+        toast.error(data.message || "Failed to create event");
       }
     } catch (err: any) {
       // setError(err.response?.data?.message || "An error occurred");
@@ -154,10 +153,6 @@ export default function CreateEventPage() {
         onSubmit={handleSubmit}
         className="relative z-10 mx-auto max-w-6xl px-6 py-8 md:px-10 md:py-10"
       >
-
-
-       
-
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-2xl font-bold">Create New Event</h1>
           <button

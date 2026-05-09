@@ -18,18 +18,18 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (isLoaded) {
-      if (!isSignedIn || user?.role !== "ORGANIZER") {
+      if (!isSignedIn || user?.role !== "HOST") {
         router.push("/login");
       } else {
-        fetchOrganizerEvents(user.id);
+        fetchHostEvents(user.id);
       }
     }
   }, [isLoaded, isSignedIn, user, router]);
 
-  const fetchOrganizerEvents = async (organizerId: number) => {
+  const fetchHostEvents = async (hostId: number) => {
     try {
       setLoadingEvents(true);
-      const res = await api.get(`/organiser/events`);
+      const res = await api.get(`/host/events`);
       if (res.data.success) {
         setEvents(res.data.data);
       } else {
@@ -43,7 +43,7 @@ export default function DashboardPage() {
     }
   };
 
-  if (!isLoaded || (isLoaded && (!isSignedIn || user?.role !== "ORGANIZER"))) {
+  if (!isLoaded || (isLoaded && (!isSignedIn || user?.role !== "HOST"))) {
     return (
       <div className="flex h-screen items-center justify-center bg-[#131517]">
         <p className="text-white/50">Loading...</p>

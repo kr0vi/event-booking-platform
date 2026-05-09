@@ -1,15 +1,27 @@
 "use client";
 
 import { useUser } from "@/lib/auth/useUser";
-import { ArrowUpRight, ArrowRight, Lock, Shield, CreditCard, Mail, CheckCircle2, Ticket, Users, Calendar, TrendingUp } from "lucide-react";
+import {
+  ArrowUpRight,
+  ArrowRight,
+  Lock,
+  Shield,
+  CreditCard,
+  Mail,
+  CheckCircle2,
+  Ticket,
+  Users,
+  Calendar,
+  TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
 
 export default function Home() {
-  const { isSignedIn, isLoaded,user } = useUser();
+  const { isSignedIn, isLoaded, user } = useUser();
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      if(user?.role === "ORGANIZER") {
+      if (user?.role === "HOST") {
         window.location.href = "/dashboard";
       } else {
         window.location.href = "/home";
@@ -39,7 +51,8 @@ export default function Home() {
 
             <p className="text-lg font-light text-white/90 max-w-xl mb-8">
               All your university events, in one place. Discover, share,
-              <br className="hidden md:block" /> and attend events that matter to you.
+              <br className="hidden md:block" /> and attend events that matter
+              to you.
             </p>
             <div className="gap-3 flex items-center">
               <Link
@@ -50,7 +63,7 @@ export default function Home() {
               </Link>
               <span className="font-light text-white/60 mx-2">or</span>
               <Link
-                href={'/events'}
+                href={"/events"}
                 className="underline font-light cursor-pointer text-white hover:text-white/80 transition-colors outline-none rounded-2xl relative z-10 text-sm"
               >
                 Create your own
@@ -58,7 +71,7 @@ export default function Home() {
               <ArrowUpRight className="-ml-1 text-white/70" size={18} />
             </div>
           </article>
-          
+
           <article className="w-full md:w-1/2 pb-20 md:pb-32 mt-10 md:mt-20 flex items-center justify-center opacity-0-start animate-fade-in-up delay-300">
             <img
               src={"/assets/images/tickets.png"}
@@ -72,7 +85,8 @@ export default function Home() {
         <section className="max-w-7xl mx-auto px-6 md:px-12 mt-10 md:mt-20 opacity-0-start animate-fade-in-up delay-400">
           <div className="text-center mb-16">
             <h3 className="text-4xl md:text-5xl font-light mb-4">
-              What's going on at the <span className="italic font-semibold">moment</span>
+              What's going on at the{" "}
+              <span className="italic font-semibold">moment</span>
             </h3>
             <p className="text-white/50 text-lg max-w-xl mx-auto font-light">
               All your university events, in one place. Discover, share, and
@@ -96,11 +110,15 @@ export default function Home() {
               Trusted by Universities everywhere
             </span>
             <div className="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-700">
-              <span className="text-2xl font-bold tracking-tight">Stanford</span>
+              <span className="text-2xl font-bold tracking-tight">
+                Stanford
+              </span>
               <span className="text-2xl font-bold tracking-tight">Harvard</span>
               <span className="text-2xl font-bold tracking-tight">MIT</span>
               <span className="text-2xl font-bold tracking-tight">Oxford</span>
-              <span className="text-2xl font-bold tracking-tight">Cambridge</span>
+              <span className="text-2xl font-bold tracking-tight">
+                Cambridge
+              </span>
             </div>
           </div>
         </section>
@@ -156,12 +174,13 @@ export default function Home() {
 
             {/* Feature 4 */}
             <div className="col-span-1 md:col-span-2 rounded-2xl border border-white/5 bg-[#1a1c1e] relative overflow-hidden p-8 flex flex-col justify-between group hover:border-white/10 transition-all duration-500">
-               <div className="absolute inset-0 bg-gradient-to-tl from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-tl from-white/[0.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <TrendingUp className="text-white/20 w-12 h-12 relative z-10" />
               <div className="relative z-10">
                 <h4 className="text-xl font-medium mb-2">Deep Analytics</h4>
                 <p className="text-white/50 text-sm">
-                  Track views, ticket sales velocity, and scan rates in real-time.
+                  Track views, ticket sales velocity, and scan rates in
+                  real-time.
                 </p>
               </div>
             </div>
@@ -184,7 +203,10 @@ export default function Home() {
                 { icon: Mail, text: ["No Spam", "Guarantee"] },
                 { icon: Lock, text: ["Encrypted", "Data"] },
               ].map((item, i) => (
-                <div key={i} className="flex flex-col items-center gap-4 text-center group">
+                <div
+                  key={i}
+                  className="flex flex-col items-center gap-4 text-center group"
+                >
                   <div className="group-hover:scale-110 transition-transform duration-300">
                     <item.icon className="w-6 h-6 text-white/40 group-hover:text-white/80 transition-colors" />
                   </div>

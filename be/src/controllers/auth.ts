@@ -148,7 +148,7 @@ export const hostSignup = async (req: Request, res: Response) => {
           id: user.id,
         },
         data: {
-          role: "HOST" as any,
+          role: "HOST",
         },
       });
     }
@@ -156,7 +156,7 @@ export const hostSignup = async (req: Request, res: Response) => {
     user = await prisma.user.create({
       data: {
         name,
-        role: "HOST" as any,
+        role: "HOST",
         email,
         passwordHash: hashSync(password, 10),
       },

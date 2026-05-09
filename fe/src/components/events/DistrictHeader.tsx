@@ -10,7 +10,7 @@ export function DistrictHeader() {
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     if (isLoaded) {
-      setIsAdmin(user?.role === "ORGANIZER" || user?.role === "ADMIN");
+      setIsAdmin(user?.role === "HOST" || user?.role === "ADMIN");
     }
   }, [isLoaded]);
   return (

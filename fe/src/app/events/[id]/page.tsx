@@ -1,5 +1,9 @@
 import BuyEventForm from "@/components/events/BuyEventForm";
-import { changeTimeFormat, getDayFromDate, getMonthFromDate } from "@/utils/helper";
+import {
+  changeTimeFormat,
+  getDayFromDate,
+  getMonthFromDate,
+} from "@/utils/helper";
 import axios from "axios";
 import { MapPin } from "lucide-react";
 
@@ -22,7 +26,7 @@ export default async function EventPage({ params }: EventPageProps) {
     );
   }
   const event = data.data;
-  console.log(event.organizer.name);
+  console.log(event.host.name);
   return (
     <main className="relative  min-h-screen bg-[#131517] text-white overflow-hidden">
       <video
@@ -58,8 +62,8 @@ export default async function EventPage({ params }: EventPageProps) {
                 <div>
                   <p className="mb-2 text-white/60">Hosted By</p>
                   <p className="font-semibold ">
-                    {event.organizer.name.charAt(0).toUpperCase() +
-                      event.organizer.name.slice(1)}
+                    {event.host.name.charAt(0).toUpperCase() +
+                      event.host.name.slice(1)}
                   </p>
                 </div>
                 <div>

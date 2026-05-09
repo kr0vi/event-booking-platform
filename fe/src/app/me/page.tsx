@@ -280,12 +280,12 @@ export default function MePage() {
               </div>
             </div>
 
-            {user?.role !== "ORGANIZER" ? (
+            {user?.role !== "HOST" ? (
               <Link
-                href="/organizer/signup"
+                href="/host/signup"
                 className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-blue-200 hover:text-white"
               >
-                Become an Organizer
+                Become a Host
                 <ArrowRight size={15} />
               </Link>
             ) : (
@@ -293,7 +293,7 @@ export default function MePage() {
                 href="/dashboard"
                 className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-blue-200 hover:text-white"
               >
-                Go to Organizer Dashboard
+                Go to Host Dashboard
                 <ArrowRight size={15} />
               </Link>
             )}

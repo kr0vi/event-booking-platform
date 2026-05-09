@@ -5,7 +5,11 @@ import { api } from "@/utils/api";
 import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
 import { Compass, Landmark, MapPin } from "lucide-react";
-import { changeTimeFormat, getDayFromDate, getMonthFromDate } from "@/utils/helper";
+import {
+  changeTimeFormat,
+  getDayFromDate,
+  getMonthFromDate,
+} from "@/utils/helper";
 import Avatar from "boring-avatars";
 
 export default function HomePage() {
@@ -149,14 +153,12 @@ export default function HomePage() {
                                   <Avatar
                                     className="w-[18px] h-[18px] rounded-full  mr-2 shrink-0 flex items-center justify-center text-[8px] text-white font-bold shadow-sm"
                                     size={18}
-                                    name={event.organizer.name}
+                                    name={event.host.name}
                                   />
                                   <span className="truncate pr-2">
                                     By{" "}
-                                    {event.organizer.name
-                                      .charAt(0)
-                                      .toUpperCase() +
-                                      event.organizer.name.slice(1)}
+                                    {event.host.name.charAt(0).toUpperCase() +
+                                      event.host.name.slice(1)}
                                   </span>
                                 </div>
                                 <div className="flex items-center text-white/50 text-[13px]">

@@ -18,7 +18,7 @@ export interface EventType {
   highlights?: EventHighlight[] | null;
   thingsToKnow?: string[] | null;
   status: "OPEN" | "CLOSED" | "SOON";
-  organizerId: number;
+  hostId: number;
   createdAt: string;
   updatedAt: string;
 }
