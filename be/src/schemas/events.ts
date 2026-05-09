@@ -34,5 +34,61 @@ export const createEventSchema = z.object({
     .default([]),
   price: z.number().min(0, "Price must be a positive number"),
   totalTickets: z.number().min(0, "Total tickets must be a positive number"),
-  ticketPerStudent: z.number().min(1, "Ticket per student must be at least 1").max(8, "We dont recommed setting more than 8").default(1),
+  ticketPerStudent: z
+    .number()
+    .min(1, "Ticket per student must be at least 1")
+    .max(8, "We dont recommed setting more than 8")
+    .default(1),
+});
+export const updateEventSchema = z.object({
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .max(100, "Title must be less than 100 characters")
+    .optional(),
+  description: z
+    .string()
+    .min(10, "Description is required")
+    .max(800, "Description must be less than 800 characters")
+    .optional(),
+  location: z
+    .string()
+    .min(1, "Location is required")
+    .max(100, "Location must be less than 100 characters")
+    .optional(),
+  eventDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format")
+    .optional(),
+  eventTime: z.string().optional(),
+  posterImage: z.string().url("Invalid image URL").optional(),
+  highlights: z
+    .array(
+      z.object({
+        title: z
+          .string()
+          .max(100, "Highlight title must be less than 100 characters"),
+        description: z
+          .string()
+          .max(200, "Highlight description must be less than 200 characters"),
+      }),
+    )
+    .optional(),
+  thingsToKnow: z
+    .array(
+      z.string().max(100, "Thing to know must be less than 100 characters"),
+    )
+    .default([])
+    .optional(),
+  price: z.number().min(0, "Price must be a positive number").optional(),
+  totalTickets: z
+    .number()
+    .min(0, "Total tickets must be a positive number")
+    .optional(),
+  ticketPerStudent: z
+    .number()
+    .min(1, "Ticket per student must be at least 1")
+    .max(8, "We dont recommed setting more than 8")
+    .default(1)
+    .optional(),
 });

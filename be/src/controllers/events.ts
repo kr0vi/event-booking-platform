@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import { prisma } from "../index.js";
-import { createEventSchema } from "../schemas/events.js";
+import { createEventSchema, updateEventSchema } from "../schemas/events.js";
 
 export const getAllEvents = async (req: Request, res: Response) => {
   const pageNumber = Math.min(parseInt(req.query.page as string) || 1, 100); // Limit to 100 pages to prevent abuse
@@ -158,5 +158,68 @@ export const getUserEvents = async (req: Request, res: Response) => {
     success: true,
     data: events,
     message: "User events fetched successfully",
+  });
+};
+
+export const updateEvent = async (req: Request, res: Response) => {
+  const eventId = req.params.id;
+  if (!eventId || Array.isArray(eventId)) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event ID is required",
+    });
+  }
+  const hostId = (req as any).userId;
+
+  const { success, data , error } = updateEventSchema.safeParse(req.body);
+  if (!success) {
+    const message = error.issues[0]?.message ?? "Invalid input";
+    return res.json({
+      success: false,
+      data: null,
+      message,
+    });
+  }
+  let validData = data;
+
+  const findEvent = await prisma.event.findUnique({
+    where: {
+      id: eventId,
+      hostId: hostId,
+    },
+  });
+  if (!findEvent) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event not found or you are not the host",
+    });
+  }
+  if (
+    findEvent.status === "CANCELLED" ||
+    findEvent.status === "COMPLETED" ||
+    findEvent.isDeleted
+  ) {
+    return res.json({
+      success: false,
+      data: null,
+      message:
+        "Cannot update a cancelled or completed event or an event that is deleted",
+    });
+  }
+  const updatedEvent = await prisma.event.update({
+    where: {
+      id: eventId,
+      hostId,
+    },
+    data: Object.fromEntries(
+      Object.entries(validData).filter(([, value]) => value !== undefined),
+    ),
+  });
+  res.json({
+    success: true,
+    data: updatedEvent,
+    message: "Event updated successfully",
   });
 };
