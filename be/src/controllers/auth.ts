@@ -119,7 +119,7 @@ export const me = async (req: Request, res: Response) => {
   });
 };
 
-export const organizerSignup = async (req: Request, res: Response) => {
+export const hostSignup = async (req: Request, res: Response) => {
   const { success, data, error } = signupSchema.safeParse(req.body);
   if (!success) {
     res.json({
@@ -136,7 +136,7 @@ export const organizerSignup = async (req: Request, res: Response) => {
     },
   });
   if (user) {
-    if (user.role == "ORGANIZER") {
+    if (String(user.role) == "HOST") {
       res.json({
         success: false,
         data: null,
@@ -148,7 +148,7 @@ export const organizerSignup = async (req: Request, res: Response) => {
           id: user.id,
         },
         data: {
-          role: "ORGANIZER",
+          role: "HOST" as any,
         },
       });
     }
@@ -156,7 +156,7 @@ export const organizerSignup = async (req: Request, res: Response) => {
     user = await prisma.user.create({
       data: {
         name,
-        role: "ORGANIZER",
+        role: "HOST" as any,
         email,
         passwordHash: hashSync(password, 10),
       },
@@ -164,7 +164,7 @@ export const organizerSignup = async (req: Request, res: Response) => {
   }
   res.json({
     success: true,
-    message: "ORGANIZER created successfully",
+    message: "Host created successfully",
     data: user,
   });
 };

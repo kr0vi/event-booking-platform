@@ -13,7 +13,7 @@ export const getAllEvents = async (req: Request, res: Response) => {
     skip,
     take: pageSize,
     include: {
-      organizer: {
+      host: {
         select: {
           name: true,
         },
@@ -58,7 +58,7 @@ export const getEventById = async (req: Request, res: Response) => {
       id: eventId,
     },
     include: {
-      organizer: {
+      host: {
         select: {
           name: true,
         },
@@ -80,7 +80,7 @@ export const getEventById = async (req: Request, res: Response) => {
 };
 
 export const createEvents = async (req: Request, res: Response) => {
-  const organizerId = (req as any).userId;
+  const hostId = (req as any).userId;
   const { success, data, error } = createEventSchema.safeParse(req.body);
   if (!success) {
     const message = error.issues[0]?.message ?? "Invalid input";
@@ -104,7 +104,7 @@ export const createEvents = async (req: Request, res: Response) => {
         thingsToKnow: data.thingsToKnow,
         price: data.price,
         totalTickets: data.totalTickets,
-        organizerId,
+        hostId,
         ticketPerStudent: data.ticketPerStudent,
       },
     });
@@ -138,7 +138,7 @@ export const getUserEvents = async (req: Request, res: Response) => {
           location: true,
           price: true,
           posterImage: true,
-          organizer: {
+          host: {
             select: {
               name: true,
             },

@@ -31,6 +31,7 @@ model User {
 
 enum Role {
   USER
+  HOST
   ORGANIZER
   ADMIN
 }
@@ -47,15 +48,15 @@ model Event {
   highlights    Json[]
   thingsToKnow  String[] @default([])
 
-  totalTickets Int
-  ticketsSold  Int @default(0)
+  totalTickets     Int
+  ticketsSold      Int @default(0)
   ticketPerStudent Int @default(1)
 
   price  Int
   status eventStatus @default(OPEN)
 
-  organizerId Int
-  organizer   User @relation(fields: [organizerId], references: [id])
+  hostId Int
+  host   User @relation(fields: [hostId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

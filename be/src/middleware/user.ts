@@ -3,7 +3,7 @@ import { JWT_SECRET_KEY } from "../secrets.js";
 import { prisma } from "../index.js";
 // @ts-ignore
 import jwt, { type JwtPayload } from "jsonwebtoken";
-export const organizerMiddleware = async (
+export const hostMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -36,7 +36,7 @@ export const organizerMiddleware = async (
       },
     });
     console.log("User role from database:", role?.role);
-    if (role?.role !== "ORGANIZER") {
+    if (role?.role !== "HOST") {
       return res.json({
         success: false,
         data: null,
@@ -45,7 +45,7 @@ export const organizerMiddleware = async (
     }
     next();
   } catch (error) {
-    console.error("Error in organizerMiddleware:", error);
+    console.error("Error in hostMiddleware:", error);
     res.json({
       success: false,
       data: null,
