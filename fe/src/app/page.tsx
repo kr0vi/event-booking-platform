@@ -6,10 +6,14 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 export default function Home() {
-  const { isSignedIn, isLoaded } = useUser();
+  const { isSignedIn, isLoaded,user } = useUser();
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      window.location.href = "/home";
+      if(user?.role === "ORGANIZER") {
+        window.location.href = "/dashboard";
+      } else {
+        window.location.href = "/home";
+      }
     }
   }, [isLoaded, isSignedIn]);
 
