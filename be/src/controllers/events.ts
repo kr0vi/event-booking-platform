@@ -223,3 +223,49 @@ export const updateEvent = async (req: Request, res: Response) => {
     message: "Event updated successfully",
   });
 };
+
+export const cancelEvent = async (req: Request, res: Response) => {
+  const eventId = req.params.id;
+  if (!eventId || Array.isArray(eventId)) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event ID is required",
+    });
+  } 
+  const hostId = (req as any).userId;
+  const findEvent = await prisma.event.findUnique({
+    where: {
+      id: eventId,
+      hostId: hostId,
+    },
+  });
+  if (!findEvent) {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event not found or you are not the host",
+    });
+  }
+  if (findEvent.status === "CANCELLED" || findEvent.status === "COMPLETED") {
+    return res.json({
+      success: false,
+      data: null,
+      message: "Event is already cancelled or completed",
+    });
+  }
+  const cancelledEvent = await prisma.event.update({
+    where: {
+      id: eventId,
+      hostId,
+    },
+    data: {
+      status: "CANCELLED",
+    },
+  });
+  res.json({
+    success: true,
+    data: cancelledEvent,
+    message: "Event cancelled successfully",
+  });
+};
