@@ -53,6 +53,11 @@ export const logout = () => {
   removeToken();
 };
 
+export const getHostEventAnalytics = async (eventId: string) => {
+  const { data } = await api.get(`/host/events/${eventId}/analytics`);
+  return data;
+};
+
 
 
 export function getErrorMessage(error: unknown): string {

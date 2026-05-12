@@ -26,7 +26,6 @@ export default function RootLayout({
     <html lang="en" className={`${inter.className} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-[#f8f9fa] relative">
         <AuthProvider>
-          <div className="bg-linear-to-b fixed from-[#426384]/40 pointer-events-none  to-transparent w-full z-100 h-20 "></div>
           <DistrictHeader />
           {children}
           <Footer></Footer>

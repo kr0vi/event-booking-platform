@@ -7,7 +7,7 @@ import { api } from "@/utils/api";
 import { EventCard } from "@/components/events/EventCard";
 import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
-import { Landmark, MapPin } from "lucide-react";
+import { Landmark, LineChart, MapPin } from "lucide-react";
 import { getDayFromDate } from "@/utils/helper";
 
 export default function DashboardPage() {
@@ -131,47 +131,58 @@ export default function DashboardPage() {
 
                       {/* Event Cards Set */}
                       <div className="flex flex-col gap-3.5 mb-15">
-                        <Link
-                          href={`/events/${event.id}`}
-                          className="block group focus:outline-none"
-                        >
-                          <div className="flex justify-between items-center bg-white/10 hover:bg-white/20 border border-white/30 rounded-2xl p-4 transition-all duration-300">
-                            <div className="flex flex-col pr-4 overflow-hidden flex-1">
-                              <span className="text-white/50 text-[13px] font-medium mb-1.5 tracking-wide">
-                                {event.time}
-                              </span>
-                              <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2  transition-all duration-300 line-clamp-2 pr-2">
-                                {event.title}
-                              </h4>
-                              <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
-                                <div className="w-[18px] h-[18px] rounded-full bg-indigo-500/80 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">
-                                  H
+                        <div className="block group focus:outline-none">
+                          <Link
+                            href={`/events/${event.id}`}
+                            className="block focus:outline-none"
+                          >
+                            <div className="flex justify-between items-center bg-white/10 hover:bg-white/20 border border-white/30 rounded-2xl p-4 transition-all duration-300">
+                              <div className="flex flex-col pr-4 overflow-hidden flex-1">
+                                <span className="text-white/50 text-[13px] font-medium mb-1.5 tracking-wide">
+                                  {event.time}
+                                </span>
+                                <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2 transition-all duration-300 line-clamp-2 pr-2">
+                                  {event.title}
+                                </h4>
+                                <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
+                                  <div className="w-[18px] h-[18px] rounded-full bg-white/15 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">
+                                    H
+                                  </div>
+                                  <span className="truncate pr-2">
+                                    By Host Name
+                                  </span>
                                 </div>
-                                <span className="truncate pr-2">
-                                  By Host Name
-                                </span>
+                                <div className="flex items-center text-white/50 text-[13px]">
+                                  <MapPin
+                                    size={13}
+                                    className="mr-2 shrink-0 opacity-70"
+                                  />
+                                  <span className="truncate pr-2">
+                                    {event.location}
+                                  </span>
+                                </div>
                               </div>
-                              <div className="flex items-center text-white/50 text-[13px]">
-                                <MapPin
-                                  size={13}
-                                  className="mr-2 shrink-0 opacity-70"
-                                />
-                                <span className="truncate pr-2">
-                                  {event.location}
-                                </span>
-                              </div>
-                            </div>
 
-                            {/* Image right */}
-                            <div className="w-[100px] h-[100px] sm:w-[124px] sm:h-[100px] bg-white/5 rounded-[12px] shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
-                              <img
-                                src={event.posterImage}
-                                className="w-full h-full object-cover transition-transform duration-700 ease-out"
-                                alt="Event Cover"
-                              />
+                              <div className="w-[100px] h-[100px] sm:w-[124px] sm:h-[100px] bg-white/5 rounded-[12px] shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
+                                <img
+                                  src={event.posterImage}
+                                  className="w-full h-full object-cover transition-transform duration-700 ease-out"
+                                  alt="Event Cover"
+                                />
+                              </div>
                             </div>
+                          </Link>
+
+                          <div className="mt-3 flex justify-end">
+                            <Link
+                              href={`/dashboard/events/${event.id}/analytics`}
+                              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[12px] font-semibold text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                            >
+                              <LineChart size={14} />
+                              Analytics
+                            </Link>
                           </div>
-                        </Link>
+                        </div>
                       </div>
                     </div>
                     {/* CARD MARGIN SET */}

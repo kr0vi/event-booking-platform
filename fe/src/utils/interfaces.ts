@@ -45,6 +45,39 @@ export interface OrderType {
   updatedAt: string;
 }
 
+export interface RegistrationTimelinePoint {
+  date: string;
+  count: number;
+}
+
+export interface HostEventAnalytics {
+  totalRegistrations: number;
+  totalAttendees: number;
+  attendanceRate: number;
+  remainingCapacity: number;
+  registrationTimeline: RegistrationTimelinePoint[];
+}
+
+export interface HostEventSummary {
+  id: string;
+  title: string;
+  description?: string | null;
+  location: string;
+  date: string;
+  time: string;
+  posterImage?: string | null;
+  totalTickets: number;
+  ticketsSold: number;
+  ticketPerStudent: number;
+  price: number;
+  status: "DRAFT" | "PUBLISHED" | "CANCELLED" | "COMPLETED";
+  isDeleted?: boolean;
+  deletedAt?: string | null;
+  hostId: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface LoginResponseData {
   token: string;
 }
