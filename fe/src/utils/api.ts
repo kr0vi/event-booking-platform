@@ -31,7 +31,10 @@ export const login = async (email: string, password: string) => {
 };
 
 export const signup = async (email: string, password: string, name: string) => {
-  const { data } = await api.post(process.env.NEXT_PUBLIC_API_SIGNUP_URL || "/auth/signup", { email, password, name });
+  const { data } = await api.post(
+    process.env.NEXT_PUBLIC_API_SIGNUP_URL || "/auth/signup",
+    { email, password, name },
+  );
 
   if (data.success) {
     window.location.href = "/login";
@@ -40,10 +43,11 @@ export const signup = async (email: string, password: string, name: string) => {
   return data;
 };
 
-
 // Me: fetch currently logged-in user from token.
 export const getCurrentUser = async () => {
-  const { data } = await api.get(process.env.NEXT_PUBLIC_API_ME_URL || "/auth/me");
+  const { data } = await api.get(
+    process.env.NEXT_PUBLIC_API_ME_URL || "/auth/me",
+  );
   return data.user;
 };
 
@@ -58,7 +62,23 @@ export const getHostEventAnalytics = async (eventId: string) => {
   return data;
 };
 
+export const updateHostEvent = async (
+  eventId: string,
+  payload: Record<string, unknown>,
+) => {
+  const { data } = await api.patch(`/events/${eventId}`, payload);
+  return data;
+};
 
+export const cancelHostEvent = async (eventId: string) => {
+  const { data } = await api.post(`/events/${eventId}/cancel`);
+  return data;
+};
+
+export const deleteHostEvent = async (eventId: string) => {
+  const { data } = await api.post(`/events/${eventId}/delete`);
+  return data;
+};
 
 export function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {

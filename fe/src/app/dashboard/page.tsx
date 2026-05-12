@@ -4,11 +4,10 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/lib/auth/context";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { EventCard } from "@/components/events/EventCard";
 import Link from "next/link";
 import { useUser } from "@/lib/auth/useUser";
-import { Landmark, LineChart, MapPin } from "lucide-react";
-import { getDayFromDate } from "@/utils/helper";
+import { Landmark, LineChart, MapPin, PencilLine } from "lucide-react";
+import { getDayFromDate, getMonthFromDate } from "@/utils/helper";
 
 export default function DashboardPage() {
   const { isSignedIn, isLoaded, user } = useUser();
@@ -72,9 +71,9 @@ export default function DashboardPage() {
         </div>
 
         {loadingEvents ? (
-          <p className="text-white/50 text-sm font-medium">
-            Loading your events...
-          </p>
+          <div className="flex justify-center items-center py-12">
+            <p className="text-white/50">Loading Events...</p>
+          </div>
         ) : events.length === 0 ? (
           <div className="lp-12 text-center">
             <div className="w-40 h-40 mx-auto bg-white/10 border border-dashed border-white/40 rounded-full flex items-center justify-center">
@@ -116,13 +115,10 @@ export default function DashboardPage() {
                       {/* Date Header */}
                       <div className="mb-2 absolute top-[20%] -left-[35%]">
                         <h3 className="text-white font-bold text-base flex items-baseline gap-2 leading-none">
-                          {getDayFromDate(event.date)},{" "}
+                          {getDayFromDate(event.date)},
                           <span className="text-white/50 font-medium ">
-                            {event.date
-                              .split("-")
-                              .reverse()
-                              .join("-")
-                              .slice(0, 5)}
+                            {event.date.split("-")[2]}{" "}
+                            {getMonthFromDate(event.date)}
                           </span>
                         </h3>
                       </div>
@@ -132,55 +128,57 @@ export default function DashboardPage() {
                       {/* Event Cards Set */}
                       <div className="flex flex-col gap-3.5 mb-15">
                         <div className="block group focus:outline-none">
-                          <Link
-                            href={`/events/${event.id}`}
-                            className="block focus:outline-none"
-                          >
-                            <div className="flex justify-between items-center bg-white/10 hover:bg-white/20 border border-white/30 rounded-2xl p-4 transition-all duration-300">
-                              <div className="flex flex-col pr-4 overflow-hidden flex-1">
-                                <span className="text-white/50 text-[13px] font-medium mb-1.5 tracking-wide">
-                                  {event.time}
-                                </span>
-                                <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2 transition-all duration-300 line-clamp-2 pr-2">
-                                  {event.title}
-                                </h4>
-                                <div className="flex items-center text-white/60 text-[13px] mb-1.5 min-w-0">
-                                  <div className="w-[18px] h-[18px] rounded-full bg-white/15 mr-2 shrink-0 border border-white/20 flex items-center justify-center text-[8px] text-white font-bold shadow-sm">
-                                    H
-                                  </div>
-                                  <span className="truncate pr-2">
-                                    By Host Name
-                                  </span>
-                                </div>
-                                <div className="flex items-center text-white/50 text-[13px]">
-                                  <MapPin
-                                    size={13}
-                                    className="mr-2 shrink-0 opacity-70"
-                                  />
-                                  <span className="truncate pr-2">
-                                    {event.location}
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div className="w-[100px] h-[100px] sm:w-[124px] sm:h-[100px] bg-white/5 rounded-[12px] shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
-                                <img
-                                  src={event.posterImage}
-                                  className="w-full h-full object-cover transition-transform duration-700 ease-out"
-                                  alt="Event Cover"
-                                />
-                              </div>
-                            </div>
-                          </Link>
-
-                          <div className="mt-3 flex justify-end">
+                          <div className="bg-white/3 hover:bg-white/5 border border-white/8 rounded-2xl p-4 transition-all duration-300">
                             <Link
-                              href={`/dashboard/events/${event.id}/analytics`}
-                              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[12px] font-semibold text-white/80 transition-colors hover:bg-white/10 hover:text-white"
+                              href={`/events/${event.id}`}
+                              className="block focus:outline-none"
                             >
-                              <LineChart size={14} />
-                              Analytics
+                              <div className="flex justify-between items-center ">
+                                <div className="flex flex-col pr-4 overflow-hidden flex-1">
+                                  <span className="text-white/50 text-[13px] font-medium mb-1.5 tracking-wide">
+                                    {event.time}
+                                  </span>
+                                  <h4 className="text-white font-semibold text-[17px] leading-snug tracking-tight mb-2 transition-all duration-300 line-clamp-2 pr-2">
+                                    {event.title}
+                                  </h4>
+                                  <div className="flex items-center text-white/50 text-[13px]">
+                                    <MapPin
+                                      size={13}
+                                      className="mr-2 shrink-0 opacity-70"
+                                    />
+                                    <span className="truncate pr-2">
+                                      {event.location}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="w-[100px] h-[100px] sm:w-[124px] sm:h-[100px] bg-white/5 rounded-[12px] shrink-0 overflow-hidden relative border border-white/5 group-hover:border-white/15 transition-colors">
+                                  <img
+                                    src={event.posterImage}
+                                    className="w-full h-full object-cover transition-transform duration-700 ease-out"
+                                    alt="Event Cover"
+                                  />
+                                </div>
+                              </div>
                             </Link>
+
+                            <div className="flex flex-wrap gap-2 mt-5">
+                              <Link
+                                href={`/dashboard/manage/${event.id}`}
+                                className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-[12px] font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white/90"
+                              >
+                                <PencilLine size={14} />
+                                Manage Event
+                              </Link>
+
+                              <Link
+                                href={`/dashboard/events/${event.id}/analytics`}
+                                className="inline-flex items-center gap-2 rounded-xl bg-white/5 px-4 py-2 text-[12px] font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white/90"
+                              >
+                                <LineChart size={14} />
+                                Analytics
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </div>

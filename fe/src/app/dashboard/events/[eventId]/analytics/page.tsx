@@ -3,13 +3,18 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { LineChart, ArrowLeft, CalendarDays, Users, UserCheck, Gauge, Lock } from "lucide-react";
+import {
+  LineChart,
+  ArrowLeft,
+  CalendarDays,
+  Users,
+  UserCheck,
+  Gauge,
+  Lock,
+} from "lucide-react";
 import { useUser } from "@/lib/auth/useUser";
 import { api, getErrorMessage } from "@/utils/api";
-import type {
-  HostEventAnalytics,
-  HostEventSummary,
-} from "@/utils/interfaces";
+import type { HostEventAnalytics, HostEventSummary } from "@/utils/interfaces";
 
 type AnalyticsState = {
   data: HostEventAnalytics | null;
@@ -99,7 +104,9 @@ export default function HostEventAnalyticsPage() {
 
   const maxTimelineCount = Math.max(
     1,
-    ...(analytics.data?.registrationTimeline.map((point) => point.count) ?? [1]),
+    ...(analytics.data?.registrationTimeline.map((point) => point.count) ?? [
+      1,
+    ]),
   );
 
   if (!isLoaded || !isSignedIn || user?.role !== "HOST") {
