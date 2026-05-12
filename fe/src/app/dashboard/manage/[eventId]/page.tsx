@@ -18,6 +18,7 @@ import {
   getMonthFromDate,
 } from "@/utils/helper";
 import EditEventForm from "../../events/[eventId]/manage/EventEditForm";
+import CancelEventPanel from "../../events/[eventId]/manage/CancelEventPanel";
 
 export default function StaticManagePage() {
   const params = useParams<{ eventId: string }>();
@@ -116,18 +117,18 @@ export default function StaticManagePage() {
 
             <aside className=" border-white/8 bg-[#111214] p-6">
               <EditEventForm currentEvent={eventData} />
-
-  
             </aside>
+
           </div>
         </div>
 
-        <section className="mt-8">
+        <section className="my-8">
           <h3 className="text-lg font-semibold mb-3">Guests</h3>
           <div className="rounded-lg border border-white/8 bg-[#0e1011] p-4 text-sm text-white/60">
             Guest list preview — empty for now.
           </div>
         </section>
+            <CancelEventPanel currentEvent={eventData} />
 
    
       </div>
