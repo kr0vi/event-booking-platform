@@ -4,6 +4,7 @@ import { useUser } from "@/lib/auth/useUser";
 import { useEffect, useState } from "react";
 import { Bell, Compass, House, MicVocal, Settings, Ticket } from "lucide-react";
 import Logo from "../Logo";
+import { UserAvatar } from "../UserAvatar";
 
 export function DistrictHeader() {
   const { isSignedIn, isLoaded, user } = useUser();
@@ -81,24 +82,23 @@ export function DistrictHeader() {
               <>
                 <Link
                   href={"/me"}
-                  className="rounded-lg  text-sm font-semibold text-white"
+                  className="rounded-lg group flex items-center gap-2 text-sm font-semibold text-white"
                 >
-                  <Bell size={18} />
-                </Link>
-                <Link
-                  href={"/me"}
-                  className="rounded-lg  text-sm font-semibold text-white"
-                >
-                  <Settings size={18} />
+                   <UserAvatar userId={user?.id} name={user?.name} size={28} />
+                  <span className="overflow-hidden max-w-0 opacity-0 transition-all duration-500 group-hover:max-w-28 group-hover:opacity-100">
+                    <span className="block whitespace-nowrap -translate-x-2 transition-transform duration-500 group-hover:translate-x-0">
+                      My Account
+                    </span>
+                  </span>
                 </Link>
               </>
             ) : (
               <>
                 <Link
-                  href={"/signup"}
+                  href={"/login"}
                   className="rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
                 >
-                  Sign Up
+                  Log In
                 </Link>
               </>
             )}
